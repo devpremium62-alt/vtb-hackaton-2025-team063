@@ -1,6 +1,6 @@
 import Heading from "@/shared/ui/typography/Heading";
 import Image from "next/image";
-import {ProgressBar} from "@/shared/ui/ProgressBar";
+import ProgressBar from "@/shared/ui/ProgressBar";
 
 type Props = {
     moneyCollected: number;

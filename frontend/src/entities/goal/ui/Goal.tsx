@@ -1,6 +1,6 @@
 import {type GoalType} from "@/entities/goal/model/types";
 import Image from "next/image";
-import {ProgressBar} from "@/shared/ui/ProgressBar";
+import ProgressBar from "@/shared/ui/ProgressBar";
 
 type Props = {
     goal: GoalType;
@@ -14,7 +14,7 @@ export const Goal = ({goal}: Props) => {
     }).format(goal.deadline);
 
     return <article className="bg-tertiary rounded-xl p-1.5 flex items-center gap-2">
-        <div className="w-[3.125rem] h-[3.125rem] rounded-full relative bg-accent">
+        <div className="shrink-0 w-[3.125rem] h-[3.125rem] rounded-full relative bg-accent">
             <Image className={`rounded-full${goal.avatar ? '' : ' p-1.5'}`} src={goal.avatar ?? "/icons/flash-on.svg"}
                    alt={goal.name} fill/>
         </div>
