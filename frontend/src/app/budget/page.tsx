@@ -1,3 +1,3 @@
 export default function Page() {
-    return <div>Budget</div>;
+    return <div>Бюджет</div>;
 }

@@ -8,6 +8,15 @@
     --bg-tertiary: #EEF2F7;
     --accent-color: #00C897;
     --accent-color--transparent: rgba(0, 200, 151, 0.22);
+
+    --success-color: #00C897;
+    --error-color: #FF5A5F;
+    --info-color: #0078FF;
+}
+
+@theme {
+    --breakpoint-xxs: 25rem;
+    --breakpoint-xs: 30rem;
 }
 
 body, .font-sf {
@@ -73,6 +82,18 @@ main {
 
 .bg-accent-transparent {
     background: var(--accent-color--transparent);
+}
+
+.bg-success {
+    background: var(--success-color);
+}
+
+.bg-error {
+    background: var(--error-color);
+}
+
+.bg-info {
+    background: var(--info-color);
 }
 
 .navbar {

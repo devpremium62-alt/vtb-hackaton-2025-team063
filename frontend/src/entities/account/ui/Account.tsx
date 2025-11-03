@@ -18,7 +18,7 @@ export const Account = ({account, className = "", ...props}: Props) => {
         </div>
         <div className="text-secondary">
             <p className="text-[0.6rem]">Баланс</p>
-            <p className="text-3xl leading-none font-semibold">{new Intl.NumberFormat('ru-RU').format(account.balance)} ₽</p>
+            <p className="text-2xl xxs:text-3xl leading-none font-semibold">{new Intl.NumberFormat('ru-RU').format(account.balance)} ₽</p>
         </div>
     </div>;
 }

@@ -13,7 +13,25 @@ export default async function Dashboard() {
             <div>
                 <Accounts firstAccount={{name: "Мария", balance: 120000, avatar: "/images/woman.png"}}
                           secondAccount={{name: "Пётр", balance: 120000, avatar: "/images/man.png"}}/>
-                <UpcomingPayments/>
+                <UpcomingPayments payments={[
+                    {
+                        date: new Date(2025, 10, 3),
+                        money: 5000,
+                        name: "На квартиру",
+                        payed: true
+                    },
+                    {
+                        date: new Date(2025, 10, 2),
+                        money: 4500,
+                        name: "Детский счет",
+                        payed: false
+                    },
+                    {
+                        date: new Date(2025, 10, 10),
+                        name: "Подписка",
+                        money: 500,
+                        payed: false
+                    }]}/>
             </div>
             <div>
                 <Goals goals={[
