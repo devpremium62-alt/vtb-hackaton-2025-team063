@@ -2,20 +2,19 @@ FROM python:3.11-slim
 
 WORKDIR /app
 
-# Установка системных зависимостей
 RUN apt-get update && apt-get install -y \
     gcc \
-    postgresql-dev \
+    libpq-dev \
+    build-essential \
     && rm -rf /var/lib/apt/lists/*
 
-# Копирование requirements и установка Python зависимостей
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Копирование проекта
 COPY . .
 
-# Создание статических файлов
+# Если у вас в контейнере нет полной django настройки (env vars), этот шаг может сломаться.
+# Оставлен, но можно поместить в runtime entrypoint.
 RUN python manage.py collectstatic --noinput
 
 EXPOSE 8000

@@ -3,23 +3,19 @@ from django.dispatch import receiver
 from django.contrib.auth.models import User
 from .models import UserBankProfile
 
+
 @receiver(post_save, sender=User)
 def create_user_bank_profile(sender, instance, created, **kwargs):
-    """Автоматическое создание банковского профиля при создании пользователя"""
     if created:
-        # Генерируем team_id на основе username
         team_id = f"{instance.username}-1"
         counter = 1
-        
-        # Убеждаемся, что team_id уникален
         while UserBankProfile.objects.filter(team_id=team_id).exists():
             counter += 1
             team_id = f"{instance.username}-{counter}"
-        
         UserBankProfile.objects.create(user=instance, team_id=team_id)
+
 
 @receiver(post_save, sender=User)
 def save_user_bank_profile(sender, instance, **kwargs):
-    """Сохранение профиля при сохранении пользователя"""
-    if hasattr(instance, 'bank_profile'):
+    if hasattr(instance, "bank_profile"):
         instance.bank_profile.save()
