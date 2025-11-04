@@ -3,7 +3,8 @@
 import Heading from "@/shared/ui/typography/Heading";
 import PaymentsCalendar from "@/app/dashboard/PaymentsCalendar";
 import {Payment, PaymentType} from "@/entities/payment";
-import {useMemo, useState} from "react";
+import React, {useMemo, useState} from "react";
+import { AnimatePresence, motion } from "framer-motion";
 
 type Props = {
     payments: PaymentType[];
@@ -29,15 +30,43 @@ const UpcomingPayments = ({payments}: Props) => {
         <Heading level={2}>Ближайшие платежи</Heading>
         <div className="grid grid-cols-2 gap-2.5">
             <PaymentsCalendar currentDate={currentDate} setCurrentDate={setCurrentDate} payments={dateToPayment}/>
-            {sortedPayments.length
-                ? <div className="flex-1 flex flex-col gap-1">
-                    {sortedPayments.slice(0, 4).map((payment) => (<Payment key={payment.date.toISOString() + payment.name} payment={payment}/>))}
-                </div>
-                : <div className="flex-1 flex items-center justify-center">
-                    <p className="text-center text-secondary text-sm font-medium">В этом месяце нет запланированных платежей</p>
-                </div>}
-
-
+            <AnimatePresence mode="popLayout">
+                {sortedPayments.length ? (
+                    <motion.div
+                        key={currentDate.getMonth()}
+                        initial={{opacity: 0, y: 10}}
+                        animate={{opacity: 1, y: 0}}
+                        exit={{opacity: 0, y: -10}}
+                        transition={{duration: 0.25, ease: "easeOut"}}
+                        className="flex-1 flex flex-col gap-1"
+                    >
+                        {sortedPayments.slice(0, 4).map(payment => (
+                            <motion.div
+                                key={payment.date.toISOString() + payment.name}
+                                initial={{opacity: 0, x: -5}}
+                                animate={{opacity: 1, x: 0}}
+                                exit={{opacity: 0, x: 5}}
+                                transition={{duration: 0.2}}
+                            >
+                                <Payment payment={payment}/>
+                            </motion.div>
+                        ))}
+                    </motion.div>
+                ) : (
+                    <motion.div
+                        key="no-payments"
+                        initial={{opacity: 0}}
+                        animate={{opacity: 1}}
+                        exit={{opacity: 0}}
+                        transition={{duration: 0.2}}
+                        className="flex-1 flex items-center justify-center"
+                    >
+                        <p className="text-center text-secondary text-sm font-medium">
+                            В этом месяце нет запланированных платежей
+                        </p>
+                    </motion.div>
+                )}
+            </AnimatePresence>
         </div>
     </section>
 }

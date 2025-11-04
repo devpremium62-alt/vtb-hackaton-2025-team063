@@ -1,6 +1,7 @@
 import Image, {StaticImageData} from "next/image";
 import Heading from "@/shared/ui/typography/Heading";
 import MoneyAmount from "@/shared/ui/MoneyAmount";
+import BalanceCounter from "@/shared/ui/MoneyCounting";
 
 type Person = {
     avatar: string | StaticImageData;
@@ -34,7 +35,7 @@ const SharedBalance = ({personFirst, personSecond, balance, monthlyIncome}: Prop
             <div>
                 <p className="text-xs font-light mb-0.5 leading-tight">Общий баланс</p>
                 <Heading level={1} className="flex items-center gap-1 tracking-[-0.06rem] leading-none mb-0">
-                    <MoneyAmount value={balance}/>
+                    <BalanceCounter value={balance}/>
                 </Heading>
             </div>
             <div>

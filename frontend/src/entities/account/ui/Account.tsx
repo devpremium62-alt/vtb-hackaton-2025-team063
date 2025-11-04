@@ -1,7 +1,10 @@
+"use client";
+
 import {type AccountType} from "@/entities/account/model/types";
 import Heading from "@/shared/ui/typography/Heading";
 import Image from "next/image";
 import MoneyAmount from "@/shared/ui/MoneyAmount";
+import {motion} from "framer-motion";
 
 type Props = {
     className?: string;
@@ -10,7 +13,10 @@ type Props = {
 }
 
 export const Account = ({account, className = "", ...props}: Props) => {
-    return <div className={`bg-tertiary rounded-xl px-2 py-1 ${className}`} {...props}>
+    return <motion.div initial={{opacity: 0, y: 40}}
+                       animate={{opacity: 1, y: 0}}
+                       transition={{duration: 0.3, ease: 'easeOut'}}
+                       className={`bg-tertiary rounded-xl px-2 py-1 ${className}`} {...props}>
         <div className="flex items-center gap-2 mb-2">
             <div className="w-[2.375rem] h-[2.375rem] relative">
                 <Image src={account.avatar} alt={account.name} fill/>
@@ -23,5 +29,5 @@ export const Account = ({account, className = "", ...props}: Props) => {
                 <MoneyAmount value={account.balance}/>
             </p>
         </div>
-    </div>;
+    </motion.div>;
 }
