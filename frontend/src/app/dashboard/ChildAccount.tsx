@@ -22,7 +22,7 @@ const ChildAccount = ({moneyCollected, moneyNeed, avatar}: Props) => {
                         exit={{opacity: 0, y: -10}}
                         transition={{duration: 0.3}}>
                 <div className="flex items-start justify-between mb-5">
-                    <p className="text-[2.5rem] mb-0.5 leading-none font-bold"><MoneyAmount value={moneyCollected}/></p>
+                    <p className="text-3xl xxs:text-[2.5rem] mb-0.5 leading-none font-bold"><MoneyAmount value={moneyCollected}/></p>
                     <Avatar avatar={avatar} alt="Ребенок"/>
                 </div>
                 <div className="flex items-center justify-between">

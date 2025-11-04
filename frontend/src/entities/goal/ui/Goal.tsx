@@ -33,7 +33,7 @@ export const Goal = ({goal}: Props) => {
                 <time className="text-secondary text-xs">{formattedDeadline}</time>
             </div>
             <div className="shrink-0 ml-auto flex flex-col">
-                <p className="leading-none mb-1 font-bold text-xl">
+                <p className="leading-none mb-1 font-bold text-lg xxs:text-xl">
                     <MoneyAmount value={goal.moneyCollected}/>
                 </p>
                 <p className="text-secondary text-[0.6rem] self-end">

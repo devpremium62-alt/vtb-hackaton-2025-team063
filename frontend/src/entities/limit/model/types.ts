@@ -1,7 +1,6 @@
-import {ExpenseCategoryName} from "@/entities/expense-category";
+import {ExpenseCategoryType} from "@/entities/expense-category";
 
 export type LimitType = {
-    category: ExpenseCategoryName;
+    category: ExpenseCategoryType;
     limit: number;
-    spent: number;
 }

@@ -4,13 +4,14 @@
     --color-primary-light: #E6F0FF;
     --primary-color: #0066FF;
     --text-primary: #1E1E1E;
-    --text-secondary: #9CA3AF;
+    --text-secondary: #6B7280;
     --bg-tertiary: #EEF2F7;
     --accent-color: #00C897;
     --accent-color--transparent: rgba(0, 200, 151, 0.22);
 
     --success-color: #00C897;
     --error-color: #FF5A5F;
+    --warning-color: #FFD66B;
     --error-color--transparent: rgba(255, 90, 95, 0.16);
     --info-color: #0078FF;
 }
@@ -105,6 +106,10 @@ main {
     color: var(--error-color);
 }
 
+.bg-warning {
+    background: var(--warning-color);
+}
+
 .bg-info {
     background: var(--info-color);
 }
@@ -131,7 +136,7 @@ main {
     left: 95%;
     width: 10%;
     height: 100%;
-    filter: blur(1rem);
+    filter: blur(0.5rem);
     background: white;
 }
 
