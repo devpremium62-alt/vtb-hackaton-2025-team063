@@ -10,7 +10,7 @@ const Limits = ({limits}: Props) => {
         <Heading level={2}>Лимиты трат</Heading>
         <div className="flex gap-1 flex-col">
             {limits.map((limit) => (
-                <Limit key={limit.category} limit={limit} />
+                <Limit key={limit.category.name} limit={limit} />
             ))}
         </div>
     </section>;

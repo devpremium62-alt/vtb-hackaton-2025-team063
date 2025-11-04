@@ -23,7 +23,7 @@ const BalanceCounter = ({ value }: Props) => {
     return (
         <motion.div
             transition={{ duration: 0.4 }}
-            className="text-4xl font-bold text-white"
+            className="text-3xl xxs:text-4xl font-bold text-white"
         >
             <motion.span>{rounded || '0'}</motion.span> ₽
         </motion.div>
