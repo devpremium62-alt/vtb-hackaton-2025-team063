@@ -14,16 +14,16 @@ export const Goal = ({goal}: Props) => {
         year: 'numeric'
     }).format(goal.deadline);
 
-    return <article className="bg-tertiary rounded-xl p-1.5 flex items-center gap-2">
+    return <article className="bg-tertiary rounded-xl p-1.5 flex items-center justify-start gap-2">
         <div className="shrink-0 w-[3.125rem] h-[3.125rem] rounded-full relative bg-accent">
             <Image className={`rounded-full${goal.avatar ? '' : ' p-1.5'}`} src={goal.avatar ?? "/icons/flash-on.svg"}
                    alt={goal.name} fill/>
         </div>
-        <div className="flex flex-col">
-            <p className="text-primary font-medium">{goal.name}</p>
+        <div className="flex flex-col min-w-0">
+            <p className="text-primary font-medium text-ellipsis overflow-hidden whitespace-nowrap">{goal.name}</p>
             <time className="text-secondary text-xs">{formattedDeadline}</time>
         </div>
-        <div className="ml-auto flex flex-col">
+        <div className="shrink-0 ml-auto flex flex-col">
             <p className="leading-none mb-1 font-bold text-xl">
                 <MoneyAmount value={goal.moneyCollected}/>
             </p>

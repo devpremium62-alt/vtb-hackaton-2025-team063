@@ -11,6 +11,7 @@
 
     --success-color: #00C897;
     --error-color: #FF5A5F;
+    --error-color--transparent: rgba(255, 90, 95, 0.16);
     --info-color: #0078FF;
 }
 
@@ -94,6 +95,10 @@ main {
 
 .bg-error {
     background: var(--error-color);
+}
+
+.bg-error-transparent {
+    background: var(--error-color--transparent);
 }
 
 .text-error {

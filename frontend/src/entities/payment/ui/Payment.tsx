@@ -6,11 +6,12 @@ type Props = {
 }
 
 export const Payment = ({payment}: Props) => {
-    return <article className="bg-tertiary px-1.5 py-1 rounded-xl">
+    return <article
+        className={`${!payment.payed && payment.date < new Date() ? "bg-error-transparent" : "bg-tertiary"} px-1.5 py-1 rounded-xl`}>
         <div className="flex items-center gap-1 justify-between mb-0.5">
-            <p className="text-xs font-medium">{payment.name}</p>
-            <p className="text-sm font-medium">
-                <MoneyAmount value={payment.money} />
+            <p className="text-xs font-medium text-ellipsis min-w-0 overflow-hidden whitespace-nowrap">{payment.name}</p>
+            <p className="shrink-0 text-sm font-medium">
+                <MoneyAmount value={payment.money}/>
             </p>
         </div>
         <div className="flex items-center gap-1 justify-between">
@@ -23,11 +24,11 @@ export const Payment = ({payment}: Props) => {
 const Status = ({payment}: Props) => {
     const baseClasses = "text-[0.6rem] font-medium";
 
-    if(payment.payed) {
+    if (payment.payed) {
         return <p className={`${baseClasses} text-success`}>Внесено</p>
     }
 
-    if(payment.date < new Date()) {
+    if (payment.date < new Date()) {
         return <p className={`${baseClasses} text-error`}>Просрочен</p>
     }
 

@@ -37,6 +37,12 @@ export default async function Dashboard() {
                         name: "Кредит",
                         money: 10000,
                         payed: false
+                    },
+                    {
+                        date: new Date(2025, 11, 3),
+                        money: 5000,
+                        name: "На квартиру",
+                        payed: false
                     }
                 ]}/>
             </div>

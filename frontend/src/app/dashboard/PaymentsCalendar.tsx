@@ -3,17 +3,17 @@
 import 'dayjs/locale/ru';
 import {Calendar} from "@mantine/dates";
 import dayjs from "dayjs";
-import React, {useState} from "react";
 import {ChevronLeft, ChevronRight} from "lucide-react";
 import {PaymentType} from "@/entities/payment";
+import {Dispatch, SetStateAction} from "react";
 
 type Props = {
-    payments: Record<string, PaymentType>
+    payments: Record<string, PaymentType>;
+    currentDate: Date;
+    setCurrentDate: Dispatch<SetStateAction<Date>>;
 }
 
-const PaymentsCalendar = ({payments}: Props) => {
-    const [currentDate, setCurrentDate] = useState<Date>(new Date());
-
+const PaymentsCalendar = ({payments, currentDate, setCurrentDate}: Props) => {
     function prevMonth() {
         setCurrentDate((d) => dayjs(d).subtract(1, 'month').toDate());
     }
@@ -27,7 +27,7 @@ const PaymentsCalendar = ({payments}: Props) => {
 
     const now = new Date();
 
-    return <div className="h-full flex-1 bg-tertiary rounded-xl px-1.5 py-2">
+    return <div className="h-full flex-1 bg-tertiary rounded-xl px-1.5 py-[0.5625rem]">
         <div className="flex items-center justify-between px-1.5 mb-3">
             <div className="flex items-center gap-1">
                 <button className="cursor-pointer" onClick={prevMonth}>
@@ -57,7 +57,7 @@ const PaymentsCalendar = ({payments}: Props) => {
                     color: "var(--text-primary)",
                     fontWeight: 500,
                     width: '100%',
-                    height: 'auto'
+                    height: 'auto',
                 },
                 weekday: {
                     fontSize: '0.6rem',
@@ -71,23 +71,29 @@ const PaymentsCalendar = ({payments}: Props) => {
                     fontWeight: 600,
                 },
             }}
-            renderDay={(date) => {
-                const base =
-                    'flex items-center justify-center rounded-full w-5 h-5 pr-0.25 pt-0.25 mx-auto text-[0.6rem] font-medium leading-none';
-                const payment = payments[date];
+            renderDay={(dateStr) => {
+                let base =
+                    'flex items-center justify-center rounded-full w-5 h-5 pt-0.25 mx-auto text-[0.6rem] font-medium leading-none';
+
+                const date = new Date(dateStr).getDate();
+                if(date > 10) {
+                    base += ` pr-0.5`;
+                }
+
+                const payment = payments[dateStr];
                 if(!payment) {
-                    return <div className={base}>{new Date(date).getDate()}</div>;
+                    return <div className={base}>{date}</div>;
                 }
 
                 if(payment.payed) {
-                    return <div className={`${base} bg-success text-white`}>{new Date(date).getDate()}</div>;
+                    return <div className={`${base} bg-success text-white`}>{date}</div>;
                 }
 
-                if(new Date(date) < now) {
-                    return <div className={`${base} bg-error text-white`}>{new Date(date).getDate()}</div>;
+                if(new Date(dateStr) < now) {
+                    return <div className={`${base} bg-error text-white`}>{date}</div>;
                 }
 
-                return <div className={`${base} bg-info text-white`}>{new Date(date).getDate()}</div>;
+                return <div className={`${base} bg-info text-white`}>{date}</div>;
             }}
         />
     </div>
