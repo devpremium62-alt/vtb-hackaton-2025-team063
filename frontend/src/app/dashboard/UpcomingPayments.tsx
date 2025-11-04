@@ -3,8 +3,9 @@
 import Heading from "@/shared/ui/typography/Heading";
 import PaymentsCalendar from "@/app/dashboard/PaymentsCalendar";
 import {Payment, PaymentType} from "@/entities/payment";
-import React, {useEffect, useMemo, useState} from "react";
+import React, {useMemo, useState} from "react";
 import {AnimatePresence, motion} from "framer-motion";
+import useShowingSkeleton from "@/shared/hooks/useShowingSkeleton";
 
 type Props = {
     payments: PaymentType[];
@@ -17,12 +18,7 @@ function isSameMonth(d1: Date, d2: Date): boolean {
 const UpcomingPayments = ({payments}: Props) => {
     const [currentDate, setCurrentDate] = useState<Date>(new Date());
 
-    const [isLoading, setIsLoading] = useState(true);
-
-    useEffect(() => {
-        const t = setTimeout(() => setIsLoading(false), 0);
-        return () => clearTimeout(t);
-    }, [currentDate]);
+    const isLoading = useShowingSkeleton(currentDate);
 
     const dateToPayment = useMemo(() => {
         return Object.fromEntries(payments.map(p => [p.date.toISOString().slice(0, 10), {...p}]));

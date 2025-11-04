@@ -2,9 +2,12 @@
 
 import Heading from "@/shared/ui/typography/Heading";
 import CoupleAvatars from "@/shared/ui/CoupleAvatars";
-import DonutChart from "@/shared/ui/DonutChart";
+import DonutChart from "@/shared/ui/charts/DonutChart";
 import {ExpenseCategory, ExpenseCategoryType} from "@/entities/expense-category";
-import React, {useEffect, useMemo, useState} from "react";
+import React, {useMemo} from "react";
+import 'dayjs/locale/ru';
+import dayjs from "dayjs";
+import useShowingSkeleton from "@/shared/hooks/useShowingSkeleton";
 
 type Props = {
     firstAvatar: string;
@@ -20,25 +23,20 @@ const SharedExpenses = ({firstAvatar, secondAvatar, expenseCategories}: Props) =
         return [...sortedCategories].reverse().map(c => ({name: c.name, value: c.spent, color: c.color}));
     }, [sortedCategories]);
 
-    const [isLoading, setIsLoading] = useState(true);
+    const isShowingSkeleton = useShowingSkeleton(expenseCategories);
 
-    useEffect(() => {
-        const t = setTimeout(() => setIsLoading(false), 0);
-        return () => clearTimeout(t);
-    }, [expenseCategories]);
-
-    return <section className="ml-4 md:mx-0 md:mr-4 mb-5">
+    return <section className="ml-4 md:mx-0 md:mr-4 mb-[1.875rem]">
         <div className="flex items-center justify-between mr-4 mb-2.5">
-            <Heading level={2}>Общие траты</Heading>
+            <Heading level={2}>Общие траты за {dayjs(Date.now()).locale('ru').format('MMMM')}</Heading>
             <CoupleAvatars firstAvatar={firstAvatar} secondAvatar={secondAvatar}/>
         </div>
-        <div className="flex gap-2 items-start">
-            {isLoading
+        <div className="flex items-start">
+            {isShowingSkeleton
                 ? <>
-                    <div className="w-1/2 flex-1 h-32 rounded-xl bg-tertiary animate-pulse"></div>
+                    <div className="w-1/2 flex-1 h-[8.75rem] rounded-xl bg-tertiary animate-pulse mr-1"></div>
                     <div className="w-1/2 flex-1 flex flex-col gap-1 mr-4">
                         {Array.from({length: 3}).map((_, i) => (
-                            <div key={i} className="h-10 rounded-xl bg-tertiary animate-pulse"/>
+                            <div key={i} className="h-11 rounded-xl bg-tertiary animate-pulse"/>
                         ))}
                     </div>
                 </>
@@ -47,12 +45,12 @@ const SharedExpenses = ({firstAvatar, secondAvatar, expenseCategories}: Props) =
                     <div className="w-1/2 right-blurred">
                         <div className="overflow-x-auto">
                             <div className="grid grid-flow-col auto-rows-max gap-1"
-                                 style={{gridTemplateRows: "repeat(3, auto)", gridAutoColumns: "max-content"}}>
+                                 style={{gridTemplateRows: "repeat(3, auto)", gridAutoColumns: "90%"}}>
                                 {sortedCategories.map(category => (
                                     <ExpenseCategory key={category.name} expenseCategory={category}/>
                                 ))}
-                                {Array.from({length: 3}).map(() => (
-                                    <div className="w-4"></div>
+                                {Array.from({length: 3}).map((_, i) => (
+                                    <div key={i} className="w-4"></div>
                                 ))}
                             </div>
                         </div>

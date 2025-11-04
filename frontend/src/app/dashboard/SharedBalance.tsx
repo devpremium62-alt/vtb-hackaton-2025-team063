@@ -29,7 +29,7 @@ const SharedBalance = ({personFirst, personSecond, balance, monthlyIncome}: Prop
         <div className="flex items-end justify-between">
             <div>
                 <p className="text-xs font-light mb-0.5 leading-tight">Общий баланс</p>
-                <Heading level={1} className="flex items-center gap-1 tracking-[-0.06rem] leading-none mb-0">
+                <Heading level={1} className="flex items-center gap-1 tracking-[-0.06rem] leading-none mb-0 text-3xl xxs:text-4xl font-bold text-white">
                     <BalanceCounter value={balance}/>
                 </Heading>
             </div>

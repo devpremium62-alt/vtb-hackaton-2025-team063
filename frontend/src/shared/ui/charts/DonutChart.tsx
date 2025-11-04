@@ -25,6 +25,7 @@ const DonutChart = ({data}: Props) => {
                     dataKey="value"
                     cornerRadius={6}
                     animationDuration={1000}
+                    animationBegin={0}
                 >
                     {data.map((entry, index) => (
                         <Cell

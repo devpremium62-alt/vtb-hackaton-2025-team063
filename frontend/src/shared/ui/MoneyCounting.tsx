@@ -6,7 +6,7 @@ type Props = {
     value: number;
 }
 
-const BalanceCounter = ({ value }: Props) => {
+const BalanceCounter = ({value}: Props) => {
     const balance = useMotionValue(0);
     const rounded = useTransform(balance, (latest) =>
         Math.floor(latest).toLocaleString('ru-RU')
@@ -20,14 +20,9 @@ const BalanceCounter = ({ value }: Props) => {
         return () => controls.stop();
     }, [value]);
 
-    return (
-        <motion.div
-            transition={{ duration: 0.4 }}
-            className="text-3xl xxs:text-4xl font-bold text-white"
-        >
-            <motion.span>{rounded || '0'}</motion.span> ₽
-        </motion.div>
-    );
+    return <>
+        <motion.span transition={{duration: 0.4}}>{rounded || '0'}</motion.span> ₽
+    </>;
 };
 
 export default BalanceCounter;

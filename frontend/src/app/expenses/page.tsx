@@ -5,6 +5,7 @@ import {
     ExpenseseCategoryColors,
     ExpenseseCategoryIcons
 } from "@/entities/expense-category/model/types";
+import PersonalExpenses from "@/app/expenses/PersonalExpenses";
 
 const categories: ExpenseCategoryType[] = [
     {
@@ -31,6 +32,18 @@ const categories: ExpenseCategoryType[] = [
         color: ExpenseseCategoryColors["Транспорт"],
         icon: ExpenseseCategoryIcons["Транспорт"]
     },
+    {
+        name: "Одежда и обувь",
+        spent: 12000,
+        color: ExpenseseCategoryColors["Одежда и обувь"],
+        icon: ExpenseseCategoryIcons["Одежда и обувь"]
+    },
+    {
+        name: "Подарки",
+        spent: 1000,
+        color: ExpenseseCategoryColors["Подарки"],
+        icon: ExpenseseCategoryIcons["Подарки"]
+    }
 ];
 
 export default function Expenses() {
@@ -42,10 +55,11 @@ export default function Expenses() {
                     {category: categories[1], limit: 40000},
                     {category: categories[2], limit: 5000},
                 ]}/>
-                <SharedExpenses firstAvatar="/images/man.png" secondAvatar="/images/woman.png" expenseCategories={categories}/>
+                <SharedExpenses firstAvatar="/images/man.png" secondAvatar="/images/woman.png"
+                                expenseCategories={categories}/>
             </div>
             <div>
-
+                <PersonalExpenses avatar="/images/woman.png" expenseCategories={categories}/>
             </div>
         </div>
     </div>
