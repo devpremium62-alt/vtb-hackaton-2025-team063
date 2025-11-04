@@ -29,15 +29,15 @@ const PaymentsCalendar = ({payments, currentDate, setCurrentDate}: Props) => {
 
     const now = new Date();
 
-    return <AnimatePresence mode="wait">
-        <motion.div
-            key={currentDate.getMonth()}
-            initial={{opacity: 0, x: -30}}
-            animate={{opacity: 1, x: 0}}
-            exit={{opacity: 0, x: 30}}
-            transition={{duration: 0.3, ease: "easeInOut"}}
-        >
-            <div className="h-full flex-1 bg-tertiary rounded-xl px-1.5 py-[0.5625rem]">
+    return <div className="h-full flex-1 bg-tertiary rounded-xl px-1.5 py-[0.5625rem]">
+        <AnimatePresence mode="wait">
+            <motion.div
+                key={currentDate.getMonth()}
+                initial={{opacity: 0, x: -30}}
+                animate={{opacity: 1, x: 0}}
+                exit={{opacity: 0, x: 30}}
+                transition={{duration: 0.3, ease: "easeInOut"}}
+            >
                 <div className="flex items-center justify-between px-1.5 mb-3">
                     <div className="flex items-center gap-1">
                         <button className="cursor-pointer" onClick={prevMonth}>
@@ -106,9 +106,9 @@ const PaymentsCalendar = ({payments, currentDate, setCurrentDate}: Props) => {
                         return <div className={`${base} bg-info text-white`}>{date}</div>;
                     }}
                 />
-            </div>
-        </motion.div>
-    </AnimatePresence>
+            </motion.div>
+        </AnimatePresence>
+    </div>
 }
 
 export default PaymentsCalendar;
