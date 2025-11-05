@@ -6,7 +6,7 @@ type Props = {
 }
 
 const Limits = ({limits}: Props) => {
-    return <section className="mx-4 md:mx-0 md:mr-4 mb-[1.875rem]">
+    return <section className="mx-4 md:mr-0 mb-[1.875rem]">
         <Heading level={2}>Лимиты трат</Heading>
         <div className="flex gap-1 flex-col">
             {limits.map((limit) => (

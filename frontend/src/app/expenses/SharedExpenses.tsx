@@ -25,7 +25,7 @@ const SharedExpenses = ({firstAvatar, secondAvatar, expenseCategories}: Props) =
 
     const isShowingSkeleton = useShowingSkeleton(expenseCategories);
 
-    return <section className="ml-4 md:mx-0 md:mr-4 mb-[1.875rem]">
+    return <section className="ml-4 md:mr-0 mb-[1.875rem]">
         <div className="flex items-center justify-between mr-4 mb-2.5">
             <Heading level={2}>Общие траты за {dayjs(Date.now()).locale('ru').format('MMMM')}</Heading>
             <CoupleAvatars firstAvatar={firstAvatar} secondAvatar={secondAvatar}/>
@@ -44,8 +44,8 @@ const SharedExpenses = ({firstAvatar, secondAvatar, expenseCategories}: Props) =
                     <DonutChart data={chartData}/>
                     <div className="w-1/2 right-blurred">
                         <div className="overflow-x-auto">
-                            <div className="grid grid-flow-col auto-rows-max gap-1"
-                                 style={{gridTemplateRows: "repeat(3, auto)", gridAutoColumns: "90%"}}>
+                            <div className="grid grid-flow-col auto-rows-max gap-1 auto-cols-[90%] lg:auto-cols-[80%] xl:auto-cols-[70%]"
+                                 style={{gridTemplateRows: "repeat(3, auto)"}}>
                                 {sortedCategories.map(category => (
                                     <ExpenseCategory key={category.name} expenseCategory={category}/>
                                 ))}
