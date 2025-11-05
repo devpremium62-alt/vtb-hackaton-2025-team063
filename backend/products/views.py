@@ -5,7 +5,13 @@ from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
 
 from banks.models import UserBankProfile
-from .models import Product, ProductAgreement, ProductApplication, ProductCategory
+from .models import (
+    Product,
+    ProductAgreement,
+    ProductApplication,
+    ProductCategory,
+    ProductAgreementConsent
+)
 from .serializers import (
     ProductSerializer,
     ProductAgreementSerializer,
@@ -13,11 +19,16 @@ from .serializers import (
     ProductApplicationCreateSerializer,
     ProductCategorySerializer,
     ProductOfferSerializer,
+    ProductAgreementConsentRequestSerializer,
+    ProductAgreementConsentSerializer,
+    ProductAgreementRequestSerializer,
+    CloseAgreementRequestSerializer,
 )
 from .services import (
     ProductService,
     ProductAgreementService,
     ProductRecommendationService,
+    ProductAgreementConsentService,
 )
 
 
@@ -79,20 +90,125 @@ class ProductAgreementViewSet(viewsets.ModelViewSet):
     serializer_class = ProductAgreementSerializer
 
     def get_queryset(self):
+        consent_id = self.request.headers.get('X-Product-Agreement-Consent-Id')
+        requesting_bank = self.request.headers.get('X-Requesting-Bank')
+        client_id = self.request.query_params.get('client_id')
+
+        if requesting_bank and client_id:
+            if not consent_id:
+                return Response(
+                    {"error": "Consent required for cross-bank requests"},
+                    status=status.HTTP_403_FORBIDDEN
+                )
+
+            try:
+                user_profile = UserBankProfile.objects.get(team_id=client_id)
+            except UserBankProfile.DoesNotExist:
+                return Response(
+                    {"error": "Client not found"},
+                    status=status.HTTP_404_NOT_FOUND
+                )
+
+            consent_service = ProductAgreementConsentService()
+            if not consent_service.validate_consent(
+                consent_id, requesting_bank, client_id, "read"
+            ):
+                return Response(
+                    {"error": "Invalid or expired consent"},
+                    status=status.HTTP_403_FORBIDDEN
+                )
+            return ProductAgreement.objects.filter(
+                user_profile=user_profile
+            ).select_related("product", "product__bank", "linked_account")
+
         user_profile = get_object_or_404(UserBankProfile, user=self.request.user)
         return ProductAgreement.objects.filter(user_profile=user_profile).select_related(
             "product", "product__bank", "linked_account"
         )
 
+    def create(self, request):
+        """Создание договора с поддержкой межбанковых запросов"""
+        serializer = ProductAgreementRequestSerializer(data=request.data)
+        if not serializer.is_valid():
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+        consent_id = request.headers.get('X-Product-Agreement-Consent-Id')
+        requesting_bank = request.headers.get('X-Requesting-Bank')
+        client_id = request.query_params.get('client_id')
+
+        if requesting_bank and client_id:
+            if not consent_id:
+                return Response(
+                    {"error": "Consent required for cross-bank requests"},
+                    status=status.HTTP_403_FORBIDDEN
+                )
+
+            try:
+                user_profile = UserBankProfile.objects.get(team_id=client_id)
+            except UserBankProfile.DoesNotExist:
+                return Response(
+                    {"error": "Client not found"},
+                    status=status.HTTP_404_NOT_FOUND
+                )
+
+            consent_service = ProductAgreementConsentService()
+            product = get_object_or_404(Product, product_id=serializer.validated_data['product_id'])
+
+            if not consent_service.validate_consent(
+                consent_id, requesting_bank, client_id, "open",
+                product_type=product.product_type,
+                amount=serializer.validated_data['amount']
+            ):
+                return Response(
+                    {"error": "Consent does not allow this operation"},
+                    status=status.HTTP_403_FORBIDDEN
+                )
+        else:
+            user_profile = get_object_or_404(UserBankProfile, user=request.user)
+
+        service = ProductAgreementService(user_profile)
+        try:
+            product = get_object_or_404(Product, product_id=serializer.validated_data['product_id'])
+            agreement = service.open_agreement(product, serializer.validated_data)
+            return Response(
+                ProductAgreementSerializer(agreement).data,
+                status=status.HTTP_201_CREATED,
+            )
+        except Exception as exc:
+            return Response({"error": str(exc)}, status=status.HTTP_400_BAD_REQUEST)
+
     @action(detail=True, methods=["post"])
     def close(self, request, pk=None):
         agreement = self.get_object()
         user_profile = get_object_or_404(UserBankProfile, user=request.user)
-        if agreement.user_profile != user_profile:
-            return Response({"error": "Доступ запрещен"}, status=status.HTTP_403_FORBIDDEN)
+        consent_id = request.headers.get('X-Product-Agreement-Consent-Id')
+        requesting_bank = request.headers.get('X-Requesting-Bank')
+
+        if requesting_bank:
+            if not consent_id:
+                return Response(
+                    {"error": "Consent required for cross-bank requests"},
+                    status=status.HTTP_403_FORBIDDEN
+                )
+
+            consent_service = ProductAgreementConsentService()
+            if not consent_service.validate_consent(
+                consent_id, requesting_bank, agreement.user_profile.team_id, "close"
+            ):
+                return Response(
+                    {"error": "Consent does not allow closing agreements"},
+                    status=status.HTTP_403_FORBIDDEN
+                )
+        else:
+            if agreement.user_profile != user_profile:
+                return Response({"error": "Доступ запрещен"}, status=status.HTTP_403_FORBIDDEN)
+
+        serializer = CloseAgreementRequestSerializer(data=request.data)
+        if not serializer.is_valid():
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         service = ProductAgreementService(user_profile)
         try:
-            agreement = service.close_agreement(agreement, request.data)
+            agreement = service.close_agreement(agreement, serializer.validated_data)
             return Response(ProductAgreementSerializer(agreement).data)
         except Exception as exc:
             return Response({"error": str(exc)}, status=status.HTTP_400_BAD_REQUEST)
@@ -120,5 +236,58 @@ class ProductApplicationViewSet(viewsets.ModelViewSet):
         try:
             application = service.submit_application(application)
             return Response(ProductApplicationSerializer(application).data)
+        except Exception as exc:
+            return Response({"error": str(exc)}, status=status.HTTP_400_BAD_REQUEST)
+
+
+class ProductAgreementConsentViewSet(viewsets.ModelViewSet):
+    permission_classes = [IsAuthenticated]
+    serializer_class = ProductAgreementConsentSerializer
+
+    def get_queryset(self):
+        user_profile = get_object_or_404(UserBankProfile, user=self.request.user)
+        return ProductAgreementConsent.objects.filter(user_profile=user_profile)
+
+    def create(self, request):
+        """Создание запроса на согласие"""
+        serializer = ProductAgreementConsentRequestSerializer(data=request.data)
+        if not serializer.is_valid():
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+        user_profile = get_object_or_404(UserBankProfile, user=request.user)
+        service = ProductAgreementConsentService()
+
+        try:
+            consent = service.create_consent_request(
+                user_profile, serializer.validated_data
+            )
+            return Response(
+                ProductAgreementConsentSerializer(consent).data,
+                status=status.HTTP_201_CREATED
+            )
+        except Exception as exc:
+            return Response({"error": str(exc)}, status=status.HTTP_400_BAD_REQUEST)
+
+    @action(detail=True, methods=["post"])
+    def approve(self, request, pk=None):
+        """Одобрение согласия (для банка-владельца)"""
+        consent = self.get_object()
+        service = ProductAgreementConsentService()
+
+        try:
+            consent = service.approve_consent(consent)
+            return Response(ProductAgreementConsentSerializer(consent).data)
+        except Exception as exc:
+            return Response({"error": str(exc)}, status=status.HTTP_400_BAD_REQUEST)
+
+    @action(detail=True, methods=["post"])
+    def reject(self, request, pk=None):
+        """Отклонение согласия (для банка-владельца)"""
+        consent = self.get_object()
+        service = ProductAgreementConsentService()
+
+        try:
+            consent = service.reject_consent(consent)
+            return Response(ProductAgreementConsentSerializer(consent).data)
         except Exception as exc:
             return Response({"error": str(exc)}, status=status.HTTP_400_BAD_REQUEST)

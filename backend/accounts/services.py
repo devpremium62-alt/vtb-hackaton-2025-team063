@@ -23,13 +23,13 @@ class AccountService:
             for account_data in accounts_data.get("accounts", []):
                 account = self._update_or_create_account(
                     bank_name, account_data
-                    )
+                )
                 synced_accounts.append(account)
             return synced_accounts
         except Exception as e:
             raise Exception(
                 f"Ошибка синхронизации счетов из {bank_name}: {str(e)}"
-                )
+            )
 
     def _update_or_create_account(self, bank_name, account_data):
         from banks.models import Bank
@@ -42,7 +42,7 @@ class AccountService:
             defaults={
                 "account_type": account_data.get(
                     "account_type", "CHECKING"
-                    ).upper(),
+                ).upper(),
                 "currency": account_data.get("currency", "RUB"),
                 "balance": account_data.get("balance", 0),
                 "available_balance": account_data.get("available_balance", 0),
@@ -59,7 +59,7 @@ class AccountService:
                     account=account,
                     balance_type=balance_data.get(
                         "balance_type", "CLOSING_BOOKED"
-                        ),
+                    ),
                     defaults={
                         "amount": balance_data.get("amount", 0),
                         "currency": balance_data.get("currency", "RUB"),
@@ -106,7 +106,7 @@ class AccountService:
                 defaults={
                     "bank_transaction_id": tx_data.get(
                         "bank_transaction_id", ""
-                        ),
+                    ),
                     "amount": tx_data.get("amount", 0),
                     "currency": tx_data.get("currency", "RUB"),
                     "type": tx_data.get("type", "DEBIT").upper(),
@@ -135,17 +135,21 @@ class AccountService:
     def create_account(
         self, bank_name, account_type, nickname="", initial_balance=0
     ):
+        if account_type and account_type.islower():
+            account_type = account_type.upper()
         client = BankClientFactory.get_client(bank_name)
         try:
             account_data = {
-                "account_type": account_type,
+                "account_type": account_type.lower(),
                 "initial_balance": float(initial_balance)
-                }
+            }
             if nickname:
                 account_data["nickname"] = nickname
+
             result = client.create_account(
-                account_data, client_id=self.user_profile.team_id
-                )
+                account_data,
+                client_id=self.user_profile.team_id
+            )
             return self._update_or_create_account(bank_name, result)
         except Exception as e:
             raise Exception(f"Ошибка создания счета: {str(e)}")
@@ -156,14 +160,17 @@ class AccountService:
             close_data = {"action": action}
             if destination_account_id:
                 close_data["destination_account_id"] = destination_account_id
+
             result = client.close_account(
                 account_id=account.account_id,
                 close_data=close_data,
                 client_id=self.user_profile.team_id,
             )
+
             account.status = "CLOSED"
             account.closed_date = timezone.now()
             account.save()
+
             return result
         except Exception as e:
             raise Exception(f"Ошибка закрытия счета: {str(e)}")
@@ -173,7 +180,7 @@ class AccountService:
             self.user_profile.team_id.split("-")[0]
             if self.user_profile and getattr(
                 self.user_profile, "team_id", None
-                )
+            )
             else None
         )
 

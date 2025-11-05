@@ -4,6 +4,7 @@ from .models import (
     ProductAgreement,
     ProductApplication,
     ProductCategory,
+    ProductAgreementConsent,
 )
 
 
@@ -14,6 +15,22 @@ class ProductCategorySerializer(serializers.ModelSerializer):
 
 
 class ProductSerializer(serializers.ModelSerializer):
+
+    productId = serializers.CharField(source="product_id", read_only=True)
+    productType = serializers.CharField(source="product_type", read_only=True)
+    productName = serializers.CharField(source="name", read_only=True)
+    description = serializers.CharField(read_only=True)
+    interestRate = serializers.DecimalField(
+        source="interest_rate", max_digits=5, decimal_places=2, read_only=True
+    )
+    minAmount = serializers.DecimalField(
+        source="min_amount", max_digits=15, decimal_places=2, read_only=True
+    )
+    maxAmount = serializers.DecimalField(
+        source="max_amount", max_digits=15, decimal_places=2, read_only=True
+    )
+    termMonths = serializers.IntegerField(source="term_months", read_only=True)
+
     bank_name = serializers.CharField(source="bank.name", read_only=True)
     category_name = serializers.SerializerMethodField()
     is_promotional = serializers.SerializerMethodField()
@@ -21,20 +38,19 @@ class ProductSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product
         fields = [
+            "productId",
+            "productType",
+            "productName",
+            "description",
+            "interestRate",
+            "minAmount",
+            "maxAmount",
+            "termMonths",
+            "currency",
+            "features",
             "id",
             "bank",
             "bank_name",
-            "product_id",
-            "product_type",
-            "name",
-            "description",
-            "short_description",
-            "interest_rate",
-            "min_amount",
-            "max_amount",
-            "term_months",
-            "currency",
-            "features",
             "requirements",
             "documents_required",
             "status",
@@ -64,7 +80,21 @@ class ProductSerializer(serializers.ModelSerializer):
 
 
 class ProductAgreementSerializer(serializers.ModelSerializer):
-    product_name = serializers.CharField(source="product.name", read_only=True)
+
+    agreementId = serializers.CharField(source="agreement_id", read_only=True)
+    productId = serializers.CharField(source="product.product_id", read_only=True)
+    productName = serializers.CharField(source="product.name", read_only=True)
+    amount = serializers.DecimalField(max_digits=15, decimal_places=2)
+    interestRate = serializers.DecimalField(
+        source="interest_rate", max_digits=5, decimal_places=2, read_only=True
+    )
+    termMonths = serializers.IntegerField(source="term_months", read_only=True)
+    openedDate = serializers.DateTimeField(source="opened_date", read_only=True)
+    maturityDate = serializers.DateTimeField(source="maturity_date", read_only=True)
+    currentBalance = serializers.DecimalField(
+        source="current_balance", max_digits=15, decimal_places=2, read_only=True
+    )
+
     bank_name = serializers.CharField(source="product.bank.name", read_only=True)
     team_id = serializers.CharField(source="user_profile.team_id", read_only=True)
     days_until_maturity = serializers.SerializerMethodField()
@@ -72,22 +102,23 @@ class ProductAgreementSerializer(serializers.ModelSerializer):
     class Meta:
         model = ProductAgreement
         fields = [
+            "agreementId",
+            "productId",
+            "productName",
+            "status",
+            "amount",
+            "interestRate",
+            "termMonths",
+            "openedDate",
+            "maturityDate",
+            "currentBalance",
             "id",
             "user_profile",
             "team_id",
             "product",
-            "product_name",
             "bank_name",
-            "agreement_id",
-            "status",
-            "amount",
-            "interest_rate",
-            "term_months",
-            "opened_date",
             "closed_date",
-            "maturity_date",
             "linked_account",
-            "current_balance",
             "interest_accrued",
             "next_payment_date",
             "next_payment_amount",
@@ -155,3 +186,68 @@ class ProductOfferSerializer(serializers.Serializer):
     personalized_amount = serializers.DecimalField(max_digits=15, decimal_places=2)
     reason = serializers.CharField()
     expiration_date = serializers.DateTimeField()
+
+
+class ProductAgreementConsentRequestSerializer(serializers.Serializer):
+    requesting_bank = serializers.CharField()
+    client_id = serializers.CharField()
+    read_product_agreements = serializers.BooleanField(default=False)
+    open_product_agreements = serializers.BooleanField(default=False)
+    close_product_agreements = serializers.BooleanField(default=False)
+    allowed_product_types = serializers.ListField(
+        child=serializers.CharField(), required=False, allow_null=True
+    )
+    max_amount = serializers.DecimalField(
+        max_digits=15, decimal_places=2, required=False, allow_null=True
+    )
+    valid_until = serializers.DateTimeField(required=False, allow_null=True)
+    reason = serializers.CharField(required=False, allow_null=True)
+
+
+class ProductAgreementConsentSerializer(serializers.ModelSerializer):
+    consentId = serializers.CharField(source="consent_id", read_only=True)
+    status = serializers.CharField(read_only=True)
+    creationDateTime = serializers.DateTimeField(source="created_at", read_only=True)
+    statusUpdateDateTime = serializers.DateTimeField(source="updated_at", read_only=True)
+    permissions = serializers.SerializerMethodField()
+    expirationDateTime = serializers.DateTimeField(source="valid_until", read_only=True)
+
+    class Meta:
+        model = ProductAgreementConsent
+        fields = [
+            "consentId",
+            "status",
+            "creationDateTime",
+            "statusUpdateDateTime",
+            "permissions",
+            "expirationDateTime",
+            "requesting_bank",
+            "client_id",
+            "allowed_product_types",
+            "max_amount",
+            "reason",
+        ]
+
+    def get_permissions(self, obj):
+        permissions = []
+        if obj.read_product_agreements:
+            permissions.append("ReadProductAgreements")
+        if obj.open_product_agreements:
+            permissions.append("OpenProductAgreements")
+        if obj.close_product_agreements:
+            permissions.append("CloseProductAgreements")
+        return permissions
+
+
+class ProductAgreementRequestSerializer(serializers.Serializer):
+    product_id = serializers.CharField()
+    amount = serializers.DecimalField(max_digits=15, decimal_places=2)
+    term_months = serializers.IntegerField(required=False, allow_null=True)
+    source_account_id = serializers.CharField(required=False, allow_null=True)
+
+
+class CloseAgreementRequestSerializer(serializers.Serializer):
+    repayment_account_id = serializers.CharField(required=False, allow_null=True)
+    repayment_amount = serializers.DecimalField(
+        max_digits=15, decimal_places=2, required=False, allow_null=True
+    )

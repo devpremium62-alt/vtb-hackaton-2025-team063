@@ -11,6 +11,8 @@ from .serializers import (
     AccountSerializer,
     TransactionSerializer,
     AccountStatusUpdateSerializer,
+    AccountCreateSerializer,
+    AccountCloseSerializer,
     BalanceSerializer,
 )
 from .services import AccountService, TransactionService
@@ -21,12 +23,88 @@ class AccountViewSet(viewsets.ModelViewSet):
     serializer_class = AccountSerializer
 
     def get_queryset(self):
-        user_profile = get_object_or_404(
-            UserBankProfile, user=self.request.user
-            )
-        return Account.objects.filter(
-            user_profile=user_profile
+        user_profile = get_object_or_404(UserBankProfile, user=self.request.user)
+        consent_id = self.request.headers.get("X-Consent-Id")
+        requesting_bank = self.request.headers.get("X-Requesting-Bank")
+        if consent_id and requesting_bank:
+            return self._get_interbank_accounts(
+                user_profile, consent_id, requesting_bank
+                )
+        else:
+            return Account.objects.filter(
+                user_profile=user_profile
             ).prefetch_related("balances")
+
+    @action(detail=False, methods=["post"])
+    def create_account(self, request):
+        user_profile = get_object_or_404(UserBankProfile, user=request.user)
+        serializer = AccountCreateSerializer(data=request.data)
+        if not serializer.is_valid():
+            return Response(
+                serializer.errors,
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        bank_name = getattr(user_profile, 'default_bank', 'vbank')
+        account_service = AccountService(user_profile)
+        try:
+            account = account_service.create_account(
+                bank_name=bank_name,
+                account_type=serializer.validated_data['account_type'],
+                nickname=request.data.get('nickname', ''),
+                initial_balance=serializer.validated_data['initial_balance']
+            )
+            return Response(
+                AccountSerializer(account).data,
+                status=status.HTTP_201_CREATED
+            )
+        except Exception as e:
+            return Response(
+                {"error": f"Ошибка создания счета: {str(e)}"},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+    @action(detail=True, methods=["put"])
+    def close(self, request, pk=None):
+        account = self.get_object()
+        user_profile = get_object_or_404(UserBankProfile, user=request.user)
+        if account.user_profile != user_profile:
+            return Response(
+                {"error": "Доступ запрещен"},
+                status=status.HTTP_403_FORBIDDEN
+            )
+
+        serializer = AccountCloseSerializer(data=request.data)
+        if not serializer.is_valid():
+            return Response(
+                serializer.errors,
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        account_service = AccountService(user_profile)
+        try:
+            result = account_service.close_account(
+                account=account,
+                action=serializer.validated_data['action'],
+                destination_account_id=serializer.validated_data.get(
+                    'destination_account_id'
+                    )
+            )
+            account.refresh_from_db()
+
+            return Response({
+                "status": "success",
+                "account_id": account.account_id,
+                "action": serializer.validated_data['action'],
+                "bank_response": result,
+                "new_status": account.status,
+                "closed_date": account.closed_date
+            })
+
+        except Exception as e:
+            return Response(
+                {"error": f"Ошибка закрытия счета: {str(e)}"},
+                status=status.HTTP_400_BAD_REQUEST
+            )
 
     @action(detail=False, methods=["post"])
     def sync(self, request):
@@ -49,17 +127,17 @@ class AccountViewSet(viewsets.ModelViewSet):
                      "synced_accounts": len(accounts),
                      "bank": bank_name
                      }
-                    )
+                )
             except Exception as e:
                 return Response(
                     {"error": str(e)}, status=status.HTTP_400_BAD_REQUEST
-                    )
+                )
 
         from banks.models import Consent
 
         consents = Consent.objects.filter(
             user_profile=user_profile, status="AUTHORISED"
-            )
+        )
         total_synced = 0
         errors = []
 
@@ -77,7 +155,7 @@ class AccountViewSet(viewsets.ModelViewSet):
         response_data = {
             "status": "partial_success" if errors else "success",
             "total_synced_accounts": total_synced
-            }
+        }
         if errors:
             response_data["errors"] = errors
 
@@ -87,12 +165,14 @@ class AccountViewSet(viewsets.ModelViewSet):
     def balances(self, request, pk=None):
         account = self.get_object()
         user_profile = get_object_or_404(UserBankProfile, user=request.user)
-
-        if account.user_profile != user_profile:
-            return Response(
-                {"error": "Доступ запрещен"}, status=status.HTTP_403_FORBIDDEN
-                )
-
+        consent_id = request.headers.get("X-Consent-Id")
+        requesting_bank = request.headers.get("X-Requesting-Bank")
+        if consent_id and requesting_bank:
+            if not self._check_interbank_access(account, consent_id, requesting_bank):
+                return Response({"error": "Доступ запрещен"}, status=status.HTTP_403_FORBIDDEN)
+        else:
+            if account.user_profile != user_profile:
+                return Response({"error": "Доступ запрещен"}, status=status.HTTP_403_FORBIDDEN)
         serializer = BalanceSerializer(account.balances.all(), many=True)
         return Response(serializer.data)
 
@@ -104,16 +184,26 @@ class AccountViewSet(viewsets.ModelViewSet):
         if account.user_profile != user_profile:
             return Response(
                 {"error": "Доступ запрещен"}, status=status.HTTP_403_FORBIDDEN
-                )
+            )
 
         serializer = AccountStatusUpdateSerializer(data=request.data)
         if serializer.is_valid():
-            account.status = serializer.validated_data["status"]
+            new_status = serializer.validated_data["status"]
+
+            if new_status == "CLOSED" and account.balance != 0:
+                return Response(
+                    {"error": "Нельзя закрыть счет с ненулевым балансом."},
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+
+            account.status = new_status
             if account.status == "CLOSED":
                 from django.utils import timezone
                 account.closed_date = timezone.now()
             account.save()
+
             return Response(AccountSerializer(account).data)
+
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     @action(detail=True, methods=["get"])
@@ -124,7 +214,7 @@ class AccountViewSet(viewsets.ModelViewSet):
         if account.user_profile != user_profile:
             return Response(
                 {"error": "Доступ запрещен"}, status=status.HTTP_403_FORBIDDEN
-                )
+            )
 
         account_service = AccountService(user_profile)
 
@@ -134,7 +224,7 @@ class AccountViewSet(viewsets.ModelViewSet):
             return Response(
                 {"error": "page должен быть целым числом"},
                 status=status.HTTP_400_BAD_REQUEST
-                )
+            )
 
         try:
             limit = min(int(request.query_params.get("limit", 50)), 500)
@@ -142,7 +232,7 @@ class AccountViewSet(viewsets.ModelViewSet):
             return Response(
                 {"error": "limit должен быть целым числом"},
                 status=status.HTTP_400_BAD_REQUEST
-                )
+            )
 
         from_date = None
         to_date = None
@@ -150,16 +240,16 @@ class AccountViewSet(viewsets.ModelViewSet):
             if request.query_params.get("from_date"):
                 from_date = date_parser.isoparse(
                     request.query_params["from_date"]
-                    )
+                )
             if request.query_params.get("to_date"):
                 to_date = date_parser.isoparse(
                     request.query_params["to_date"]
-                    )
+                )
         except (ValueError, TypeError):
             return Response(
                 {"error": "Неверный формат даты, используйте ISO8601"},
                 status=status.HTTP_400_BAD_REQUEST
-                )
+            )
 
         consent_id = request.headers.get("X-Consent-Id")
         requesting_bank = request.headers.get("X-Requesting-Bank")
@@ -180,7 +270,7 @@ class AccountViewSet(viewsets.ModelViewSet):
             return Response(
                 {"error": str(e)},
                 status=status.HTTP_400_BAD_REQUEST
-                )
+            )
 
 
 class TransactionViewSet(viewsets.ReadOnlyModelViewSet):
@@ -190,10 +280,10 @@ class TransactionViewSet(viewsets.ReadOnlyModelViewSet):
     def get_queryset(self):
         user_profile = get_object_or_404(
             UserBankProfile, user=self.request.user
-            )
+        )
         return Transaction.objects.filter(
             account__user_profile=user_profile
-            ).select_related("account", "account__bank")
+        ).select_related("account", "account__bank")
 
     @action(detail=False, methods=["get"])
     def analytics(self, request):
@@ -205,11 +295,11 @@ class TransactionViewSet(viewsets.ReadOnlyModelViewSet):
             return Response(
                 {"error": "days должен быть целым числом"},
                 status=status.HTTP_400_BAD_REQUEST
-                )
+            )
 
         spending_patterns = TransactionService.analyze_spending_patterns(
             user_profile, days
-            )
+        )
 
         return Response(
             {

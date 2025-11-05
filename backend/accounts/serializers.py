@@ -53,11 +53,11 @@ class TransactionSerializer(serializers.ModelSerializer):
     account_number = serializers.CharField(
         source="account.account_id",
         read_only=True
-        )
+    )
     bank_name = serializers.CharField(
         source="account.bank.name",
         read_only=True
-        )
+    )
 
     class Meta:
         model = Transaction
@@ -84,14 +84,15 @@ class TransactionSerializer(serializers.ModelSerializer):
 
 
 class AccountCreateSerializer(serializers.Serializer):
-    bank_name = serializers.CharField(max_length=100)
-    account_type = serializers.ChoiceField(choices=Account.ACCOUNT_TYPES)
-    nickname = serializers.CharField(
-        max_length=100, required=False, allow_blank=True
-        )
+    account_type = serializers.ChoiceField(
+        choices=[("checking", "Расчетный"), ("savings", "Сберегательный")]
+    )
     initial_balance = serializers.DecimalField(
         max_digits=15, decimal_places=2, default=0, min_value=0
     )
+
+    def validate_account_type(self, value):
+        return value.upper()
 
 
 class AccountStatusUpdateSerializer(serializers.Serializer):
@@ -100,8 +101,20 @@ class AccountStatusUpdateSerializer(serializers.Serializer):
 
 class AccountCloseSerializer(serializers.Serializer):
     action = serializers.ChoiceField(
-        choices=[("TRANSFER", "TRANSFER"), ("DONATE", "DONATE")]
-        )
+        choices=[("transfer", "Перевод"), ("donate", "Подарок банку")]
+    )
     destination_account_id = serializers.CharField(
-        required=False, allow_blank=True
-        )
+        required=False,
+        allow_blank=True,
+        allow_null=True
+    )
+
+    def validate(self, data):
+        if data['action'] == 'transfer' and not data.get('destination_account_id'):
+            raise serializers.ValidationError(
+                "Для действия 'transfer' обязателен destination_account_id"
+            )
+        return data
+
+    def validate_action(self, value):
+        return value.upper()

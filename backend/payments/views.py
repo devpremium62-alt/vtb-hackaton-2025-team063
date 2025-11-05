@@ -3,6 +3,7 @@ from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
+from django.utils import timezone
 
 from banks.models import UserBankProfile
 from .models import Payment, PaymentConsent, PaymentLimit
@@ -81,6 +82,17 @@ class PaymentConsentViewSet(viewsets.ModelViewSet):
         except Exception as exc:
             return Response({"error": str(exc)}, status=status.HTTP_400_BAD_REQUEST)
 
+    @action(detail=True, methods=["get"])
+    def details(self, request, pk=None):
+        """Получение детальной информации о согласии"""
+        consent = self.get_object()
+        user_profile = get_object_or_404(UserBankProfile, user=request.user)
+        if consent.user_profile != user_profile:
+            return Response({"error": "Доступ запрещен"}, status=status.HTTP_403_FORBIDDEN)
+
+        # Просто возвращаем данные из БД
+        return Response(PaymentConsentSerializer(consent).data)
+
     @action(detail=True, methods=["post"])
     def revoke(self, request, pk=None):
         consent = self.get_object()
@@ -88,10 +100,12 @@ class PaymentConsentViewSet(viewsets.ModelViewSet):
         if consent.user_profile != user_profile:
             return Response({"error": "Доступ запрещен"}, status=status.HTTP_403_FORBIDDEN)
 
-        # TODO: реализовать вызов API банка для отзыва согласия
-        consent.status = "REVOKED"
-        consent.save()
-        return Response({"status": "consent revoked"})
+        consent_service = PaymentConsentService(user_profile)
+        try:
+            consent = consent_service.revoke_consent(consent.consent_id)
+            return Response(PaymentConsentSerializer(consent).data)
+        except Exception as exc:
+            return Response({"error": str(exc)}, status=status.HTTP_400_BAD_REQUEST)
 
 
 class PaymentLimitViewSet(viewsets.ReadOnlyModelViewSet):
@@ -102,7 +116,7 @@ class PaymentLimitViewSet(viewsets.ReadOnlyModelViewSet):
         user_profile = get_object_or_404(UserBankProfile, user=self.request.user)
         return PaymentLimit.objects.filter(user_profile=user_profile)
 
-    @action(detail=True, methods=["get"])
+    @action(detail=True, methods=["post"])
     def reset(self, request, pk=None):
         limit = self.get_object()
         user_profile = get_object_or_404(UserBankProfile, user=request.user)
@@ -112,5 +126,9 @@ class PaymentLimitViewSet(viewsets.ReadOnlyModelViewSet):
         limit.daily_used = 0
         limit.weekly_used = 0
         limit.monthly_used = 0
+        limit.last_reset_daily = timezone.now().date()
+        limit.last_reset_weekly = timezone.now().date()
+        limit.last_reset_monthly = timezone.now().date()
         limit.save()
+
         return Response(PaymentLimitSerializer(limit).data)

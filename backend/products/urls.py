@@ -12,5 +12,15 @@ router.register(
     views.ProductApplicationViewSet,
     basename="product-application",
 )
+router.register(
+    r"product-agreement-consents",
+    views.ProductAgreementConsentViewSet,
+    basename="product-agreement-consent",
+)
 
-urlpatterns = [path("", include(router.urls))]
+urlpatterns = [
+    path("", include(router.urls)),
+    path("product-agreement-consents/request",
+         views.ProductAgreementConsentViewSet.as_view({'post': 'create'}),
+         name="product-agreement-consent-request"),
+]

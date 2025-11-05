@@ -102,6 +102,15 @@ class PaymentConsent(models.Model):
     status = models.CharField(max_length=30, choices=CONSENT_STATUS)
 
     debtor_account = models.CharField(max_length=100)
+    currency = models.CharField(max_length=3, default="RUB")
+
+    amount = models.DecimalField(
+        max_digits=15, decimal_places=2, null=True, blank=True
+    )
+    creditor_account = models.CharField(max_length=100, blank=True, null=True)
+    creditor_name = models.CharField(max_length=255, blank=True, null=True)
+    reference = models.TextField(blank=True, null=True)
+
     max_amount_per_payment = models.DecimalField(
         max_digits=15, decimal_places=2, null=True, blank=True
     )
@@ -113,6 +122,7 @@ class PaymentConsent(models.Model):
     used_amount = models.DecimalField(
         max_digits=15, decimal_places=2, default=0
     )
+    allowed_creditor_accounts = models.JSONField(default=list, blank=True)
 
     vrp_max_individual_amount = models.DecimalField(
         max_digits=15, decimal_places=2, null=True, blank=True
@@ -144,25 +154,70 @@ class PaymentConsent(models.Model):
             return timezone.now() >= self.valid_until
         return False
 
-    def can_be_used(self, amount):
-        amt = Decimal(amount)
+    def can_be_used(self, amount=None, creditor_account=None):
         if self.status != "AUTHORISED" or self.is_expired():
-            return False
-        if self.max_amount_per_payment and amt > self.max_amount_per_payment:
-            return False
-        if self.max_total_amount and (self.used_amount + amt) > self.max_total_amount:
-            return False
-        if self.max_uses and self.used_count >= self.max_uses:
-            return False
-        return True
+            return False, "Согласие не авторизовано или истекло"
+        if self.consent_type == "SINGLE_USE":
+            if self.used_count > 0:
+                return False, "Одноразовое согласие уже использовано"
+        elif self.consent_type == "MULTI_USE":
+            if amount:
+                amt = Decimal(amount)
+                if (
+                    self.max_amount_per_payment
+                    and amt > self.max_amount_per_payment
+                ):
+                    return (
+                        False,
+                        f"Превышен лимит на один платеж: {self.max_amount_per_payment}",
+                    )
+                if (
+                    self.max_total_amount
+                    and (self.used_amount + amt) > self.max_total_amount
+                ):
+                    return (
+                        False,
+                        f"Превышен общий лимит: {self.max_total_amount}",
+                    )
+            if self.max_uses and self.used_count >= self.max_uses:
+                return False, "Превышено количество использований"
+            if (
+                creditor_account
+                and self.allowed_creditor_accounts
+                and creditor_account not in self.allowed_creditor_accounts
+            ):
+                return False, "Счет получателя не разрешен"
+        elif self.consent_type == "VRP":
+            if amount:
+                amt = Decimal(amount)
+                if (
+                    self.vrp_max_individual_amount
+                    and amt > self.vrp_max_individual_amount
+                ):
+                    return (
+                        False,
+                        f"Превышен лимит VRP платежа: {self.vrp_max_individual_amount}",
+                    )
+        return True, "OK"
+
+    def mark_used(self, amount):
+        """Отметить использование согласия"""
+        self.used_count += 1
+        if amount:
+            self.used_amount += Decimal(amount)
+        self.save()
 
 
 class PaymentLimit(models.Model):
     user_profile = models.OneToOneField(
         UserBankProfile, on_delete=models.CASCADE, db_index=True
     )
-    daily_limit = models.DecimalField(max_digits=15, decimal_places=2, default=100000)
-    weekly_limit = models.DecimalField(max_digits=15, decimal_places=2, default=500000)
+    daily_limit = models.DecimalField(
+        max_digits=15, decimal_places=2, default=100000
+    )
+    weekly_limit = models.DecimalField(
+        max_digits=15, decimal_places=2, default=500000
+    )
     monthly_limit = models.DecimalField(
         max_digits=15, decimal_places=2, default=2000000
     )
@@ -170,9 +225,15 @@ class PaymentLimit(models.Model):
         max_digits=15, decimal_places=2, default=50000
     )
 
-    daily_used = models.DecimalField(max_digits=15, decimal_places=2, default=0)
-    weekly_used = models.DecimalField(max_digits=15, decimal_places=2, default=0)
-    monthly_used = models.DecimalField(max_digits=15, decimal_places=2, default=0)
+    daily_used = models.DecimalField(
+        max_digits=15, decimal_places=2, default=0
+    )
+    weekly_used = models.DecimalField(
+        max_digits=15, decimal_places=2, default=0
+    )
+    monthly_used = models.DecimalField(
+        max_digits=15, decimal_places=2, default=0
+    )
 
     last_reset_daily = models.DateField(auto_now_add=True)
     last_reset_weekly = models.DateField(auto_now_add=True)

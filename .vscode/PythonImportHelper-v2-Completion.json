@@ -160,6 +160,14 @@
         "documentation": {}
     },
     {
+        "label": "timezone",
+        "importPath": "django.utils",
+        "description": "django.utils",
+        "isExtraImport": true,
+        "detail": "django.utils",
+        "documentation": {}
+    },
+    {
         "label": "UserBankProfile",
         "importPath": "banks.models",
         "description": "banks.models",
@@ -976,7 +984,7 @@
         "kind": 6,
         "importPath": "backend.accounts.serializers",
         "description": "backend.accounts.serializers",
-        "peekOfCode": "class TransactionSerializer(serializers.ModelSerializer):\n    account_number = serializers.CharField(\n        source=\"account.account_id\",\n        read_only=True\n        )\n    bank_name = serializers.CharField(\n        source=\"account.bank.name\",\n        read_only=True\n        )\n    class Meta:",
+        "peekOfCode": "class TransactionSerializer(serializers.ModelSerializer):\n    account_number = serializers.CharField(\n        source=\"account.account_id\",\n        read_only=True\n    )\n    bank_name = serializers.CharField(\n        source=\"account.bank.name\",\n        read_only=True\n    )\n    class Meta:",
         "detail": "backend.accounts.serializers",
         "documentation": {}
     },
@@ -985,7 +993,7 @@
         "kind": 6,
         "importPath": "backend.accounts.serializers",
         "description": "backend.accounts.serializers",
-        "peekOfCode": "class AccountCreateSerializer(serializers.Serializer):\n    bank_name = serializers.CharField(max_length=100)\n    account_type = serializers.ChoiceField(choices=Account.ACCOUNT_TYPES)\n    nickname = serializers.CharField(\n        max_length=100, required=False, allow_blank=True\n        )\n    initial_balance = serializers.DecimalField(\n        max_digits=15, decimal_places=2, default=0, min_value=0\n    )\nclass AccountStatusUpdateSerializer(serializers.Serializer):",
+        "peekOfCode": "class AccountCreateSerializer(serializers.Serializer):\n    account_type = serializers.ChoiceField(\n        choices=[(\"checking\", \"Расчетный\"), (\"savings\", \"Сберегательный\")]\n    )\n    initial_balance = serializers.DecimalField(\n        max_digits=15, decimal_places=2, default=0, min_value=0\n    )\n    def validate_account_type(self, value):\n        return value.upper()\nclass AccountStatusUpdateSerializer(serializers.Serializer):",
         "detail": "backend.accounts.serializers",
         "documentation": {}
     },
@@ -994,7 +1002,7 @@
         "kind": 6,
         "importPath": "backend.accounts.serializers",
         "description": "backend.accounts.serializers",
-        "peekOfCode": "class AccountStatusUpdateSerializer(serializers.Serializer):\n    status = serializers.ChoiceField(choices=Account.ACCOUNT_STATUS)\nclass AccountCloseSerializer(serializers.Serializer):\n    action = serializers.ChoiceField(\n        choices=[(\"TRANSFER\", \"TRANSFER\"), (\"DONATE\", \"DONATE\")]\n        )\n    destination_account_id = serializers.CharField(\n        required=False, allow_blank=True\n        )",
+        "peekOfCode": "class AccountStatusUpdateSerializer(serializers.Serializer):\n    status = serializers.ChoiceField(choices=Account.ACCOUNT_STATUS)\nclass AccountCloseSerializer(serializers.Serializer):\n    action = serializers.ChoiceField(\n        choices=[(\"transfer\", \"Перевод\"), (\"donate\", \"Подарок банку\")]\n    )\n    destination_account_id = serializers.CharField(\n        required=False,\n        allow_blank=True,\n        allow_null=True",
         "detail": "backend.accounts.serializers",
         "documentation": {}
     },
@@ -1003,7 +1011,7 @@
         "kind": 6,
         "importPath": "backend.accounts.serializers",
         "description": "backend.accounts.serializers",
-        "peekOfCode": "class AccountCloseSerializer(serializers.Serializer):\n    action = serializers.ChoiceField(\n        choices=[(\"TRANSFER\", \"TRANSFER\"), (\"DONATE\", \"DONATE\")]\n        )\n    destination_account_id = serializers.CharField(\n        required=False, allow_blank=True\n        )",
+        "peekOfCode": "class AccountCloseSerializer(serializers.Serializer):\n    action = serializers.ChoiceField(\n        choices=[(\"transfer\", \"Перевод\"), (\"donate\", \"Подарок банку\")]\n    )\n    destination_account_id = serializers.CharField(\n        required=False,\n        allow_blank=True,\n        allow_null=True\n    )\n    def validate(self, data):",
         "detail": "backend.accounts.serializers",
         "documentation": {}
     },
@@ -1048,7 +1056,7 @@
         "kind": 6,
         "importPath": "backend.accounts.views",
         "description": "backend.accounts.views",
-        "peekOfCode": "class AccountViewSet(viewsets.ModelViewSet):\n    permission_classes = [IsAuthenticated]\n    serializer_class = AccountSerializer\n    def get_queryset(self):\n        user_profile = get_object_or_404(\n            UserBankProfile, user=self.request.user\n            )\n        return Account.objects.filter(\n            user_profile=user_profile\n            ).prefetch_related(\"balances\")",
+        "peekOfCode": "class AccountViewSet(viewsets.ModelViewSet):\n    permission_classes = [IsAuthenticated]\n    serializer_class = AccountSerializer\n    def get_queryset(self):\n        user_profile = get_object_or_404(UserBankProfile, user=self.request.user)\n        consent_id = self.request.headers.get(\"X-Consent-Id\")\n        requesting_bank = self.request.headers.get(\"X-Requesting-Bank\")\n        if consent_id and requesting_bank:\n            return self._get_interbank_accounts(\n                user_profile, consent_id, requesting_bank",
         "detail": "backend.accounts.views",
         "documentation": {}
     },
@@ -1057,7 +1065,7 @@
         "kind": 6,
         "importPath": "backend.accounts.views",
         "description": "backend.accounts.views",
-        "peekOfCode": "class TransactionViewSet(viewsets.ReadOnlyModelViewSet):\n    permission_classes = [IsAuthenticated]\n    serializer_class = TransactionSerializer\n    def get_queryset(self):\n        user_profile = get_object_or_404(\n            UserBankProfile, user=self.request.user\n            )\n        return Transaction.objects.filter(\n            account__user_profile=user_profile\n            ).select_related(\"account\", \"account__bank\")",
+        "peekOfCode": "class TransactionViewSet(viewsets.ReadOnlyModelViewSet):\n    permission_classes = [IsAuthenticated]\n    serializer_class = TransactionSerializer\n    def get_queryset(self):\n        user_profile = get_object_or_404(\n            UserBankProfile, user=self.request.user\n        )\n        return Transaction.objects.filter(\n            account__user_profile=user_profile\n        ).select_related(\"account\", \"account__bank\")",
         "detail": "backend.accounts.views",
         "documentation": {}
     },
@@ -1786,7 +1794,7 @@
         "kind": 6,
         "importPath": "backend.payments.models",
         "description": "backend.payments.models",
-        "peekOfCode": "class PaymentLimit(models.Model):\n    user_profile = models.OneToOneField(\n        UserBankProfile, on_delete=models.CASCADE, db_index=True\n    )\n    daily_limit = models.DecimalField(max_digits=15, decimal_places=2, default=100000)\n    weekly_limit = models.DecimalField(max_digits=15, decimal_places=2, default=500000)\n    monthly_limit = models.DecimalField(\n        max_digits=15, decimal_places=2, default=2000000\n    )\n    per_transaction_limit = models.DecimalField(",
+        "peekOfCode": "class PaymentLimit(models.Model):\n    user_profile = models.OneToOneField(\n        UserBankProfile, on_delete=models.CASCADE, db_index=True\n    )\n    daily_limit = models.DecimalField(\n        max_digits=15, decimal_places=2, default=100000\n    )\n    weekly_limit = models.DecimalField(\n        max_digits=15, decimal_places=2, default=500000\n    )",
         "detail": "backend.payments.models",
         "documentation": {}
     },
@@ -1795,7 +1803,7 @@
         "kind": 6,
         "importPath": "backend.payments.serializer",
         "description": "backend.payments.serializer",
-        "peekOfCode": "class PaymentSerializer(serializers.ModelSerializer):\n    bank_name = serializers.CharField(source=\"bank.name\", read_only=True)\n    team_id = serializers.CharField(source=\"user_profile.team_id\", read_only=True)\n    debtor_bank_name = serializers.CharField(\n        source=\"debtor_bank.name\", read_only=True\n    )\n    creditor_bank_name = serializers.CharField(\n        source=\"creditor_bank.name\", read_only=True\n    )\n    class Meta:",
+        "peekOfCode": "class PaymentSerializer(serializers.ModelSerializer):\n    bank_name = serializers.CharField(source=\"bank.name\", read_only=True)\n    team_id = serializers.CharField(\n        source=\"user_profile.team_id\", read_only=True\n    )\n    debtor_bank_name = serializers.CharField(\n        source=\"debtor_bank.name\", read_only=True\n    )\n    creditor_bank_name = serializers.CharField(\n        source=\"creditor_bank.name\", read_only=True",
         "detail": "backend.payments.serializer",
         "documentation": {}
     },
@@ -1804,7 +1812,7 @@
         "kind": 6,
         "importPath": "backend.payments.serializer",
         "description": "backend.payments.serializer",
-        "peekOfCode": "class PaymentCreateSerializer(serializers.Serializer):\n    bank_name = serializers.CharField(max_length=50)\n    amount = serializers.DecimalField(max_digits=15, decimal_places=2, min_value=0.01)\n    currency = serializers.CharField(max_length=3, default=\"RUB\")\n    debtor_account = serializers.CharField(max_length=100)\n    creditor_account = serializers.CharField(max_length=100)\n    creditor_name = serializers.CharField(max_length=255)\n    creditor_bank_code = serializers.CharField(\n        max_length=50, required=False, allow_blank=True\n    )",
+        "peekOfCode": "class PaymentCreateSerializer(serializers.Serializer):\n    bank_name = serializers.CharField(max_length=50)\n    amount = serializers.DecimalField(\n        max_digits=15, decimal_places=2, min_value=0.01\n    )\n    currency = serializers.CharField(max_length=3, default=\"RUB\")\n    debtor_account = serializers.CharField(max_length=100)\n    creditor_account = serializers.CharField(max_length=100)\n    creditor_name = serializers.CharField(max_length=255)\n    creditor_bank_code = serializers.CharField(",
         "detail": "backend.payments.serializer",
         "documentation": {}
     },
@@ -1813,7 +1821,7 @@
         "kind": 6,
         "importPath": "backend.payments.serializer",
         "description": "backend.payments.serializer",
-        "peekOfCode": "class PaymentConsentSerializer(serializers.ModelSerializer):\n    bank_name = serializers.CharField(source=\"bank.name\", read_only=True)\n    team_id = serializers.CharField(source=\"user_profile.team_id\", read_only=True)\n    is_expired = serializers.SerializerMethodField()\n    class Meta:\n        model = PaymentConsent\n        fields = [\n            \"id\",\n            \"user_profile\",\n            \"team_id\",",
+        "peekOfCode": "class PaymentConsentSerializer(serializers.ModelSerializer):\n    bank_name = serializers.CharField(source=\"bank.name\", read_only=True)\n    team_id = serializers.CharField(\n        source=\"user_profile.team_id\", read_only=True\n    )\n    is_expired = serializers.SerializerMethodField()\n    can_be_used = serializers.SerializerMethodField()\n    class Meta:\n        model = PaymentConsent\n        fields = [",
         "detail": "backend.payments.serializer",
         "documentation": {}
     },
@@ -1822,7 +1830,7 @@
         "kind": 6,
         "importPath": "backend.payments.serializer",
         "description": "backend.payments.serializer",
-        "peekOfCode": "class PaymentConsentCreateSerializer(serializers.Serializer):\n    CONSENT_TYPES = [\n        (\"SINGLE_USE\", \"Одноразовый\"),\n        (\"MULTI_USE\", \"Многоразовый\"),\n        (\"VRP\", \"Переменные регулярные платежи\"),\n    ]\n    bank_name = serializers.CharField(max_length=50)\n    consent_type = serializers.ChoiceField(choices=CONSENT_TYPES)\n    debtor_account = serializers.CharField(max_length=100)\n    amount = serializers.DecimalField(",
+        "peekOfCode": "class PaymentConsentCreateSerializer(serializers.Serializer):\n    CONSENT_TYPES = [\n        (\"SINGLE_USE\", \"Одноразовый\"),\n        (\"MULTI_USE\", \"Многоразовый\"),\n        (\"VRP\", \"Переменные регулярные платежи\"),\n    ]\n    bank_name = serializers.CharField(max_length=50)\n    consent_type = serializers.ChoiceField(choices=CONSENT_TYPES)\n    debtor_account = serializers.CharField(max_length=100)\n    currency = serializers.CharField(",
         "detail": "backend.payments.serializer",
         "documentation": {}
     },
@@ -1831,7 +1839,7 @@
         "kind": 6,
         "importPath": "backend.payments.serializer",
         "description": "backend.payments.serializer",
-        "peekOfCode": "class PaymentLimitSerializer(serializers.ModelSerializer):\n    team_id = serializers.CharField(source=\"user_profile.team_id\", read_only=True)\n    class Meta:\n        model = PaymentLimit\n        fields = [\n            \"id\",\n            \"user_profile\",\n            \"team_id\",\n            \"daily_limit\",\n            \"weekly_limit\",",
+        "peekOfCode": "class PaymentLimitSerializer(serializers.ModelSerializer):\n    team_id = serializers.CharField(\n        source=\"user_profile.team_id\", read_only=True\n    )\n    class Meta:\n        model = PaymentLimit\n        fields = [\n            \"id\",\n            \"user_profile\",\n            \"team_id\",",
         "detail": "backend.payments.serializer",
         "documentation": {}
     },
@@ -1840,7 +1848,7 @@
         "kind": 6,
         "importPath": "backend.payments.services",
         "description": "backend.payments.services",
-        "peekOfCode": "class PaymentService:\n    def __init__(self, user_profile):\n        self.user_profile = user_profile\n    def create_payment(self, payment_data):\n        bank_name = payment_data[\"bank_name\"]\n        client = BankClientFactory.get_client(bank_name)\n        limit_check = self._check_payment_limits(payment_data[\"amount\"])\n        if not limit_check[\"allowed\"]:\n            raise Exception(limit_check[\"reason\"])\n        try:",
+        "peekOfCode": "class PaymentService:\n    def __init__(self, user_profile):\n        self.user_profile = user_profile\n    def create_payment(self, payment_data):\n        bank_name = payment_data[\"bank_name\"]\n        client = BankClientFactory.get_client(bank_name)\n        limit_check = self._check_payment_limits(payment_data[\"amount\"])\n        if not limit_check[\"allowed\"]:\n            raise Exception(limit_check[\"reason\"])\n        consent = None",
         "detail": "backend.payments.services",
         "documentation": {}
     },
@@ -1894,7 +1902,7 @@
         "kind": 6,
         "importPath": "backend.payments.views",
         "description": "backend.payments.views",
-        "peekOfCode": "class PaymentLimitViewSet(viewsets.ReadOnlyModelViewSet):\n    permission_classes = [IsAuthenticated]\n    serializer_class = PaymentLimitSerializer\n    def get_queryset(self):\n        user_profile = get_object_or_404(UserBankProfile, user=self.request.user)\n        return PaymentLimit.objects.filter(user_profile=user_profile)\n    @action(detail=True, methods=[\"get\"])\n    def reset(self, request, pk=None):\n        limit = self.get_object()\n        user_profile = get_object_or_404(UserBankProfile, user=request.user)",
+        "peekOfCode": "class PaymentLimitViewSet(viewsets.ReadOnlyModelViewSet):\n    permission_classes = [IsAuthenticated]\n    serializer_class = PaymentLimitSerializer\n    def get_queryset(self):\n        user_profile = get_object_or_404(UserBankProfile, user=self.request.user)\n        return PaymentLimit.objects.filter(user_profile=user_profile)\n    @action(detail=True, methods=[\"post\"])\n    def reset(self, request, pk=None):\n        limit = self.get_object()\n        user_profile = get_object_or_404(UserBankProfile, user=request.user)",
         "detail": "backend.payments.views",
         "documentation": {}
     },
@@ -1926,11 +1934,38 @@
         "documentation": {}
     },
     {
+        "label": "ProductApplication",
+        "kind": 6,
+        "importPath": "backend.products.models",
+        "description": "backend.products.models",
+        "peekOfCode": "class ProductApplication(models.Model):\n    APPLICATION_STATUS = [\n        (\"DRAFT\", \"Черновик\"),\n        (\"SUBMITTED\", \"Подана\"),\n        (\"UNDER_REVIEW\", \"На рассмотрении\"),\n        (\"APPROVED\", \"Одобрена\"),\n        (\"REJECTED\", \"Отклонена\"),\n        (\"CANCELLED\", \"Отменена\"),\n        (\"ADDITIONAL_INFO_REQUIRED\", \"Требуется доп. информация\"),\n    ]",
+        "detail": "backend.products.models",
+        "documentation": {}
+    },
+    {
+        "label": "ProductCategory",
+        "kind": 6,
+        "importPath": "backend.products.models",
+        "description": "backend.products.models",
+        "peekOfCode": "class ProductCategory(models.Model):\n    name = models.CharField(max_length=100)\n    description = models.TextField(blank=True)\n    icon = models.CharField(max_length=50, blank=True)\n    order = models.IntegerField(default=0)\n    is_active = models.BooleanField(default=True)\n    class Meta:\n        db_table = \"product_categories\"\n        ordering = [\"order\", \"name\"]\n    def __str__(self):",
+        "detail": "backend.products.models",
+        "documentation": {}
+    },
+    {
+        "label": "ProductAgreementConsent",
+        "kind": 6,
+        "importPath": "backend.products.models",
+        "description": "backend.products.models",
+        "peekOfCode": "class ProductAgreementConsent(models.Model):\n    CONSENT_STATUS = [\n        (\"PENDING\", \"Ожидает подтверждения\"),\n        (\"APPROVED\", \"Одобрено\"),\n        (\"REJECTED\", \"Отклонено\"),\n        (\"EXPIRED\", \"Истекло\"),\n        (\"REVOKED\", \"Отозвано\"),\n    ]\n    consent_id = models.CharField(max_length=100, unique=True, db_index=True)\n    user_profile = models.ForeignKey(",
+        "detail": "backend.products.models",
+        "documentation": {}
+    },
+    {
         "label": "ProductCategorySerializer",
         "kind": 6,
         "importPath": "backend.products.serializers",
         "description": "backend.products.serializers",
-        "peekOfCode": "class ProductCategorySerializer(serializers.ModelSerializer):\n    class Meta:\n        model = ProductCategory\n        fields = [\"id\", \"name\", \"description\", \"icon\", \"order\", \"is_active\"]\nclass ProductSerializer(serializers.ModelSerializer):\n    bank_name = serializers.CharField(source=\"bank.name\", read_only=True)\n    category_name = serializers.SerializerMethodField()\n    is_promotional = serializers.SerializerMethodField()\n    class Meta:\n        model = Product",
+        "peekOfCode": "class ProductCategorySerializer(serializers.ModelSerializer):\n    class Meta:\n        model = ProductCategory\n        fields = [\"id\", \"name\", \"description\", \"icon\", \"order\", \"is_active\"]\nclass ProductSerializer(serializers.ModelSerializer):\n    productId = serializers.CharField(source=\"product_id\", read_only=True)\n    productType = serializers.CharField(source=\"product_type\", read_only=True)\n    productName = serializers.CharField(source=\"name\", read_only=True)\n    description = serializers.CharField(read_only=True)\n    interestRate = serializers.DecimalField(",
         "detail": "backend.products.serializers",
         "documentation": {}
     },
@@ -1939,7 +1974,7 @@
         "kind": 6,
         "importPath": "backend.products.serializers",
         "description": "backend.products.serializers",
-        "peekOfCode": "class ProductSerializer(serializers.ModelSerializer):\n    bank_name = serializers.CharField(source=\"bank.name\", read_only=True)\n    category_name = serializers.SerializerMethodField()\n    is_promotional = serializers.SerializerMethodField()\n    class Meta:\n        model = Product\n        fields = [\n            \"id\",\n            \"bank\",\n            \"bank_name\",",
+        "peekOfCode": "class ProductSerializer(serializers.ModelSerializer):\n    productId = serializers.CharField(source=\"product_id\", read_only=True)\n    productType = serializers.CharField(source=\"product_type\", read_only=True)\n    productName = serializers.CharField(source=\"name\", read_only=True)\n    description = serializers.CharField(read_only=True)\n    interestRate = serializers.DecimalField(\n        source=\"interest_rate\", max_digits=5, decimal_places=2, read_only=True\n    )\n    minAmount = serializers.DecimalField(\n        source=\"min_amount\", max_digits=15, decimal_places=2, read_only=True",
         "detail": "backend.products.serializers",
         "documentation": {}
     },
@@ -1948,7 +1983,7 @@
         "kind": 6,
         "importPath": "backend.products.serializers",
         "description": "backend.products.serializers",
-        "peekOfCode": "class ProductAgreementSerializer(serializers.ModelSerializer):\n    product_name = serializers.CharField(source=\"product.name\", read_only=True)\n    bank_name = serializers.CharField(source=\"product.bank.name\", read_only=True)\n    team_id = serializers.CharField(source=\"user_profile.team_id\", read_only=True)\n    days_until_maturity = serializers.SerializerMethodField()\n    class Meta:\n        model = ProductAgreement\n        fields = [\n            \"id\",\n            \"user_profile\",",
+        "peekOfCode": "class ProductAgreementSerializer(serializers.ModelSerializer):\n    agreementId = serializers.CharField(source=\"agreement_id\", read_only=True)\n    productId = serializers.CharField(source=\"product.product_id\", read_only=True)\n    productName = serializers.CharField(source=\"product.name\", read_only=True)\n    amount = serializers.DecimalField(max_digits=15, decimal_places=2)\n    interestRate = serializers.DecimalField(\n        source=\"interest_rate\", max_digits=5, decimal_places=2, read_only=True\n    )\n    termMonths = serializers.IntegerField(source=\"term_months\", read_only=True)\n    openedDate = serializers.DateTimeField(source=\"opened_date\", read_only=True)",
         "detail": "backend.products.serializers",
         "documentation": {}
     },
@@ -1975,7 +2010,43 @@
         "kind": 6,
         "importPath": "backend.products.serializers",
         "description": "backend.products.serializers",
-        "peekOfCode": "class ProductOfferSerializer(serializers.Serializer):\n    product_id = serializers.IntegerField()\n    personalized_rate = serializers.DecimalField(max_digits=5, decimal_places=2)\n    personalized_amount = serializers.DecimalField(max_digits=15, decimal_places=2)\n    reason = serializers.CharField()\n    expiration_date = serializers.DateTimeField()",
+        "peekOfCode": "class ProductOfferSerializer(serializers.Serializer):\n    product_id = serializers.IntegerField()\n    personalized_rate = serializers.DecimalField(max_digits=5, decimal_places=2)\n    personalized_amount = serializers.DecimalField(max_digits=15, decimal_places=2)\n    reason = serializers.CharField()\n    expiration_date = serializers.DateTimeField()\nclass ProductAgreementConsentRequestSerializer(serializers.Serializer):\n    requesting_bank = serializers.CharField()\n    client_id = serializers.CharField()\n    read_product_agreements = serializers.BooleanField(default=False)",
+        "detail": "backend.products.serializers",
+        "documentation": {}
+    },
+    {
+        "label": "ProductAgreementConsentRequestSerializer",
+        "kind": 6,
+        "importPath": "backend.products.serializers",
+        "description": "backend.products.serializers",
+        "peekOfCode": "class ProductAgreementConsentRequestSerializer(serializers.Serializer):\n    requesting_bank = serializers.CharField()\n    client_id = serializers.CharField()\n    read_product_agreements = serializers.BooleanField(default=False)\n    open_product_agreements = serializers.BooleanField(default=False)\n    close_product_agreements = serializers.BooleanField(default=False)\n    allowed_product_types = serializers.ListField(\n        child=serializers.CharField(), required=False, allow_null=True\n    )\n    max_amount = serializers.DecimalField(",
+        "detail": "backend.products.serializers",
+        "documentation": {}
+    },
+    {
+        "label": "ProductAgreementConsentSerializer",
+        "kind": 6,
+        "importPath": "backend.products.serializers",
+        "description": "backend.products.serializers",
+        "peekOfCode": "class ProductAgreementConsentSerializer(serializers.ModelSerializer):\n    consentId = serializers.CharField(source=\"consent_id\", read_only=True)\n    status = serializers.CharField(read_only=True)\n    creationDateTime = serializers.DateTimeField(source=\"created_at\", read_only=True)\n    statusUpdateDateTime = serializers.DateTimeField(source=\"updated_at\", read_only=True)\n    permissions = serializers.SerializerMethodField()\n    expirationDateTime = serializers.DateTimeField(source=\"valid_until\", read_only=True)\n    class Meta:\n        model = ProductAgreementConsent\n        fields = [",
+        "detail": "backend.products.serializers",
+        "documentation": {}
+    },
+    {
+        "label": "ProductAgreementRequestSerializer",
+        "kind": 6,
+        "importPath": "backend.products.serializers",
+        "description": "backend.products.serializers",
+        "peekOfCode": "class ProductAgreementRequestSerializer(serializers.Serializer):\n    product_id = serializers.CharField()\n    amount = serializers.DecimalField(max_digits=15, decimal_places=2)\n    term_months = serializers.IntegerField(required=False, allow_null=True)\n    source_account_id = serializers.CharField(required=False, allow_null=True)\nclass CloseAgreementRequestSerializer(serializers.Serializer):\n    repayment_account_id = serializers.CharField(required=False, allow_null=True)\n    repayment_amount = serializers.DecimalField(\n        max_digits=15, decimal_places=2, required=False, allow_null=True\n    )",
+        "detail": "backend.products.serializers",
+        "documentation": {}
+    },
+    {
+        "label": "CloseAgreementRequestSerializer",
+        "kind": 6,
+        "importPath": "backend.products.serializers",
+        "description": "backend.products.serializers",
+        "peekOfCode": "class CloseAgreementRequestSerializer(serializers.Serializer):\n    repayment_account_id = serializers.CharField(required=False, allow_null=True)\n    repayment_amount = serializers.DecimalField(\n        max_digits=15, decimal_places=2, required=False, allow_null=True\n    )",
         "detail": "backend.products.serializers",
         "documentation": {}
     },
@@ -1984,7 +2055,7 @@
         "kind": 6,
         "importPath": "backend.products.services",
         "description": "backend.products.services",
-        "peekOfCode": "class ProductService:\n    def __init__(self, user_profile):\n        self.user_profile = user_profile\n    def sync_products_from_bank(self, bank_name):\n        client = BankClientFactory.get_client(bank_name)\n        try:\n            products_data = client.get_products()\n            synced_products = []\n            for product_data in products_data.get(\"products\", []):\n                product = self._update_or_create_product(bank_name, product_data)",
+        "peekOfCode": "class ProductService:\n    def __init__(self, user_profile):\n        self.user_profile = user_profile\n    def sync_products_from_bank(self, bank_name):\n        client = BankClientFactory.get_client(bank_name)\n        try:\n            products_data = client.get_products()\n            synced_products = []\n            for product_data in products_data.get(\"products\", []):\n                product = self._update_or_create_product(",
         "detail": "backend.products.services",
         "documentation": {}
     },
@@ -2007,6 +2078,15 @@
         "documentation": {}
     },
     {
+        "label": "ProductAgreementConsentService",
+        "kind": 6,
+        "importPath": "backend.products.services",
+        "description": "backend.products.services",
+        "peekOfCode": "class ProductAgreementConsentService:\n    def create_consent_request(self, user_profile, consent_data):\n        \"\"\"Создание запроса на согласие\"\"\"\n        try:\n            consent = ProductAgreementConsent.objects.create(\n                user_profile=user_profile,\n                requesting_bank=consent_data[\"requesting_bank\"],\n                client_id=consent_data[\"client_id\"],\n                read_product_agreements=consent_data.get(\n                    \"read_product_agreements\", False",
+        "detail": "backend.products.services",
+        "documentation": {}
+    },
+    {
         "label": "router",
         "kind": 5,
         "importPath": "backend.products.urls",
@@ -2020,7 +2100,7 @@
         "kind": 5,
         "importPath": "backend.products.urls",
         "description": "backend.products.urls",
-        "peekOfCode": "urlpatterns = [path(\"\", include(router.urls))]",
+        "peekOfCode": "urlpatterns = [\n    path(\"\", include(router.urls)),\n    path(\"product-agreement-consents/request\",\n         views.ProductAgreementConsentViewSet.as_view({'post': 'create'}),\n         name=\"product-agreement-consent-request\"),\n]",
         "detail": "backend.products.urls",
         "documentation": {}
     },
@@ -2038,7 +2118,7 @@
         "kind": 6,
         "importPath": "backend.products.views",
         "description": "backend.products.views",
-        "peekOfCode": "class ProductAgreementViewSet(viewsets.ModelViewSet):\n    permission_classes = [IsAuthenticated]\n    serializer_class = ProductAgreementSerializer\n    def get_queryset(self):\n        user_profile = get_object_or_404(UserBankProfile, user=self.request.user)\n        return ProductAgreement.objects.filter(user_profile=user_profile).select_related(\n            \"product\", \"product__bank\", \"linked_account\"\n        )\n    @action(detail=True, methods=[\"post\"])\n    def close(self, request, pk=None):",
+        "peekOfCode": "class ProductAgreementViewSet(viewsets.ModelViewSet):\n    permission_classes = [IsAuthenticated]\n    serializer_class = ProductAgreementSerializer\n    def get_queryset(self):\n        consent_id = self.request.headers.get('X-Product-Agreement-Consent-Id')\n        requesting_bank = self.request.headers.get('X-Requesting-Bank')\n        client_id = self.request.query_params.get('client_id')\n        if requesting_bank and client_id:\n            if not consent_id:\n                return Response(",
         "detail": "backend.products.views",
         "documentation": {}
     },
@@ -2048,6 +2128,15 @@
         "importPath": "backend.products.views",
         "description": "backend.products.views",
         "peekOfCode": "class ProductApplicationViewSet(viewsets.ModelViewSet):\n    permission_classes = [IsAuthenticated]\n    serializer_class = ProductApplicationSerializer\n    def get_queryset(self):\n        user_profile = get_object_or_404(UserBankProfile, user=self.request.user)\n        return ProductApplication.objects.filter(user_profile=user_profile).select_related(\n            \"product\", \"product__bank\"\n        )\n    @action(detail=True, methods=[\"post\"])\n    def submit(self, request, pk=None):",
+        "detail": "backend.products.views",
+        "documentation": {}
+    },
+    {
+        "label": "ProductAgreementConsentViewSet",
+        "kind": 6,
+        "importPath": "backend.products.views",
+        "description": "backend.products.views",
+        "peekOfCode": "class ProductAgreementConsentViewSet(viewsets.ModelViewSet):\n    permission_classes = [IsAuthenticated]\n    serializer_class = ProductAgreementConsentSerializer\n    def get_queryset(self):\n        user_profile = get_object_or_404(UserBankProfile, user=self.request.user)\n        return ProductAgreementConsent.objects.filter(user_profile=user_profile)\n    def create(self, request):\n        \"\"\"Создание запроса на согласие\"\"\"\n        serializer = ProductAgreementConsentRequestSerializer(data=request.data)\n        if not serializer.is_valid():",
         "detail": "backend.products.views",
         "documentation": {}
     },
