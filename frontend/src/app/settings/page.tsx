@@ -3,7 +3,7 @@ import ManageFamily from "@/app/settings/ManageFamily";
 import AppData from "@/app/settings/AppData";
 
 export default async function Settings() {
-    return <div>
+    return <div className="py-4">
         <div className="grid grid-cols-1 md:grid-cols-2 md:gap-8">
             <div>
                 <MyProfile profileData={{

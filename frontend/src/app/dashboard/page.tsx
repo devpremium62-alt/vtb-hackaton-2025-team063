@@ -5,7 +5,7 @@ import ShortUpcomingPayments from "@/app/dashboard/ShortUpcomingPayments";
 import ShortChildAccount from "@/app/dashboard/ShortChildAccount";
 
 export default async function Dashboard() {
-    return <div>
+    return <div className="py-4">
         <SharedBalance personFirst={{avatar: "/images/man.png", accountDigits: "0934"}}
                        personSecond={{avatar: "/images/woman.png", accountDigits: "1289"}} balance={12345000}
                        monthlyIncome={120000}/>

@@ -8,6 +8,7 @@ import {Navbar} from "@/widgets/navbar";
 import MantineClientProvider from "@/providers/MantineClientProvider";
 import {ColorSchemeScript} from "@mantine/core";
 import ServiceWorker from "@/providers/ServiceWorker";
+import {usePathname} from "next/navigation";
 
 const sfPro = localFont({
     src: [
@@ -59,12 +60,12 @@ export default function RootLayout({children}: Readonly<{ children: React.ReactN
     </head>
     <body className={`${sfPro.variable} antialiased bg-[#F8F9FB] text-white`}>
     <MantineClientProvider>
-        <main className="py-4 w-full mx-auto max-w-screen-2xl relative">
+        <main className="w-full mx-auto max-w-screen-2xl relative">
             {children}
         </main>
-        <Navbar/>
+        <Navbar />
     </MantineClientProvider>
-    {/*<ServiceWorker/>*/}
+    <ServiceWorker/>
     </body>
     </html>
 }

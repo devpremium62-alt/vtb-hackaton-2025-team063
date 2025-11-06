@@ -47,7 +47,7 @@ const categories: ExpenseCategoryType[] = [
 ];
 
 export default async function Budget() {
-    return <div>
+    return <div className="py-4">
         <div className="grid grid-cols-1 md:grid-cols-2 md:gap-8">
             <div>
                 <Goals goals={[

@@ -66,6 +66,10 @@ main {
     background: var(--primary-color);
 }
 
+.bg-primary-hover:hover {
+    background: var(--primary-color--dark);
+}
+
 .outline-primary {
     outline-color: var(--primary-color);
 }
@@ -188,6 +192,10 @@ main {
 
 .bg-nav {
     background: var(--nav-bg);
+}
+
+.bg-login {
+    background: rgba(255, 255, 255, 0.9);
 }
 
 .text-info {
