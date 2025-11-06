@@ -1,6 +1,6 @@
 "use client";
 
-import {PieChart, Pie, Cell, ResponsiveContainer, Tooltip} from 'recharts';
+import {PieChart, Pie, Cell, ResponsiveContainer, Tooltip, PieLabelRenderProps, PieLabel} from 'recharts';
 import {useMemo} from "react";
 
 type Props = {
@@ -30,7 +30,7 @@ const DonutChart = ({data, height = 140, size = 70, children}: Props) => {
                     animationDuration={1000}
                     animationBegin={0}
                     labelLine={false}
-                    label={({ cx, cy, midAngle, innerRadius, outerRadius, fill, value }) => {
+                    label={({ cx, cy, midAngle, innerRadius, outerRadius, fill }: any) => {
                         const elem = data.find(d => d.color === fill);
                         if (!elem?.label) return null;
 
@@ -47,10 +47,7 @@ const DonutChart = ({data, height = 140, size = 70, children}: Props) => {
                                 height={24}
                                 style={{ overflow: "visible" }}
                             >
-                                <div
-                                    xmlns="http://www.w3.org/1999/xhtml"
-                                    className="flex flex-col bg-tertiary text-primary text-xs px-2 py-0.5 rounded-md text-center select-none"
-                                >
+                                <div className="flex flex-col bg-tertiary text-primary text-xs px-2 py-0.5 rounded-md text-center select-none">
                                     <span className="text-sm font-semibold">{Math.round(elem.value / total * 100)}%</span>
                                     {elem.value.toLocaleString("ru-RU")}₽
                                 </div>

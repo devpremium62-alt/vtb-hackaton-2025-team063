@@ -6,6 +6,7 @@ import ProgressBar from "@/shared/ui/ProgressBar";
 import MoneyAmount from "@/shared/ui/MoneyAmount";
 import {motion} from "framer-motion";
 import Date from "@/shared/ui/typography/Date";
+import {FlashOn} from "@/shared/ui/icons/FlashOn";
 
 type Props = {
     goal: GoalType;
@@ -18,10 +19,11 @@ export const Goal = ({goal}: Props) => {
                     animate={{opacity: 1, y: 0}}
                     exit={{opacity: 0, y: -10}}
                     transition={{duration: 0.3}}>
-            <div className="shrink-0 w-[3.125rem] h-[3.125rem] rounded-full relative bg-health">
-                <Image className={`rounded-full${goal.avatar ? '' : ' p-1.5'}`}
-                       src={goal.avatar ?? "/icons/flash-on.svg"}
-                       alt={goal.name} fill sizes="50px"/>
+            <div className="shrink-0 w-[3.125rem] h-[3.125rem] rounded-full relative bg-health text-white flex justify-center items-center">
+                {goal.avatar
+                    ? <Image className="p-1.5" src={goal.avatar} alt={goal.name} fill sizes="50px"/>
+                    : <FlashOn/>
+                }
             </div>
             <div className="flex flex-col min-w-0">
                 <p className="text-primary font-medium text-ellipsis overflow-hidden whitespace-nowrap">{goal.name}</p>
