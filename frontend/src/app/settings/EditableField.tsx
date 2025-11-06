@@ -38,24 +38,35 @@ const EditableField = ({value, onChange, ...props}: Props) => {
     }
 
     return <div className="bg-tertiary rounded-xl px-2.5 h-[2.625rem] flex items-center">
-        <form className="flex items-center justify-between w-full" action="">
-            {isEditing
-                ? <input ref={input} className="text-sm font-medium" value={currValue} onChange={(e) => setValue(e.target.value)}/>
-                : <p className="text-sm font-medium">{value}</p>
-            }
+        <motion.div className="w-full"
+                    initial={{opacity: 0, y: 10}}
+                    animate={{opacity: 1, y: 0}}
+                    exit={{opacity: 0, y: -10}}
+                    transition={{duration: 0.3}}>
+            <form className="flex items-center justify-between w-full" action="">
+                {isEditing
+                    ? <input ref={input} className="text-sm font-medium" value={currValue}
+                             onChange={(e) => setValue(e.target.value)}/>
+                    : <p className="text-sm font-medium">{value}</p>
+                }
 
-            {isEditing
-                ? <motion.span initial={{opacity: 0}} animate={{opacity: 1}} exit={{opacity: 0}} transition={{duration: 0.3}}>
-                    <AccentButton className="text-xs" onClick={onSave}>Сохранить изменения</AccentButton>
-                </motion.span>
-                : isSaved
-                    ? <motion.span initial={{opacity: 0}} animate={{opacity: 1}} exit={{opacity: 0}} transition={{duration: 0.3}}
-                                   className="bg-primary rounded-2xl text-xs py-1.5 px-2.5 text-white">Сохранено!</motion.span>
-                    : <motion.button initial={{opacity: 0}} animate={{opacity: 1}} exit={{opacity: 0}} transition={{duration: 0.3}} type="button" className="text-inactive" onClick={() => setEditing(true)}>
-                        <Edit/>
-                    </motion.button>
-            }
-        </form>
+                {isEditing
+                    ? <motion.span initial={{opacity: 0}} animate={{opacity: 1}} exit={{opacity: 0}}
+                                   transition={{duration: 0.3}}>
+                        <AccentButton className="text-xs py-1.5" onClick={onSave}>Сохранить изменения</AccentButton>
+                    </motion.span>
+                    : isSaved
+                        ? <motion.span initial={{opacity: 0}} animate={{opacity: 1}} exit={{opacity: 0}}
+                                       transition={{duration: 0.3}}
+                                       className="bg-primary rounded-2xl text-xs py-1.5 px-2.5 text-white">Сохранено!</motion.span>
+                        : <motion.button initial={{opacity: 0}} animate={{opacity: 1}} exit={{opacity: 0}}
+                                         transition={{duration: 0.3}} type="button" className="text-inactive"
+                                         onClick={() => setEditing(true)}>
+                            <Edit/>
+                        </motion.button>
+                }
+            </form>
+        </motion.div>
     </div>
 }
 

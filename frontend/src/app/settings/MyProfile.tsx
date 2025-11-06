@@ -5,6 +5,7 @@ import Avatar from "@/shared/ui/Avatar";
 import EditableField from "@/app/settings/EditableField";
 import {useState} from "react";
 import Checkbox from "@/shared/ui/inputs/Checkbox";
+import { motion } from "framer-motion";
 
 type Props = {
     profileData: {
@@ -33,9 +34,15 @@ const MyProfile = ({profileData, pushEnabled}: Props) => {
             }}/>
         </div>
         <div>
-            <div className="bg-tertiary rounded-xl px-2.5 h-[2.625rem] flex items-center justify-between">
-                <p className="text-sm font-medium">Push-уведомления</p>
-                <Checkbox value={isPushEnabled} onChange={setPushEnabled}/>
+            <div className="bg-tertiary rounded-xl px-2.5">
+                <motion.div className="h-[2.625rem] flex items-center justify-between"
+                            initial={{opacity: 0, y: 10}}
+                            animate={{opacity: 1, y: 0}}
+                            exit={{opacity: 0, y: -10}}
+                            transition={{duration: 0.3}}>
+                    <p className="text-sm font-medium">Push-уведомления</p>
+                    <Checkbox value={isPushEnabled} onChange={setPushEnabled}/>
+                </motion.div>
             </div>
         </div>
     </section>

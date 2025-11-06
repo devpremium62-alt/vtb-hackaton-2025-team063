@@ -23,7 +23,7 @@ const MyProfile = ({partners}: Props) => {
             </AccentButton>
         </div>
         <div className="flex flex-col items-stretch gap-1 mb-[1.875rem]">
-            {partners.map(partner => <Partner partner={partner}/> )}
+            {partners.map(partner => <Partner key={partner.date.getTime()} partner={partner}/> )}
         </div>
         <InvitePartner isActive={isModalOpen} setActive={setModalOpen} code={705726} validTo={new Date(Date.now() + 1000 * 60 * 60 * 24)}/>
     </section>

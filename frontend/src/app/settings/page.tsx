@@ -17,7 +17,7 @@ export default async function Settings() {
             <div>
                 <ManageFamily partners={[
                     {name: "Михаил", date: new Date(2023, 9, 5), avatar: "/images/man.png", status: "connected"},
-                    {name: "Михаил", date: new Date(2023, 9, 5), avatar: "/images/man.png", status: "disconnected"},
+                    {name: "Михаил", date: new Date(2023, 6, 5), avatar: "/images/man.png", status: "disconnected"},
                 ]}/>
                 <AppData/>
             </div>
