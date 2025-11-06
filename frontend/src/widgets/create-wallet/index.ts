@@ -1,0 +1,1 @@
+export {CreateWallet} from "@/widgets/create-wallet/ui/CreateWallet"

@@ -5,16 +5,20 @@ import AccentButton from "@/shared/ui/AccentButton";
 import {Plus} from "@/shared/ui/icons/Plus";
 import {type LimitType} from "@/entities/limit";
 import {WalletItem} from "@/entities/limit";
+import {useState} from "react";
+import { CreateWallet } from "@/widgets/create-wallet";
 
 type Props = {
     walletItems: LimitType[];
 };
 
 const Wallet = ({walletItems}: Props) => {
+    const [isModalOpen, setModalOpen] = useState(false);
+
     return <section className="mx-4 md:mr-0 mb-[1.875rem]">
         <div className="flex items-center justify-between mb-2.5">
             <Heading level={2}>Кошелек</Heading>
-            <AccentButton>
+            <AccentButton onClick={() => setModalOpen(true)}>
                 <Plus className="mr-1"/>
                 Создать кошелек
             </AccentButton>
@@ -24,6 +28,7 @@ const Wallet = ({walletItems}: Props) => {
                 <WalletItem key={item.category.name} item={item} />
             ))}
         </div>
+        <CreateWallet isActive={isModalOpen} setActive={setModalOpen}/>
     </section>
 }
 

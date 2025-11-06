@@ -9,7 +9,7 @@ import {
     PaymentLarge,
     PaymentType
 } from "@/entities/payment";
-import React, {useMemo, useState} from "react";
+import React, {ChangeEvent, useMemo, useState} from "react";
 import {PaymentsCalendar} from "@/widgets/payments-calendar";
 import AccentButton from "@/shared/ui/AccentButton";
 import {Plus} from "@/shared/ui/icons/Plus";
@@ -18,12 +18,14 @@ import Select from "@/shared/ui/inputs/Select";
 import {Filter} from "@/shared/ui/icons/Filter";
 import NearestPayment from "@/app/budget/NearestPayment";
 import {PaymentsList} from "@/widgets/payments-list";
+import {CreatePayment} from "@/widgets/create-payment";
 
 type Props = {
     payments: PaymentType[];
 }
 
 const UpcomingPayments = ({payments}: Props) => {
+    const [isModalOpen, setModalOpen] = useState(false);
     const [currentDate, setCurrentDate] = useState<Date>(new Date());
     const [search, setSearch] = useState("");
     const [selectedStatus, setSelectedStatus] = useState("all");
@@ -58,8 +60,8 @@ const UpcomingPayments = ({payments}: Props) => {
             <Heading level={2}>Календарь платежей</Heading>
         </div>
         <div className="mb-1 flex items-stretch gap-1">
-            <SearchInput value={search} onChange={(e) => setSearch(e.target.value)} className="flex-1" placeholder="Поиск платежей"/>
-            <AccentButton>
+            <SearchInput value={search} onChange={(e:ChangeEvent<HTMLInputElement>) => setSearch(e.target.value)} className="flex-1" placeholder="Поиск платежей"/>
+            <AccentButton onClick={() => setModalOpen(true)}>
                 <Plus className="mr-1"/>
                 Создать платеж
             </AccentButton>
@@ -67,7 +69,7 @@ const UpcomingPayments = ({payments}: Props) => {
         <div className="mb-2.5 flex items-stretch gap-1">
             <Select onChange={setSelectedStatus} className="flex-1" options={[
                 {label: "Все статусы", value: "all"}, {label: "Ожидается", value: "waiting"},
-                {label: "Просрочен", value: "expired"}, {label: "Внесен", value: "payed"}
+                {label: "Просрочен", value: "expired"}, {label: "Оплачен", value: "payed"}
             ]}></Select>
             <Select className="flex-1" options={[
                 {label: "Все платежи", value: "all"}, {label: "Ожидается", value: "waiting"},
@@ -89,6 +91,7 @@ const UpcomingPayments = ({payments}: Props) => {
                               <div key={i} className="h-16 rounded-xl bg-tertiary animate-pulse"/>
                           )}/>
         </div>
+        <CreatePayment isActive={isModalOpen} setActive={setModalOpen}/>
     </section>
 }
 

@@ -25,7 +25,7 @@ export const WalletItem = ({item}: Props) => {
             <div className="flex flex-col min-w-0">
                 <p className="text-primary font-medium text-ellipsis overflow-hidden whitespace-nowrap">{item.category.name}</p>
                 <p className="text-light font-light text-xs flex items-center gap-[0.15rem]">
-                    <span>Осталось</span>
+                    <span className="hidden xxs:inline-block">Осталось</span>
                     <span><MoneyAmount value={Math.max(0, item.limit - item.category.spent)}/></span>
                     <span>из</span>
                     <span><MoneyAmount value={item.limit}/></span>

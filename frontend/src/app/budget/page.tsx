@@ -105,7 +105,7 @@ export default async function Budget() {
                 ]}/>
             </div>
             <div>
-                <ChildAccount moneyCollected={123450} moneyNeed={230000} avatar="/images/woman.png"/>
+                <ChildAccount moneyCollected={50000} moneyPerDay={2500} avatar="/images/woman.png"/>
                 <ExpenseStats expenseCategories={categories}/>
                 <ExpenseList expenses={[
                     {

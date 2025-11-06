@@ -21,11 +21,11 @@ const ExpensesDistributions = ({firstPerson, secondPerson}: Props) => {
         <div className="mb-2.5">
             <Heading level={2}>Распределение трат</Heading>
         </div>
-        <div className="flex items-center">
-            <DonutChart data={firstPersonData} size={80} height={210}>
+        <div className="flex items-center flex-col xxs:flex-row">
+            <DonutChart data={firstPersonData} size={80} height={200}>
                 <Image className="rounded-full" width={48} height={48} src={firstPerson.avatar} alt=""/>
             </DonutChart>
-            <DonutChart data={secondPersonData} size={80} height={210}>
+            <DonutChart data={secondPersonData} size={80} height={200}>
                 <Image className="rounded-full" width={48} height={48} src={secondPerson.avatar} alt=""/>
             </DonutChart>
         </div>

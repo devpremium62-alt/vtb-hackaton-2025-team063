@@ -30,7 +30,9 @@ export const Expenses = ({expenseCategories}: Props) => {
                 </div>
             </>
             : <>
-                <DonutChart data={chartData}/>
+                <div className="w-1/2">
+                    <DonutChart data={chartData}/>
+                </div>
                 <div className="w-1/2 md:w-full right-blurred md:after:hidden">
                     <div className="overflow-x-auto">
                         <div

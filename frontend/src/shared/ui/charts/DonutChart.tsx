@@ -16,7 +16,7 @@ const DonutChart = ({data, height = 140, size = 70, children}: Props) => {
     }, [data]);
 
     return <>
-        <ResponsiveContainer className="relative" width="50%" height={height}>
+        <ResponsiveContainer className="relative" width="100%" height={height}>
             <PieChart>
                 <Pie
                     data={data}

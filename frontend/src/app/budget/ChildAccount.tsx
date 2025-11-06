@@ -9,11 +9,11 @@ import AccentButton from "@/shared/ui/AccentButton";
 
 type Props = {
     moneyCollected: number;
-    moneyNeed: number;
+    moneyPerDay: number;
     avatar: string;
 }
 
-const ChildAccount = ({moneyCollected, moneyNeed, avatar}: Props) => {
+const ChildAccount = ({moneyCollected, moneyPerDay, avatar}: Props) => {
     return <section className="mx-4 md:ml-0 mb-[1.875rem]">
         <div className="mb-2.5">
             <Heading level={2}>Детский счет</Heading>
@@ -30,10 +30,10 @@ const ChildAccount = ({moneyCollected, moneyNeed, avatar}: Props) => {
                 <div className="flex items-center justify-between gap-5">
                     <div className="flex-1">
                         <p className="font-medium text-xs mb-0.5">
-                            <MoneyAmount value={Math.floor(moneyNeed / 30)}/> в день
+                            <MoneyAmount value={moneyPerDay}/> в день
                         </p>
                         <div className="flex-1">
-                            <ProgressBar value={moneyCollected} max={moneyNeed}/>
+                            <ProgressBar indicators value={moneyCollected} max={moneyPerDay * 30}/>
                         </div>
                     </div>
                     <div className="flex items-center gap-1">
