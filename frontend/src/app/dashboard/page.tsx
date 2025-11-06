@@ -1,6 +1,6 @@
 import SharedBalance from "@/app/dashboard/SharedBalance";
 import Accounts from "@/app/dashboard/Accounts";
-import Goals from "@/app/dashboard/Goals";
+import ShortGoals from "@/app/dashboard/ShortGoals";
 import UpcomingPayments from "@/app/dashboard/UpcomingPayments";
 import ChildAccount from "@/app/dashboard/ChildAccount";
 
@@ -47,7 +47,7 @@ export default async function Dashboard() {
                 ]}/>
             </div>
             <div>
-                <Goals goals={[
+                <ShortGoals goals={[
                     {
                         id: 1,
                         name: "Поездка на море",

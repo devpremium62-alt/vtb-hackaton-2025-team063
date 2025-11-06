@@ -6,6 +6,7 @@ import ProgressBar from "@/shared/ui/ProgressBar";
 import MoneyAmount from "@/shared/ui/MoneyAmount";
 import {motion} from "framer-motion";
 import Avatar from "@/shared/ui/Avatar";
+import AccentButton from "@/shared/ui/AccentButton";
 
 type Props = {
     moneyCollected: number;
@@ -35,9 +36,7 @@ const ChildAccount = ({moneyCollected, moneyNeed, avatar}: Props) => {
                         </div>
                     </div>
                     <div>
-                        <button
-                            className="bg-accent text-white text-base font-medium px-3 py-1 rounded-2xl cursor-pointer">Пополнить
-                        </button>
+                        <AccentButton>Пополнить</AccentButton>
                     </div>
                 </div>
             </motion.div>
