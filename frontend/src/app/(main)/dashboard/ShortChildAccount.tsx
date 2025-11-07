@@ -6,6 +6,8 @@ import MoneyAmount from "@/shared/ui/MoneyAmount";
 import {motion} from "framer-motion";
 import Avatar from "@/shared/ui/Avatar";
 import AccentButton from "@/shared/ui/AccentButton";
+import {useState} from "react";
+import {DepositChildAccount} from "@/widgets/deposit-child-account";
 
 type Props = {
     moneyCollected: number;
@@ -14,6 +16,8 @@ type Props = {
 }
 
 const ShortChildAccount = ({moneyCollected, moneyPerDay, avatar}: Props) => {
+    const [isModalActive, setModalActive] = useState(false);
+
     return <section className="mx-4 md:ml-0 mb-20">
         <Heading level={2}>Детский счет</Heading>
         <div className="bg-tertiary rounded-xl py-2 px-1.5">
@@ -22,7 +26,7 @@ const ShortChildAccount = ({moneyCollected, moneyPerDay, avatar}: Props) => {
                         exit={{opacity: 0, y: -10}}
                         transition={{duration: 0.3}}>
                 <div className="flex items-start justify-between mb-5">
-                    <p className="text-3xl xxs:text-[2.5rem] mb-0.5 leading-none font-bold"><MoneyAmount value={moneyCollected}/></p>
+                    <p className="text-3xl mb-0.5 leading-none font-bold"><MoneyAmount value={moneyCollected}/></p>
                     <Avatar avatar={avatar} alt="Ребенок"/>
                 </div>
                 <div className="flex items-center justify-between">
@@ -35,11 +39,12 @@ const ShortChildAccount = ({moneyCollected, moneyPerDay, avatar}: Props) => {
                         </div>
                     </div>
                     <div>
-                        <AccentButton>Пополнить</AccentButton>
+                        <AccentButton onClick={() => setModalActive(true)}>Пополнить</AccentButton>
                     </div>
                 </div>
             </motion.div>
         </div>
+        <DepositChildAccount isActive={isModalActive} setActive={setModalActive}/>
     </section>
 }
 

@@ -56,7 +56,7 @@ const Select = ({options, id, className, placeholder, onChange, large, error}: P
                     {options.map((option, i) => (
                         <li onClick={() => handleChange(option.value, i)}
                             className={`p-2 font-normal text-sm ${i === value && !showPlaceholder ? 'bg-select-active' : ''}`}
-                            key={option.label}>{option.label}</li>
+                            key={option.value}>{option.label}</li>
                     ))}
                 </ul>
             </div>

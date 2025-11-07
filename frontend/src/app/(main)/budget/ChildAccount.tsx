@@ -6,6 +6,9 @@ import MoneyAmount from "@/shared/ui/MoneyAmount";
 import {motion} from "framer-motion";
 import Avatar from "@/shared/ui/Avatar";
 import AccentButton from "@/shared/ui/AccentButton";
+import {useState} from "react";
+import {DepositChildAccount} from "@/widgets/deposit-child-account";
+import {ChangeChildAccountLimit} from "@/widgets/change-child-account-limit";
 
 type Props = {
     moneyCollected: number;
@@ -14,6 +17,9 @@ type Props = {
 }
 
 const ChildAccount = ({moneyCollected, moneyPerDay, avatar}: Props) => {
+    const [isAddMoneyModalActive, setAddMoneyModalActive] = useState(false);
+    const [isChangeLimitModalActive, setChangeLimitModalActive] = useState(false);
+
     return <section className="mx-4 md:ml-0 mb-[1.875rem]">
         <div className="mb-2.5">
             <Heading level={2}>Детский счет</Heading>
@@ -24,7 +30,8 @@ const ChildAccount = ({moneyCollected, moneyPerDay, avatar}: Props) => {
                         exit={{opacity: 0, y: -10}}
                         transition={{duration: 0.3}}>
                 <div className="flex items-baseline justify-between mb-5">
-                    <p className="text-3xl xxs:text-[2.5rem] mb-0.5 leading-none font-bold"><MoneyAmount value={moneyCollected}/></p>
+                    <p className="text-3xl mb-0.5 leading-none font-bold"><MoneyAmount
+                        value={moneyCollected}/></p>
                     <Avatar avatar={avatar} alt="Ребенок"/>
                 </div>
                 <div className="flex items-center justify-between gap-5">
@@ -37,14 +44,18 @@ const ChildAccount = ({moneyCollected, moneyPerDay, avatar}: Props) => {
                         </div>
                     </div>
                     <div className="flex items-center gap-1">
-                        <button className="bg-primary-dark text-white text-sm font-medium px-3 py-1 rounded-2xl cursor-pointer flex items-center bg-primary-dark">
+                        <button
+                            onClick={() => setChangeLimitModalActive(true)}
+                            className="bg-primary-dark text-white text-sm font-medium px-3 py-1 rounded-2xl cursor-pointer flex items-center bg-primary-dark">
                             Изменить лимит
                         </button>
-                        <AccentButton>Пополнить</AccentButton>
+                        <AccentButton onClick={() => setAddMoneyModalActive(true)}>Пополнить</AccentButton>
                     </div>
                 </div>
             </motion.div>
         </div>
+        <ChangeChildAccountLimit isActive={isChangeLimitModalActive} setActive={setChangeLimitModalActive}/>
+        <DepositChildAccount isActive={isAddMoneyModalActive} setActive={setAddMoneyModalActive}/>
     </section>
 }
 

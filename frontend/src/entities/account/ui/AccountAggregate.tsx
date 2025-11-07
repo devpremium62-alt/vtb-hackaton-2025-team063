@@ -1,6 +1,6 @@
 "use client";
 
-import {type AccountType} from "@/entities/account/model/types";
+import {type AccountAggregateType} from "@/entities/account/model/types";
 import Heading from "@/shared/ui/typography/Heading";
 import Image from "next/image";
 import MoneyAmount from "@/shared/ui/MoneyAmount";
@@ -10,10 +10,10 @@ import Avatar from "@/shared/ui/Avatar";
 type Props = {
     className?: string;
     style?: object;
-    account: AccountType;
+    account: AccountAggregateType;
 }
 
-export const Account = ({account, className = "", ...props}: Props) => {
+export const AccountAggregate = ({account, className = "", ...props}: Props) => {
     return <div className={`bg-tertiary rounded-xl px-2 py-1 ${className}`} {...props}>
         <motion.div initial={{opacity: 0, y: 40}}
                     animate={{opacity: 1, y: 0}}

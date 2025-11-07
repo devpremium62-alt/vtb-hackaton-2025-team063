@@ -1,2 +1,2 @@
-export {Account} from "@/entities/account/ui/Account";
-export {type AccountType} from "@/entities/account/model/types";
+export {AccountAggregate} from "@/entities/account/ui/AccountAggregate";
+export {type AccountAggregateType} from "@/entities/account/model/types";

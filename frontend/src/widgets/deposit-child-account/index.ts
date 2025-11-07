@@ -1,0 +1,1 @@
+export {DepositChildAccount} from "@/widgets/deposit-child-account/ui/DepositChildAccount"

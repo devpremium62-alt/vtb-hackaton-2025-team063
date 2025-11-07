@@ -7,9 +7,10 @@ import { motion } from "framer-motion";
 
 type Props = {
     payment: PaymentType;
+    onDepositClick: (id: number) => void;
 }
 
-const NearestPayment = ({payment}: Props) => {
+const NearestPayment = ({payment, onDepositClick}: Props) => {
     return <div className="p-2.5 rounded-xl bg-primary mb-2.5">
         <motion.div className="flex items-start justify-between " initial={{opacity: 0, y: 10}}
                     animate={{opacity: 1, y: 0}}
@@ -30,7 +31,8 @@ const NearestPayment = ({payment}: Props) => {
                     </span>
                     </Heading>
                 </div>
-                <button className="bg-accent text-white text-[0.5rem] px-2.5 py-0.5 rounded-2xl cursor-pointer">
+                <button onClick={() => onDepositClick(payment.id)}
+                        className="bg-accent text-white text-[0.5rem] px-2.5 py-0.5 rounded-2xl cursor-pointer">
                     Внести
                 </button>
             </div>

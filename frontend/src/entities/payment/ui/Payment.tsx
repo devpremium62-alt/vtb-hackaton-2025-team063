@@ -4,9 +4,10 @@ import SwipeForDelete from "@/shared/ui/SwipeForDelete";
 
 type Props = {
     payment: PaymentType;
+    onDepositClick: (id: number) => void;
 }
 
-export const Payment = ({payment}: Props) => {
+export const Payment = ({payment, onDepositClick}: Props) => {
     return <div className="relative overflow-hidden">
         <SwipeForDelete onDelete={() => {}}>
             <article
@@ -19,14 +20,14 @@ export const Payment = ({payment}: Props) => {
                 </div>
                 <div className="flex items-center gap-1 justify-between">
                     <time className="text-light text-[0.6rem] leading-none">{payment.date.toLocaleDateString()}</time>
-                    <Status payment={payment}/>
+                    <Status onDepositClick={onDepositClick} payment={payment}/>
                 </div>
             </article>
         </SwipeForDelete>
     </div>;
 }
 
-const Status = ({payment}: Props) => {
+const Status = ({payment, onDepositClick}: Props) => {
     const baseClasses = "text-[0.6rem] font-medium";
 
     if (isPaymentPayed(payment)) {
@@ -39,6 +40,6 @@ const Status = ({payment}: Props) => {
 
     return <p className={`${baseClasses} flex items-center gap-1.5`}>
         <span className="text-info">Ожидается</span>
-        <button className="cursor-pointer">Внести</button>
+        <button className="cursor-pointer" onClick={() => onDepositClick(payment.id)}>Внести</button>
     </p>
 }

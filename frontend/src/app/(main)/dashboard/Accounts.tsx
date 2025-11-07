@@ -1,14 +1,14 @@
-import {Account, type AccountType} from "@/entities/account";
+import {AccountAggregate, type AccountAggregateType} from "@/entities/account";
 
 type Props = {
-    firstAccount: AccountType;
-    secondAccount: AccountType;
+    firstAccount: AccountAggregateType;
+    secondAccount: AccountAggregateType;
 }
 
 const Accounts = ({firstAccount, secondAccount}: Props) => {
     return <section className="flex items-center mb-6 gap-2.5 mx-4 md:mr-0">
-        <Account className="flex-1" account={firstAccount}/>
-        <Account className="flex-1" account={secondAccount}/>
+        <AccountAggregate className="flex-1" account={firstAccount}/>
+        <AccountAggregate className="flex-1" account={secondAccount}/>
     </section>
 }
 

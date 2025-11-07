@@ -4,9 +4,10 @@ import React, {JSX, useMemo} from "react";
 import useShowingSkeleton from "@/shared/hooks/useShowingSkeleton";
 
 type Props = {
+    onDepositClick: (id: number) => void;
     currentDate: Date;
     payments: PaymentType[];
-    paymentMarkup: (payment: PaymentType) => JSX.Element;
+    paymentMarkup: (payment: PaymentType, onDepositClick: (id: number) => void) => JSX.Element;
     skeletonMarkup: (key: number) => JSX.Element;
 }
 
@@ -14,7 +15,7 @@ function isSameMonth(d1: Date, d2: Date): boolean {
     return d1.getFullYear() === d2.getFullYear() && d1.getMonth() === d2.getMonth();
 }
 
-export const PaymentsList = ({currentDate, payments, paymentMarkup, skeletonMarkup}: Props) => {
+export const PaymentsList = ({currentDate, payments, paymentMarkup, skeletonMarkup, onDepositClick}: Props) => {
     const isLoading = useShowingSkeleton(currentDate);
 
     const sortedPayments = useMemo(() => {
@@ -45,7 +46,7 @@ export const PaymentsList = ({currentDate, payments, paymentMarkup, skeletonMark
                         exit={{opacity: 0, x: 5}}
                         transition={{duration: 0.2}}
                     >
-                        {paymentMarkup(payment)}
+                        {paymentMarkup(payment, onDepositClick)}
                     </motion.div>
                 ))}
             </motion.div>

@@ -1,0 +1,1 @@
+export {DepositPayment} from "@/widgets/deposit-payment/ui/DepositPayment"

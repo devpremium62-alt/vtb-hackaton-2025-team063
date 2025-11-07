@@ -4,11 +4,13 @@ import SwipeForDelete from "@/shared/ui/SwipeForDelete";
 
 type Props = {
     payment: PaymentType;
+    onDepositClick: (id: number) => void;
 }
 
-export const PaymentLarge = ({payment}: Props) => {
+export const PaymentLarge = ({payment, onDepositClick}: Props) => {
     return <div className="relative overflow-hidden">
-        <SwipeForDelete onDelete={() => {}}>
+        <SwipeForDelete onDelete={() => {
+        }}>
             <article
                 className={`${!payment.payed && payment.date < new Date() ? "bg-error-transparent" : "bg-tertiary"} flex items-center justify-between p-2.5 rounded-xl gap-2`}>
 
@@ -20,14 +22,14 @@ export const PaymentLarge = ({payment}: Props) => {
                     <p className="shrink-0 text-xl font-semibold">
                         <MoneyAmount value={payment.money}/>
                     </p>
-                    <Status payment={payment}/>
+                    <Status onDepositClick={onDepositClick} payment={payment}/>
                 </div>
             </article>
         </SwipeForDelete>
     </div>;
 }
 
-const Status = ({payment}: Props) => {
+const Status = ({payment, onDepositClick}: Props) => {
     const baseClasses = "text-[0.6rem] text-white py-0.5 px-4 rounded-xl font-medium";
 
     if (isPaymentPayed(payment)) {
@@ -40,6 +42,9 @@ const Status = ({payment}: Props) => {
 
     return <p className={`text-[0.6rem] font-medium flex items-center gap-1.5`}>
         <span className="text-info">Ожидается</span>
-        <button className="bg-accent cursor-pointer text-white rounded-lg py-0.5 px-2.5">Внести</button>
+        <button onClick={() => onDepositClick(payment.id)}
+                className="bg-accent cursor-pointer text-white rounded-lg py-0.5 px-2.5">
+            Внести
+        </button>
     </p>
 }
