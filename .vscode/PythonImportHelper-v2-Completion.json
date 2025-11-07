@@ -1801,46 +1801,46 @@
     {
         "label": "PaymentSerializer",
         "kind": 6,
-        "importPath": "backend.payments.serializer",
-        "description": "backend.payments.serializer",
+        "importPath": "backend.payments.serializers",
+        "description": "backend.payments.serializers",
         "peekOfCode": "class PaymentSerializer(serializers.ModelSerializer):\n    bank_name = serializers.CharField(source=\"bank.name\", read_only=True)\n    team_id = serializers.CharField(\n        source=\"user_profile.team_id\", read_only=True\n    )\n    debtor_bank_name = serializers.CharField(\n        source=\"debtor_bank.name\", read_only=True\n    )\n    creditor_bank_name = serializers.CharField(\n        source=\"creditor_bank.name\", read_only=True",
-        "detail": "backend.payments.serializer",
+        "detail": "backend.payments.serializers",
         "documentation": {}
     },
     {
         "label": "PaymentCreateSerializer",
         "kind": 6,
-        "importPath": "backend.payments.serializer",
-        "description": "backend.payments.serializer",
+        "importPath": "backend.payments.serializers",
+        "description": "backend.payments.serializers",
         "peekOfCode": "class PaymentCreateSerializer(serializers.Serializer):\n    bank_name = serializers.CharField(max_length=50)\n    amount = serializers.DecimalField(\n        max_digits=15, decimal_places=2, min_value=0.01\n    )\n    currency = serializers.CharField(max_length=3, default=\"RUB\")\n    debtor_account = serializers.CharField(max_length=100)\n    creditor_account = serializers.CharField(max_length=100)\n    creditor_name = serializers.CharField(max_length=255)\n    creditor_bank_code = serializers.CharField(",
-        "detail": "backend.payments.serializer",
+        "detail": "backend.payments.serializers",
         "documentation": {}
     },
     {
         "label": "PaymentConsentSerializer",
         "kind": 6,
-        "importPath": "backend.payments.serializer",
-        "description": "backend.payments.serializer",
+        "importPath": "backend.payments.serializers",
+        "description": "backend.payments.serializers",
         "peekOfCode": "class PaymentConsentSerializer(serializers.ModelSerializer):\n    bank_name = serializers.CharField(source=\"bank.name\", read_only=True)\n    team_id = serializers.CharField(\n        source=\"user_profile.team_id\", read_only=True\n    )\n    is_expired = serializers.SerializerMethodField()\n    can_be_used = serializers.SerializerMethodField()\n    class Meta:\n        model = PaymentConsent\n        fields = [",
-        "detail": "backend.payments.serializer",
+        "detail": "backend.payments.serializers",
         "documentation": {}
     },
     {
         "label": "PaymentConsentCreateSerializer",
         "kind": 6,
-        "importPath": "backend.payments.serializer",
-        "description": "backend.payments.serializer",
+        "importPath": "backend.payments.serializers",
+        "description": "backend.payments.serializers",
         "peekOfCode": "class PaymentConsentCreateSerializer(serializers.Serializer):\n    CONSENT_TYPES = [\n        (\"SINGLE_USE\", \"Одноразовый\"),\n        (\"MULTI_USE\", \"Многоразовый\"),\n        (\"VRP\", \"Переменные регулярные платежи\"),\n    ]\n    bank_name = serializers.CharField(max_length=50)\n    consent_type = serializers.ChoiceField(choices=CONSENT_TYPES)\n    debtor_account = serializers.CharField(max_length=100)\n    currency = serializers.CharField(",
-        "detail": "backend.payments.serializer",
+        "detail": "backend.payments.serializers",
         "documentation": {}
     },
     {
         "label": "PaymentLimitSerializer",
         "kind": 6,
-        "importPath": "backend.payments.serializer",
-        "description": "backend.payments.serializer",
+        "importPath": "backend.payments.serializers",
+        "description": "backend.payments.serializers",
         "peekOfCode": "class PaymentLimitSerializer(serializers.ModelSerializer):\n    team_id = serializers.CharField(\n        source=\"user_profile.team_id\", read_only=True\n    )\n    class Meta:\n        model = PaymentLimit\n        fields = [\n            \"id\",\n            \"user_profile\",\n            \"team_id\",",
-        "detail": "backend.payments.serializer",
+        "detail": "backend.payments.serializers",
         "documentation": {}
     },
     {
@@ -1864,19 +1864,19 @@
     {
         "label": "router",
         "kind": 5,
-        "importPath": "backend.payments.url",
-        "description": "backend.payments.url",
+        "importPath": "backend.payments.urls",
+        "description": "backend.payments.urls",
         "peekOfCode": "router = DefaultRouter()\nrouter.register(r\"payments\", views.PaymentViewSet, basename=\"payment\")\nrouter.register(r\"consents\", views.PaymentConsentViewSet, basename=\"payment-consent\")\nrouter.register(r\"limits\", views.PaymentLimitViewSet, basename=\"payment-limit\")\nurlpatterns = [path(\"\", include(router.urls))]",
-        "detail": "backend.payments.url",
+        "detail": "backend.payments.urls",
         "documentation": {}
     },
     {
         "label": "urlpatterns",
         "kind": 5,
-        "importPath": "backend.payments.url",
-        "description": "backend.payments.url",
+        "importPath": "backend.payments.urls",
+        "description": "backend.payments.urls",
         "peekOfCode": "urlpatterns = [path(\"\", include(router.urls))]",
-        "detail": "backend.payments.url",
+        "detail": "backend.payments.urls",
         "documentation": {}
     },
     {
