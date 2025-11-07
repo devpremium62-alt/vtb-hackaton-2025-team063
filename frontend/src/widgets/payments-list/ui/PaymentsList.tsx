@@ -19,7 +19,7 @@ export const PaymentsList = ({currentDate, payments, paymentMarkup, skeletonMark
     const isLoading = useShowingSkeleton(currentDate);
 
     const sortedPayments = useMemo(() => {
-        return payments.filter(p => isSameMonth(p.date, currentDate)).sort((p1, p2) => p1.date.getTime() - p2.date.getTime());
+        return payments.filter(p => isSameMonth(new Date(p.date), currentDate)).sort((p1, p2) => new Date(p1.date).getTime() - new Date(p2.date).getTime());
     }, [payments, currentDate]);
 
     const hasPayments = sortedPayments.length > 0;
@@ -40,7 +40,7 @@ export const PaymentsList = ({currentDate, payments, paymentMarkup, skeletonMark
             >
                 {sortedPayments.slice(0, 4).map(payment => (
                     <motion.div
-                        key={payment.date.toISOString() + payment.name}
+                        key={payment.id}
                         initial={{opacity: 0, x: -5}}
                         animate={{opacity: 1, x: 0}}
                         exit={{opacity: 0, x: 5}}

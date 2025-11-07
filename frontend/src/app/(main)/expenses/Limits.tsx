@@ -24,7 +24,7 @@ const Limits = ({limits}: Props) => {
         </div>
         <div className="flex gap-1 flex-col">
             {limits.map((limit) => (
-                <Limit key={limit.category.name} limit={limit}/>
+                <Limit key={limit.id} limit={limit}/>
             ))}
         </div>
         <CreateLimit isActive={isModalOpen} setActive={setModalOpen}/>

@@ -11,14 +11,15 @@ type Props = {
     profileData: {
         avatar: string;
         name: string;
-        email: string;
         phone: string;
     };
-    pushEnabled: boolean;
+    settings: {
+        pushEnabled: boolean;
+    }
 }
 
-const MyProfile = ({profileData, pushEnabled}: Props) => {
-    const [isPushEnabled, setPushEnabled] = useState(false);
+const MyProfile = ({profileData, settings}: Props) => {
+    const [isPushEnabled, setPushEnabled] = useState(settings.pushEnabled);
 
     return <section className="mx-4 md:mr-0 mb-[1.875rem]">
         <div className="mb-2.5 flex items-center justify-between">

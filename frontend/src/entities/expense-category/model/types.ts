@@ -10,6 +10,7 @@ export type ExpenseCategoryName =
     | "Прочее";
 
 export type ExpenseCategoryType = {
+    id: number;
     name: ExpenseCategoryName;
     spent: number;
     color: string;

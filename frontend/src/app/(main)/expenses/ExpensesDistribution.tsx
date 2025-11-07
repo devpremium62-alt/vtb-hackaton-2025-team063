@@ -5,7 +5,7 @@ import Image from "next/image";
 
 type PersonExpenses = {
     avatar: string;
-    value: number;
+    expenses: number;
 }
 
 type Props = {
@@ -14,8 +14,8 @@ type Props = {
 }
 
 const ExpensesDistributions = ({firstPerson, secondPerson}: Props) => {
-    const firstPersonData = [{value: firstPerson.value, color: "var(--primary-color)", label: true}, {value: secondPerson.value, color: "var(--icons-inactive)"}];
-    const secondPersonData = [{value: firstPerson.value, color: "var(--icons-inactive)"}, {value: secondPerson.value, color: "var(--primary-color)", label: true}];
+    const firstPersonData = [{value: firstPerson.expenses, color: "var(--primary-color)", label: true}, {value: secondPerson.expenses, color: "var(--icons-inactive)"}];
+    const secondPersonData = [{value: firstPerson.expenses, color: "var(--icons-inactive)"}, {value: secondPerson.expenses, color: "var(--primary-color)", label: true}];
 
     return <section className="mx-4 md:mx-0 md:mr-4 mb-20">
         <div className="mb-2.5">

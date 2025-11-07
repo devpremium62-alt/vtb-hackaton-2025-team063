@@ -6,10 +6,12 @@ import PhotoStep from "@/app/register/PhotoStep";
 import {UserType} from "@/entities/user";
 import BankSelectStep from "@/app/register/BankSelectStep";
 import FinalStep from "@/app/register/FinalStep";
+import { useRouter } from "next/navigation";
 
 const RegisterForm = () => {
     const [step, setStep] = useState(0);
     const [userData, setUserData] = useState<Partial<UserType>>({});
+    const router = useRouter();
 
     function onMainStepEnd(user: Partial<UserType>) {
         setUserData((prevUser) => ({...prevUser, ...user}));
@@ -27,7 +29,7 @@ const RegisterForm = () => {
     }
 
     function onRegisterFinished() {
-
+        router.push("/dashboard");
     }
 
     return <section className="min-h-screen w-full max-w-md login-page flex flex-col px-4 relative">
