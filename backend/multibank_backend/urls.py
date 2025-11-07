@@ -8,7 +8,7 @@ urlpatterns = [
     path("api/auth/", include("rest_framework.urls")),
     path("api/banking/", include("banks.urls")),
     path("api/accounts/", include("accounts.urls")),
-    path("api/payments/", include("payments.urls")),
+    path("api/", include("payments.urls")),
     path("api/products/", include("products.urls")),
 ]
 

@@ -7,7 +7,7 @@ from django.utils import timezone
 
 from banks.models import UserBankProfile
 from .models import Payment, PaymentConsent, PaymentLimit
-from .serializers import (
+from .serializer import (
     PaymentSerializer,
     PaymentCreateSerializer,
     PaymentConsentSerializer,
