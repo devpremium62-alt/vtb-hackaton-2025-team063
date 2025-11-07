@@ -1,0 +1,1 @@
+export {banks} from "@/entities/bank/model/types"

@@ -1,0 +1,45 @@
+import {isPaymentExpired, isPaymentPayed, PaymentType} from "@/entities/payment";
+import MoneyAmount from "@/shared/ui/MoneyAmount";
+import SwipeForDelete from "@/shared/ui/SwipeForDelete";
+
+type Props = {
+    payment: PaymentType;
+}
+
+export const PaymentLarge = ({payment}: Props) => {
+    return <div className="relative overflow-hidden">
+        <SwipeForDelete onDelete={() => {}}>
+            <article
+                className={`${!payment.payed && payment.date < new Date() ? "bg-error-transparent" : "bg-tertiary"} flex items-center justify-between p-2.5 rounded-xl gap-2`}>
+
+                <div className="flex flex-col min-w-0">
+                    <time className="text-secondary text-xs font-medium">{payment.date.toLocaleDateString()}</time>
+                    <p className="font-semibold min-w-0 text-xl text-ellipsis overflow-hidden whitespace-nowrap">{payment.name}</p>
+                </div>
+                <div className="flex flex-col items-end">
+                    <p className="shrink-0 text-xl font-semibold">
+                        <MoneyAmount value={payment.money}/>
+                    </p>
+                    <Status payment={payment}/>
+                </div>
+            </article>
+        </SwipeForDelete>
+    </div>;
+}
+
+const Status = ({payment}: Props) => {
+    const baseClasses = "text-[0.6rem] text-white py-0.5 px-4 rounded-xl font-medium";
+
+    if (isPaymentPayed(payment)) {
+        return <p className={`${baseClasses} bg-info`}>Внесено</p>
+    }
+
+    if (isPaymentExpired(payment)) {
+        return <p className={`${baseClasses} bg-error`}>Просрочен</p>
+    }
+
+    return <p className={`text-[0.6rem] font-medium flex items-center gap-1.5`}>
+        <span className="text-info">Ожидается</span>
+        <button className="bg-accent cursor-pointer text-white rounded-lg py-0.5 px-2.5">Внести</button>
+    </p>
+}

@@ -1,0 +1,1 @@
+export {Expenses} from "@/widgets/expenses/ui/Expenses"

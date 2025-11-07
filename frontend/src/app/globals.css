@@ -3,10 +3,34 @@
 :root {
     --color-primary-light: #E6F0FF;
     --primary-color: #0066FF;
+    --primary-color--dark: #0046B3;
     --text-primary: #1E1E1E;
-    --text-secondary: #9CA3AF;
+    --text-secondary: #6B7280;
+    --text-light: #9CA3AF;
+    --text-placeholder: rgba(174, 179, 185, 0.74);
     --bg-tertiary: #EEF2F7;
     --accent-color: #00C897;
+    --accent-color--hover: #008969;
+    --accent-color--transparent: rgba(0, 200, 151, 0.22);
+
+    --success-color: #00C897;
+    --error-color: #FF5A5F;
+    --error-color-hover: #ce4247;
+    --warning-color: #FFD66B;
+    --error-color--transparent: rgba(255, 90, 95, 0.16);
+    --info-color: #0078FF;
+
+    --bg-inactive: rgba(174, 179, 185, 0.38);
+    --icons-inactive: #AEB3B9;
+
+    --health-color: #BEE4F5;
+
+    --nav-bg: #EEF2F7;
+}
+
+@theme {
+    --breakpoint-xxs: 25rem;
+    --breakpoint-xs: 30rem;
 }
 
 body, .font-sf {
@@ -42,6 +66,18 @@ main {
     background: var(--primary-color);
 }
 
+.bg-primary-hover:hover {
+    background: var(--primary-color--dark);
+}
+
+.outline-primary {
+    outline-color: var(--primary-color);
+}
+
+.bg-primary-dark {
+    background: var(--primary-color--dark);
+}
+
 .bg-primary-light {
     background: var(--color-primary-light);
 }
@@ -50,8 +86,48 @@ main {
     background: var(--bg-tertiary);
 }
 
+.bg-light {
+    background: var(--text-light);
+}
+
+.bg-light-hover:hover {
+    background: var(--text-secondary);
+}
+
+.bg-health {
+    background: var(--health-color);
+}
+
 .text-primary {
     color: var(--text-primary);
+}
+
+.text-secondary {
+    color: var(--text-secondary);
+}
+
+.bg-secondary {
+    background: var(--text-secondary);
+}
+
+.text-light {
+    color: var(--text-light);
+}
+
+.bg-inactive {
+    background: var(--bg-inactive);
+}
+
+.text-inactive {
+    color: var(--icons-inactive);
+}
+
+.text-placeholder {
+    color: var(--text-placeholder);
+}
+
+.text-primary-dark {
+    color: var(--primary-color--dark);
 }
 
 .text-active {
@@ -62,18 +138,75 @@ main {
     color: var(--primary-color);
 }
 
-.text-secondary {
-    color: var(--text-secondary);
-}
-
 .bg-accent {
     background: var(--accent-color);
 }
 
+.bg-accent-hover:hover {
+    background: var(--accent-color--hover);
+}
+
+.bg-accent-transparent {
+    background: var(--accent-color--transparent);
+}
+
+.bg-success {
+    background: var(--success-color);
+}
+
+.text-success {
+    color: var(--success-color);
+}
+
+.bg-error {
+    background: var(--error-color);
+}
+
+.bg-error-hover:hover {
+    background: var(--error-color-hover);
+}
+
+.bg-error-transparent {
+    background: var(--error-color--transparent);
+}
+
+.text-error {
+    color: var(--error-color);
+}
+
+.bg-warning {
+    background: var(--warning-color);
+}
+
+.bg-info {
+    background: var(--info-color);
+}
+
+.bg-select {
+    background-color: rgba(238, 242, 247);
+}
+
+.bg-select-active {
+    background-color: rgba(221, 228, 236);
+}
+
+.bg-nav {
+    background: var(--nav-bg);
+}
+
+.bg-login {
+    background: rgba(255, 255, 255, 0.9);
+}
+
+.text-info {
+    color: var(--info-color);
+}
+
 .navbar {
-    background: rgba(239, 245, 255, 0.59);
+    background: var(--nav-bg);
     backdrop-filter: blur(23px);
-    box-shadow: 2px -2px 20.9px 0px rgba(33, 33, 33, 0.09);
+    box-shadow: 2px -2px 57.2px 0px #282B3059;
+    border-radius: 50px;
 }
 
 .right-blurred {
@@ -87,10 +220,76 @@ main {
     left: 95%;
     width: 10%;
     height: 100%;
-    filter: blur(1rem);
+    filter: blur(0.5rem);
     background: white;
 }
 
 .z-1 {
     z-index: 1;
+}
+
+.border-error {
+    border: 1px solid var(--error-color);
+}
+
+.popup {
+    background: #0176FA;
+    box-shadow: 1.1px -1.1px 31.34px 0px rgba(40, 43, 48, 0.35);
+}
+
+.modal {
+    background-color: rgba(1, 118, 250, 0.15);
+    backdrop-filter: blur(2rem);
+}
+
+input::placeholder {
+    color: var(--text-placeholder);
+}
+
+input::placeholder {
+    font-size: 0.75rem;
+}
+
+input.large::placeholder {
+    font-size: 0.875rem;
+}
+
+.mantine-Calendar-day:hover,
+.mantine-Calendar-day:focus {
+    background-color: transparent !important;
+    box-shadow: none !important;
+    filter: none !important;
+    opacity: 1 !important;
+}
+
+.mantine-DatePicker-day:hover,
+.mantine-Calendar-day:hover {
+    background-color: #f3f4f6 !important;
+}
+
+.mantine-UnstyledButton-root:hover {
+    background-color: var(--bg-tertiary) !important;
+}
+
+.mantine-DatePicker-day[data-selected],
+.mantine-Calendar-day[data-selected] {
+    background-color: var(--primary-color) !important;
+    color: white !important;
+}
+
+.mantine-DatePicker-day[data-outside],
+.mantine-Calendar-day[data-outside] {
+    color: #9ca3af !important;
+    background: transparent !important;
+}
+
+.login-page {
+    padding-top: 15vh;
+    padding-bottom: 4rem;
+}
+
+@media screen and (max-height: 700px) {
+    .login-page {
+        padding-top: 2rem;
+    }
 }

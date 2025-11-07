@@ -1,0 +1,1 @@
+export {PaymentsList} from "@/widgets/payments-list/ui/PaymentsList"

@@ -1,39 +1,44 @@
-import {HandCoins, House, Settings, Wallet} from "lucide-react";
+"use client";
+
 import NavLink from "@/shared/ui/NavLink";
+import {Card} from "@/shared/ui/icons/Card";
+import {Enchant} from "@/shared/ui/icons/Enchant";
+import {Money} from "@/shared/ui/icons/Money";
+import {Settings} from "@/shared/ui/icons/Settings";
 
 export const Navbar = () => {
-    return <div className="fixed bottom-4 z-10 mx-auto px-4 left-0 right-0 max-w-screen-2xl">
+    return <div className="fixed bottom-4 z-20 flex justify-center left-0 right-0 w-full">
         <nav
-            className="navbar flex justify-between items-center rounded-xl p-6 py-4 text-center list-none">
+            className="navbar flex justify-between md:justify-evenly md:w-1/2 lg:w-1/3 xl:w-1/4 items-stretch rounded-xl px-6 py-3 gap-8 text-center list-none">
             <li>
                 <NavLink
-                    className="text-[0.875rem] font-medium flex flex-col items-center transition-colors duration-300 hover:text-active"
+                    className="h-full text-[0.7rem] text-light font-medium flex flex-col items-center transition-colors duration-300 hover:text-active"
                     activeClassName="text-active" href="/dashboard">
-                    <House className="w-4 h-4"/>
+                    <Card className="mb-0.5 flex-1"/>
                     Обзор
                 </NavLink>
             </li>
             <li>
                 <NavLink
-                    className="text-[0.875rem] font-medium flex flex-col items-center transition-colors duration-300 hover:text-active"
+                    className="h-full text-[0.7rem] text-light font-medium flex flex-col items-center transition-colors duration-300 hover:text-active"
                     activeClassName="text-active" href="/expenses">
-                    <HandCoins className="w-4 h-4"/>
+                    <Money className="mb-0.5 flex-1"/>
                     Расходы
                 </NavLink>
             </li>
             <li>
                 <NavLink
-                    className="text-[0.875rem] font-medium flex flex-col items-center transition-colors duration-300 hover:text-active"
+                    className="h-full text-[0.7rem] text-light font-medium flex flex-col items-center transition-colors duration-300 hover:text-active"
                     activeClassName="text-active" href="/budget">
-                    <Wallet className="w-4 h-4"/>
+                    <Enchant className="mb-0.5 flex-1"/>
                     Бюджет
                 </NavLink>
             </li>
             <li>
                 <NavLink
-                    className="text-[0.875rem] font-medium flex flex-col items-center transition-colors duration-300 hover:text-active"
+                    className="h-full text-[0.7rem] text-light font-medium flex flex-col items-center transition-colors duration-300 hover:text-active"
                     activeClassName="text-active" href="/settings">
-                    <Settings className="w-4 h-4"/>
+                    <Settings className="mb-0.5 flex-1"/>
                     Настройки
                 </NavLink>
             </li>

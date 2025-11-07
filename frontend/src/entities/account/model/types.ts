@@ -1,9 +1,5 @@
-export type Accounts = {
+export type AccountType = {
     name: string;
-    accounts: Account[];
-}
-
-export type Account = {
-    type: "mir";
-    digits: string;
+    avatar: string;
+    balance: number;
 }

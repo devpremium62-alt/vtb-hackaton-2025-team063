@@ -1,0 +1,1 @@
+export {CreatePayment} from "@/widgets/create-payment/ui/CreatePayment"

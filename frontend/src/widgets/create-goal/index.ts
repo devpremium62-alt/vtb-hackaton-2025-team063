@@ -1,0 +1,1 @@
+export {CreateGoal} from "@/widgets/create-goal/ui/CreateGoal"

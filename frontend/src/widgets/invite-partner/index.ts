@@ -1,0 +1,1 @@
+export {InvitePartner} from "@/widgets/invite-partner/ui/InvitePartner"

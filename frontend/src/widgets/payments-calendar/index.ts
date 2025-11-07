@@ -1,0 +1,1 @@
+export {PaymentsCalendar} from "@/widgets/payments-calendar/ui/PaymentsCalendar"

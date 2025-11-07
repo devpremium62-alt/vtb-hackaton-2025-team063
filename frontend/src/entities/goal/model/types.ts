@@ -3,5 +3,6 @@ export type GoalType = {
     name: string;
     avatar?: string;
     deadline: Date;
-    money: number;
+    moneyNeed: number;
+    moneyCollected: number;
 };

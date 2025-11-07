@@ -7,7 +7,7 @@ type Props = {
 const Heading = ({level, children, className = ""}: Props) => {
     switch (level) {
         case 1:
-            return <h1 className={`text-[2.5rem] mb-1 font-semibold ${className}`}>{children}</h1>;
+            return <h1 className={`text-3xl xxs:text-[2.5rem] mb-1 font-semibold ${className}`}>{children}</h1>;
         case 2:
             return <h2 className={`text-2xl mb-1 font-semibold ${className}`}>{children}</h2>;
         case 3:
