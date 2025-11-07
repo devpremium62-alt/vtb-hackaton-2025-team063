@@ -14,8 +14,6 @@
 # next.js
 **/.next/
 /out/
-/frontend/public/sw*
-/frontend/public/workbox-*
 
 # production
 /build
