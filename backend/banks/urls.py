@@ -7,9 +7,10 @@ router.register(r"banks", views.BankViewSet, basename="bank")
 router.register(r"profiles", views.UserProfileViewSet, basename="profile")
 router.register(
     r"account-sharing", views.AccountSharingViewSet, basename="account-sharing"
-    )
+)
 
 urlpatterns = [
     path("", include(router.urls)),
     path("auth/bank/", views.authenticate_bank, name="authenticate-bank"),
+    path("auth/login/", views.user_login, name="user_login"),
 ]

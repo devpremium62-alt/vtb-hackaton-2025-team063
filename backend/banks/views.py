@@ -1,17 +1,73 @@
 from rest_framework import status
 from rest_framework.decorators import api_view, permission_classes, action
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
 from django.shortcuts import get_object_or_404
+from django.contrib.auth import login
+from rest_framework.authtoken.models import Token
 
-from .models import Bank, UserBankProfile, AccountSharing
+from .models import User, Bank, UserBankProfile, AccountSharing
 from .serializers import (
-    AccountSharingSerializer, BankSerializer, UserBankProfileSerializer
-    )
+    UserLoginSerializer, UserSerializer, AccountSharingSerializer,
+    BankSerializer, UserBankProfileSerializer
+)
 from .services import BankManagementService, AccountSharingService
 from .clients import BankClientFactory
 from .permissions import IsBankOrUserAuthenticated
+
+
+@api_view(['POST'])
+@permission_classes([AllowAny])
+def user_login(request):
+    serializer = UserLoginSerializer(data=request.data)
+
+    if not serializer.is_valid():
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    try:
+        phone = serializer.validated_data['phone']
+        photo = serializer.validated_data['photo']
+        first_name = serializer.validated_data['first_name']
+        invitation_code = serializer.validated_data.get('invitation_code', '')
+
+        # Проверяем существование пользователя
+        try:
+            user = User.objects.get(phone=phone)
+            # Обновляем фото если нужно
+            if photo and user.photo != photo:
+                user.photo = photo
+                user.save()
+        except User.DoesNotExist:
+            # Создаем нового пользователя
+            user = User.objects.create_user(
+                phone=phone,
+                first_name=first_name,
+                photo=photo,
+                invitation_code=invitation_code
+            )
+
+        # Создаем или получаем токен
+        token, created = Token.objects.get_or_create(user=user)
+
+        # Логиним пользователя
+        login(request, user)
+
+        # Возвращаем данные пользователя и токен
+        user_data = UserSerializer(user).data
+        response_data = {
+            'user': user_data,
+            'token': token.key,
+            'message': 'Login successful'
+        }
+
+        return Response(response_data, status=status.HTTP_200_OK)
+
+    except Exception as e:
+        return Response(
+            {'error': f'Login failed: {str(e)}'},
+            status=status.HTTP_400_BAD_REQUEST
+        )
 
 
 class BankViewSet(ModelViewSet):
@@ -52,6 +108,13 @@ class UserProfileViewSet(ModelViewSet):
 
     def get_queryset(self):
         return UserBankProfile.objects.filter(user=self.request.user)
+
+    @action(detail=False, methods=['get'])
+    def me(self, request):
+        """Получить данные текущего пользователя"""
+        user = request.user
+        user_data = UserSerializer(user).data
+        return Response(user_data)
 
 
 class AccountSharingViewSet(ModelViewSet):

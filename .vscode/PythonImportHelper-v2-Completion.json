@@ -1,5 +1,135 @@
 [
     {
+        "label": "migrations",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "models",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "migrations",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "models",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "models",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "migrations",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "models",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "models",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "migrations",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "models",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "models",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "migrations",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "models",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "models",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "django.db.models.deletion",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "django.db.models.deletion",
+        "description": "django.db.models.deletion",
+        "detail": "django.db.models.deletion",
+        "documentation": {}
+    },
+    {
+        "label": "django.utils.timezone",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "django.utils.timezone",
+        "description": "django.utils.timezone",
+        "detail": "django.utils.timezone",
+        "documentation": {}
+    },
+    {
         "label": "AppConfig",
         "importPath": "django.apps",
         "description": "django.apps",
@@ -29,38 +159,6 @@
         "description": "django.apps",
         "isExtraImport": true,
         "detail": "django.apps",
-        "documentation": {}
-    },
-    {
-        "label": "models",
-        "importPath": "django.db",
-        "description": "django.db",
-        "isExtraImport": true,
-        "detail": "django.db",
-        "documentation": {}
-    },
-    {
-        "label": "models",
-        "importPath": "django.db",
-        "description": "django.db",
-        "isExtraImport": true,
-        "detail": "django.db",
-        "documentation": {}
-    },
-    {
-        "label": "models",
-        "importPath": "django.db",
-        "description": "django.db",
-        "isExtraImport": true,
-        "detail": "django.db",
-        "documentation": {}
-    },
-    {
-        "label": "models",
-        "importPath": "django.db",
-        "description": "django.db",
-        "isExtraImport": true,
-        "detail": "django.db",
         "documentation": {}
     },
     {
@@ -464,6 +562,30 @@
         "documentation": {}
     },
     {
+        "label": "path",
+        "importPath": "django.urls",
+        "description": "django.urls",
+        "isExtraImport": true,
+        "detail": "django.urls",
+        "documentation": {}
+    },
+    {
+        "label": "include",
+        "importPath": "django.urls",
+        "description": "django.urls",
+        "isExtraImport": true,
+        "detail": "django.urls",
+        "documentation": {}
+    },
+    {
+        "label": "DefaultRouter",
+        "importPath": "rest_framework.routers",
+        "description": "rest_framework.routers",
+        "isExtraImport": true,
+        "detail": "rest_framework.routers",
+        "documentation": {}
+    },
+    {
         "label": "DefaultRouter",
         "importPath": "rest_framework.routers",
         "description": "rest_framework.routers",
@@ -592,6 +714,14 @@
         "documentation": {}
     },
     {
+        "label": "AllowAny",
+        "importPath": "rest_framework.permissions",
+        "description": "rest_framework.permissions",
+        "isExtraImport": true,
+        "detail": "rest_framework.permissions",
+        "documentation": {}
+    },
+    {
         "label": "IsAuthenticated",
         "importPath": "rest_framework.permissions",
         "description": "rest_framework.permissions",
@@ -664,6 +794,64 @@
         "documentation": {}
     },
     {
+        "label": "settings",
+        "importPath": "django.conf",
+        "description": "django.conf",
+        "isExtraImport": true,
+        "detail": "django.conf",
+        "documentation": {}
+    },
+    {
+        "label": "settings",
+        "importPath": "django.conf",
+        "description": "django.conf",
+        "isExtraImport": true,
+        "detail": "django.conf",
+        "documentation": {}
+    },
+    {
+        "label": "settings",
+        "importPath": "django.conf",
+        "description": "django.conf",
+        "isExtraImport": true,
+        "detail": "django.conf",
+        "documentation": {}
+    },
+    {
+        "label": "django.contrib.auth.models",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "django.contrib.auth.models",
+        "description": "django.contrib.auth.models",
+        "detail": "django.contrib.auth.models",
+        "documentation": {}
+    },
+    {
+        "label": "AbstractUser",
+        "importPath": "django.contrib.auth.models",
+        "description": "django.contrib.auth.models",
+        "isExtraImport": true,
+        "detail": "django.contrib.auth.models",
+        "documentation": {}
+    },
+    {
+        "label": "User",
+        "importPath": "django.contrib.auth.models",
+        "description": "django.contrib.auth.models",
+        "isExtraImport": true,
+        "detail": "django.contrib.auth.models",
+        "documentation": {}
+    },
+    {
+        "label": "uuid",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "uuid",
+        "description": "uuid",
+        "detail": "uuid",
+        "documentation": {}
+    },
+    {
         "label": "BaseAuthentication",
         "importPath": "rest_framework.authentication",
         "description": "rest_framework.authentication",
@@ -705,55 +893,6 @@
         "documentation": {}
     },
     {
-        "label": "settings",
-        "importPath": "django.conf",
-        "description": "django.conf",
-        "isExtraImport": true,
-        "detail": "django.conf",
-        "documentation": {}
-    },
-    {
-        "label": "settings",
-        "importPath": "django.conf",
-        "description": "django.conf",
-        "isExtraImport": true,
-        "detail": "django.conf",
-        "documentation": {}
-    },
-    {
-        "label": "User",
-        "importPath": "django.contrib.auth.models",
-        "description": "django.contrib.auth.models",
-        "isExtraImport": true,
-        "detail": "django.contrib.auth.models",
-        "documentation": {}
-    },
-    {
-        "label": "User",
-        "importPath": "django.contrib.auth.models",
-        "description": "django.contrib.auth.models",
-        "isExtraImport": true,
-        "detail": "django.contrib.auth.models",
-        "documentation": {}
-    },
-    {
-        "label": "User",
-        "importPath": "django.contrib.auth.models",
-        "description": "django.contrib.auth.models",
-        "isExtraImport": true,
-        "detail": "django.contrib.auth.models",
-        "documentation": {}
-    },
-    {
-        "label": "uuid",
-        "kind": 6,
-        "isExtraImport": true,
-        "importPath": "uuid",
-        "description": "uuid",
-        "detail": "uuid",
-        "documentation": {}
-    },
-    {
         "label": "post_save",
         "importPath": "django.db.models.signals",
         "description": "django.db.models.signals",
@@ -791,6 +930,22 @@
         "description": "rest_framework.viewsets",
         "isExtraImport": true,
         "detail": "rest_framework.viewsets",
+        "documentation": {}
+    },
+    {
+        "label": "login",
+        "importPath": "django.contrib.auth",
+        "description": "django.contrib.auth",
+        "isExtraImport": true,
+        "detail": "django.contrib.auth",
+        "documentation": {}
+    },
+    {
+        "label": "Token",
+        "importPath": "rest_framework.authtoken.models",
+        "description": "rest_framework.authtoken.models",
+        "isExtraImport": true,
+        "detail": "rest_framework.authtoken.models",
         "documentation": {}
     },
     {
@@ -892,6 +1047,15 @@
         "documentation": {}
     },
     {
+        "label": "django.contrib.postgres.fields",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "django.contrib.postgres.fields",
+        "description": "django.contrib.postgres.fields",
+        "detail": "django.contrib.postgres.fields",
+        "documentation": {}
+    },
+    {
         "label": "ArrayField",
         "importPath": "django.contrib.postgres.fields",
         "description": "django.contrib.postgres.fields",
@@ -914,6 +1078,24 @@
         "importPath": "sys",
         "description": "sys",
         "detail": "sys",
+        "documentation": {}
+    },
+    {
+        "label": "Migration",
+        "kind": 6,
+        "importPath": "backend.accounts.migrations.0001_initial",
+        "description": "backend.accounts.migrations.0001_initial",
+        "peekOfCode": "class Migration(migrations.Migration):\n    initial = True\n    dependencies = [\n    ]\n    operations = [\n        migrations.CreateModel(\n            name='Account',\n            fields=[\n                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),\n                ('account_id', models.CharField(db_index=True, max_length=100)),",
+        "detail": "backend.accounts.migrations.0001_initial",
+        "documentation": {}
+    },
+    {
+        "label": "Migration",
+        "kind": 6,
+        "importPath": "backend.accounts.migrations.0002_initial",
+        "description": "backend.accounts.migrations.0002_initial",
+        "peekOfCode": "class Migration(migrations.Migration):\n    initial = True\n    dependencies = [\n        ('accounts', '0001_initial'),\n        ('banks', '0001_initial'),\n    ]\n    operations = [\n        migrations.AddField(\n            model_name='account',\n            name='bank',",
+        "detail": "backend.accounts.migrations.0002_initial",
         "documentation": {}
     },
     {
@@ -1079,6 +1261,15 @@
         "documentation": {}
     },
     {
+        "label": "Migration",
+        "kind": 6,
+        "importPath": "backend.banks.migrations.0001_initial",
+        "description": "backend.banks.migrations.0001_initial",
+        "peekOfCode": "class Migration(migrations.Migration):\n    initial = True\n    dependencies = [\n        ('auth', '0012_alter_user_first_name_max_length'),\n    ]\n    operations = [\n        migrations.CreateModel(\n            name='User',\n            fields=[\n                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),",
+        "detail": "backend.banks.migrations.0001_initial",
+        "documentation": {}
+    },
+    {
         "label": "BanksConfig",
         "kind": 6,
         "importPath": "backend.banks.apps",
@@ -1121,6 +1312,15 @@
         "description": "backend.banks.clients",
         "peekOfCode": "class BankClientFactory:\n    @staticmethod\n    def get_client(bank_name):\n        clients = {\n            \"VBANK\": VBankClient, \"ABANK\": VBankClient, \"SBANK\": VBankClient\n            }\n        client_class = clients.get(bank_name)\n        if not client_class:\n            raise ValueError(f\"Unsupported bank: {bank_name}\")\n        return client_class()",
         "detail": "backend.banks.clients",
+        "documentation": {}
+    },
+    {
+        "label": "User",
+        "kind": 6,
+        "importPath": "backend.banks.models",
+        "description": "backend.banks.models",
+        "peekOfCode": "class User(AbstractUser):\n    phone = models.CharField(max_length=15, unique=True)\n    photo = models.TextField(blank=True, null=True)  # base64 encoded image\n    invitation_code = models.CharField(max_length=20, blank=True, null=True)\n    created_at = models.DateTimeField(default=timezone.now)\n    updated_at = models.DateTimeField(auto_now=True)\n    username = None\n    email = models.EmailField(blank=True, null=True)\n    USERNAME_FIELD = 'phone'\n    REQUIRED_FIELDS = ['first_name']",
+        "detail": "backend.banks.models",
         "documentation": {}
     },
     {
@@ -1187,11 +1387,20 @@
         "documentation": {}
     },
     {
+        "label": "UserLoginSerializer",
+        "kind": 6,
+        "importPath": "backend.banks.serializers",
+        "description": "backend.banks.serializers",
+        "peekOfCode": "class UserLoginSerializer(serializers.Serializer):\n    phone = serializers.CharField(max_length=15, required=True)\n    photo = serializers.CharField(required=True)  # base64 string\n    invitation_code = serializers.CharField(max_length=20, required=False, allow_blank=True)\n    first_name = serializers.CharField(max_length=150, required=True)\n    def validate(self, attrs):\n        phone = attrs.get('phone')\n        photo = attrs.get('photo')\n        first_name = attrs.get('first_name')\n        if not phone:",
+        "detail": "backend.banks.serializers",
+        "documentation": {}
+    },
+    {
         "label": "UserSerializer",
         "kind": 6,
         "importPath": "backend.banks.serializers",
         "description": "backend.banks.serializers",
-        "peekOfCode": "class UserSerializer(serializers.ModelSerializer):\n    class Meta:\n        model = User\n        fields = [\"id\", \"username\", \"email\", \"first_name\", \"last_name\"]\nclass UserBankProfileSerializer(serializers.ModelSerializer):\n    user = UserSerializer(read_only=True)\n    class Meta:\n        model = UserBankProfile\n        fields = [\"id\", \"user\", \"team_id\", \"created_at\"]\nclass BankSerializer(serializers.ModelSerializer):",
+        "peekOfCode": "class UserSerializer(serializers.ModelSerializer):\n    team_id = serializers.CharField(source='bank_profile.team_id', read_only=True)\n    class Meta:\n        model = User\n        fields = ['id', 'phone', 'first_name', 'last_name', 'email', 'photo', 'invitation_code', 'team_id', 'created_at']\n        read_only_fields = ['id', 'team_id', 'created_at']\nclass UserBankProfileSerializer(serializers.ModelSerializer):\n    user = UserSerializer(read_only=True)\n    class Meta:\n        model = UserBankProfile",
         "detail": "backend.banks.serializers",
         "documentation": {}
     },
@@ -1272,7 +1481,7 @@
         "kind": 2,
         "importPath": "backend.banks.signals",
         "description": "backend.banks.signals",
-        "peekOfCode": "def create_user_bank_profile(sender, instance, created, **kwargs):\n    if created:\n        team_id = f\"{instance.username}-1\"\n        counter = 1\n        while UserBankProfile.objects.filter(team_id=team_id).exists():\n            counter += 1\n            team_id = f\"{instance.username}-{counter}\"\n        UserBankProfile.objects.create(user=instance, team_id=team_id)\n@receiver(post_save, sender=User)\ndef save_user_bank_profile(sender, instance, **kwargs):",
+        "peekOfCode": "def create_user_bank_profile(sender, instance, created, **kwargs):\n    if created:\n        team_id = f\"{instance.phone}-1\"  # используем phone вместо username\n        counter = 1\n        while UserBankProfile.objects.filter(team_id=team_id).exists():\n            counter += 1\n            team_id = f\"{instance.phone}-{counter}\"\n        UserBankProfile.objects.create(user=instance, team_id=team_id)\n@receiver(post_save, sender=User)\ndef save_user_bank_profile(sender, instance, **kwargs):",
         "detail": "backend.banks.signals",
         "documentation": {}
     },
@@ -1326,7 +1535,7 @@
         "kind": 5,
         "importPath": "backend.banks.urls",
         "description": "backend.banks.urls",
-        "peekOfCode": "router = DefaultRouter()\nrouter.register(r\"banks\", views.BankViewSet, basename=\"bank\")\nrouter.register(r\"profiles\", views.UserProfileViewSet, basename=\"profile\")\nrouter.register(\n    r\"account-sharing\", views.AccountSharingViewSet, basename=\"account-sharing\"\n    )\nurlpatterns = [\n    path(\"\", include(router.urls)),\n    path(\"auth/bank/\", views.authenticate_bank, name=\"authenticate-bank\"),\n]",
+        "peekOfCode": "router = DefaultRouter()\nrouter.register(r\"banks\", views.BankViewSet, basename=\"bank\")\nrouter.register(r\"profiles\", views.UserProfileViewSet, basename=\"profile\")\nrouter.register(\n    r\"account-sharing\", views.AccountSharingViewSet, basename=\"account-sharing\"\n)\nurlpatterns = [\n    path(\"\", include(router.urls)),\n    path(\"auth/bank/\", views.authenticate_bank, name=\"authenticate-bank\"),\n    path(\"auth/login/\", views.user_login, name=\"user_login\"),",
         "detail": "backend.banks.urls",
         "documentation": {}
     },
@@ -1335,7 +1544,7 @@
         "kind": 5,
         "importPath": "backend.banks.urls",
         "description": "backend.banks.urls",
-        "peekOfCode": "urlpatterns = [\n    path(\"\", include(router.urls)),\n    path(\"auth/bank/\", views.authenticate_bank, name=\"authenticate-bank\"),\n]",
+        "peekOfCode": "urlpatterns = [\n    path(\"\", include(router.urls)),\n    path(\"auth/bank/\", views.authenticate_bank, name=\"authenticate-bank\"),\n    path(\"auth/login/\", views.user_login, name=\"user_login\"),\n]",
         "detail": "backend.banks.urls",
         "documentation": {}
     },
@@ -1353,7 +1562,7 @@
         "kind": 6,
         "importPath": "backend.banks.views",
         "description": "backend.banks.views",
-        "peekOfCode": "class UserProfileViewSet(ModelViewSet):\n    permission_classes = [IsAuthenticated]\n    serializer_class = UserBankProfileSerializer\n    def get_queryset(self):\n        return UserBankProfile.objects.filter(user=self.request.user)\nclass AccountSharingViewSet(ModelViewSet):\n    permission_classes = [IsAuthenticated]\n    serializer_class = AccountSharingSerializer\n    def get_queryset(self):\n        profile = get_object_or_404(UserBankProfile, user=self.request.user)",
+        "peekOfCode": "class UserProfileViewSet(ModelViewSet):\n    permission_classes = [IsAuthenticated]\n    serializer_class = UserBankProfileSerializer\n    def get_queryset(self):\n        return UserBankProfile.objects.filter(user=self.request.user)\n    @action(detail=False, methods=['get'])\n    def me(self, request):\n        \"\"\"Получить данные текущего пользователя\"\"\"\n        user = request.user\n        user_data = UserSerializer(user).data",
         "detail": "backend.banks.views",
         "documentation": {}
     },
@@ -1363,6 +1572,15 @@
         "importPath": "backend.banks.views",
         "description": "backend.banks.views",
         "peekOfCode": "class AccountSharingViewSet(ModelViewSet):\n    permission_classes = [IsAuthenticated]\n    serializer_class = AccountSharingSerializer\n    def get_queryset(self):\n        profile = get_object_or_404(UserBankProfile, user=self.request.user)\n        return (\n            AccountSharing.objects.filter(sharer=profile)\n            | AccountSharing.objects.filter(receiver=profile)\n            )\n    def create(self, request):",
+        "detail": "backend.banks.views",
+        "documentation": {}
+    },
+    {
+        "label": "user_login",
+        "kind": 2,
+        "importPath": "backend.banks.views",
+        "description": "backend.banks.views",
+        "peekOfCode": "def user_login(request):\n    serializer = UserLoginSerializer(data=request.data)\n    if not serializer.is_valid():\n        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)\n    try:\n        phone = serializer.validated_data['phone']\n        photo = serializer.validated_data['photo']\n        first_name = serializer.validated_data['first_name']\n        invitation_code = serializer.validated_data.get('invitation_code', '')\n        # Проверяем существование пользователя",
         "detail": "backend.banks.views",
         "documentation": {}
     },
@@ -1452,7 +1670,7 @@
         "kind": 5,
         "importPath": "backend.multibank_backend.settings",
         "description": "backend.multibank_backend.settings",
-        "peekOfCode": "ALLOWED_HOSTS = env.list(\"ALLOWED_HOSTS\", default=[\"localhost\", \"127.0.0.1\"])\nINSTALLED_APPS = [\n    \"django.contrib.admin\",\n    \"django.contrib.auth\",\n    \"django.contrib.contenttypes\",\n    \"django.contrib.sessions\",\n    \"django.contrib.messages\",\n    \"django.contrib.staticfiles\",\n    \"rest_framework\",\n    \"corsheaders\",",
+        "peekOfCode": "ALLOWED_HOSTS = env.list(\"ALLOWED_HOSTS\", default=[\"localhost\", \"127.0.0.1\"])\nINSTALLED_APPS = [\n    \"django.contrib.admin\",\n    \"django.contrib.auth\",\n    \"django.contrib.contenttypes\",\n    \"django.contrib.sessions\",\n    \"django.contrib.messages\",\n    \"django.contrib.staticfiles\",\n    \"rest_framework\",\n    'rest_framework.authtoken',",
         "detail": "backend.multibank_backend.settings",
         "documentation": {}
     },
@@ -1461,7 +1679,7 @@
         "kind": 5,
         "importPath": "backend.multibank_backend.settings",
         "description": "backend.multibank_backend.settings",
-        "peekOfCode": "INSTALLED_APPS = [\n    \"django.contrib.admin\",\n    \"django.contrib.auth\",\n    \"django.contrib.contenttypes\",\n    \"django.contrib.sessions\",\n    \"django.contrib.messages\",\n    \"django.contrib.staticfiles\",\n    \"rest_framework\",\n    \"corsheaders\",\n    \"django_filters\",",
+        "peekOfCode": "INSTALLED_APPS = [\n    \"django.contrib.admin\",\n    \"django.contrib.auth\",\n    \"django.contrib.contenttypes\",\n    \"django.contrib.sessions\",\n    \"django.contrib.messages\",\n    \"django.contrib.staticfiles\",\n    \"rest_framework\",\n    'rest_framework.authtoken',\n    \"corsheaders\",",
         "detail": "backend.multibank_backend.settings",
         "documentation": {}
     },
@@ -1542,7 +1760,7 @@
         "kind": 5,
         "importPath": "backend.multibank_backend.settings",
         "description": "backend.multibank_backend.settings",
-        "peekOfCode": "TIME_ZONE = \"Europe/Moscow\"\nUSE_I18N = True\nUSE_L10N = True\nUSE_TZ = True\nSTATIC_URL = \"/static/\"\nSTATIC_ROOT = BASE_DIR / \"staticfiles\"\nMEDIA_URL = \"/media/\"\nMEDIA_ROOT = BASE_DIR / \"media\"\nDEFAULT_AUTO_FIELD = \"django.db.models.BigAutoField\"\nREST_FRAMEWORK = {",
+        "peekOfCode": "TIME_ZONE = \"Europe/Moscow\"\nUSE_I18N = True\nUSE_L10N = True\nUSE_TZ = True\nSTATIC_URL = \"/static/\"\nSTATIC_ROOT = BASE_DIR / \"staticfiles\"\nMEDIA_URL = \"/media/\"\nMEDIA_ROOT = BASE_DIR / \"media\"\nDEFAULT_AUTO_FIELD = \"django.db.models.BigAutoField\"\nAUTH_USER_MODEL = 'banks.User'",
         "detail": "backend.multibank_backend.settings",
         "documentation": {}
     },
@@ -1551,7 +1769,7 @@
         "kind": 5,
         "importPath": "backend.multibank_backend.settings",
         "description": "backend.multibank_backend.settings",
-        "peekOfCode": "USE_I18N = True\nUSE_L10N = True\nUSE_TZ = True\nSTATIC_URL = \"/static/\"\nSTATIC_ROOT = BASE_DIR / \"staticfiles\"\nMEDIA_URL = \"/media/\"\nMEDIA_ROOT = BASE_DIR / \"media\"\nDEFAULT_AUTO_FIELD = \"django.db.models.BigAutoField\"\nREST_FRAMEWORK = {\n    \"DEFAULT_AUTHENTICATION_CLASSES\": [",
+        "peekOfCode": "USE_I18N = True\nUSE_L10N = True\nUSE_TZ = True\nSTATIC_URL = \"/static/\"\nSTATIC_ROOT = BASE_DIR / \"staticfiles\"\nMEDIA_URL = \"/media/\"\nMEDIA_ROOT = BASE_DIR / \"media\"\nDEFAULT_AUTO_FIELD = \"django.db.models.BigAutoField\"\nAUTH_USER_MODEL = 'banks.User'\nREST_FRAMEWORK = {",
         "detail": "backend.multibank_backend.settings",
         "documentation": {}
     },
@@ -1560,7 +1778,7 @@
         "kind": 5,
         "importPath": "backend.multibank_backend.settings",
         "description": "backend.multibank_backend.settings",
-        "peekOfCode": "USE_L10N = True\nUSE_TZ = True\nSTATIC_URL = \"/static/\"\nSTATIC_ROOT = BASE_DIR / \"staticfiles\"\nMEDIA_URL = \"/media/\"\nMEDIA_ROOT = BASE_DIR / \"media\"\nDEFAULT_AUTO_FIELD = \"django.db.models.BigAutoField\"\nREST_FRAMEWORK = {\n    \"DEFAULT_AUTHENTICATION_CLASSES\": [\n        \"banks.authentication.BankTokenAuthentication\",",
+        "peekOfCode": "USE_L10N = True\nUSE_TZ = True\nSTATIC_URL = \"/static/\"\nSTATIC_ROOT = BASE_DIR / \"staticfiles\"\nMEDIA_URL = \"/media/\"\nMEDIA_ROOT = BASE_DIR / \"media\"\nDEFAULT_AUTO_FIELD = \"django.db.models.BigAutoField\"\nAUTH_USER_MODEL = 'banks.User'\nREST_FRAMEWORK = {\n    \"DEFAULT_AUTHENTICATION_CLASSES\": [",
         "detail": "backend.multibank_backend.settings",
         "documentation": {}
     },
@@ -1569,7 +1787,7 @@
         "kind": 5,
         "importPath": "backend.multibank_backend.settings",
         "description": "backend.multibank_backend.settings",
-        "peekOfCode": "USE_TZ = True\nSTATIC_URL = \"/static/\"\nSTATIC_ROOT = BASE_DIR / \"staticfiles\"\nMEDIA_URL = \"/media/\"\nMEDIA_ROOT = BASE_DIR / \"media\"\nDEFAULT_AUTO_FIELD = \"django.db.models.BigAutoField\"\nREST_FRAMEWORK = {\n    \"DEFAULT_AUTHENTICATION_CLASSES\": [\n        \"banks.authentication.BankTokenAuthentication\",\n    ],",
+        "peekOfCode": "USE_TZ = True\nSTATIC_URL = \"/static/\"\nSTATIC_ROOT = BASE_DIR / \"staticfiles\"\nMEDIA_URL = \"/media/\"\nMEDIA_ROOT = BASE_DIR / \"media\"\nDEFAULT_AUTO_FIELD = \"django.db.models.BigAutoField\"\nAUTH_USER_MODEL = 'banks.User'\nREST_FRAMEWORK = {\n    \"DEFAULT_AUTHENTICATION_CLASSES\": [\n        'rest_framework.authentication.TokenAuthentication',",
         "detail": "backend.multibank_backend.settings",
         "documentation": {}
     },
@@ -1578,7 +1796,7 @@
         "kind": 5,
         "importPath": "backend.multibank_backend.settings",
         "description": "backend.multibank_backend.settings",
-        "peekOfCode": "STATIC_URL = \"/static/\"\nSTATIC_ROOT = BASE_DIR / \"staticfiles\"\nMEDIA_URL = \"/media/\"\nMEDIA_ROOT = BASE_DIR / \"media\"\nDEFAULT_AUTO_FIELD = \"django.db.models.BigAutoField\"\nREST_FRAMEWORK = {\n    \"DEFAULT_AUTHENTICATION_CLASSES\": [\n        \"banks.authentication.BankTokenAuthentication\",\n    ],\n    \"DEFAULT_PERMISSION_CLASSES\": [",
+        "peekOfCode": "STATIC_URL = \"/static/\"\nSTATIC_ROOT = BASE_DIR / \"staticfiles\"\nMEDIA_URL = \"/media/\"\nMEDIA_ROOT = BASE_DIR / \"media\"\nDEFAULT_AUTO_FIELD = \"django.db.models.BigAutoField\"\nAUTH_USER_MODEL = 'banks.User'\nREST_FRAMEWORK = {\n    \"DEFAULT_AUTHENTICATION_CLASSES\": [\n        'rest_framework.authentication.TokenAuthentication',\n        'rest_framework.authentication.SessionAuthentication',",
         "detail": "backend.multibank_backend.settings",
         "documentation": {}
     },
@@ -1587,7 +1805,7 @@
         "kind": 5,
         "importPath": "backend.multibank_backend.settings",
         "description": "backend.multibank_backend.settings",
-        "peekOfCode": "STATIC_ROOT = BASE_DIR / \"staticfiles\"\nMEDIA_URL = \"/media/\"\nMEDIA_ROOT = BASE_DIR / \"media\"\nDEFAULT_AUTO_FIELD = \"django.db.models.BigAutoField\"\nREST_FRAMEWORK = {\n    \"DEFAULT_AUTHENTICATION_CLASSES\": [\n        \"banks.authentication.BankTokenAuthentication\",\n    ],\n    \"DEFAULT_PERMISSION_CLASSES\": [\n        \"rest_framework.permissions.IsAuthenticated\",",
+        "peekOfCode": "STATIC_ROOT = BASE_DIR / \"staticfiles\"\nMEDIA_URL = \"/media/\"\nMEDIA_ROOT = BASE_DIR / \"media\"\nDEFAULT_AUTO_FIELD = \"django.db.models.BigAutoField\"\nAUTH_USER_MODEL = 'banks.User'\nREST_FRAMEWORK = {\n    \"DEFAULT_AUTHENTICATION_CLASSES\": [\n        'rest_framework.authentication.TokenAuthentication',\n        'rest_framework.authentication.SessionAuthentication',\n        \"banks.authentication.BankTokenAuthentication\",",
         "detail": "backend.multibank_backend.settings",
         "documentation": {}
     },
@@ -1596,7 +1814,7 @@
         "kind": 5,
         "importPath": "backend.multibank_backend.settings",
         "description": "backend.multibank_backend.settings",
-        "peekOfCode": "MEDIA_URL = \"/media/\"\nMEDIA_ROOT = BASE_DIR / \"media\"\nDEFAULT_AUTO_FIELD = \"django.db.models.BigAutoField\"\nREST_FRAMEWORK = {\n    \"DEFAULT_AUTHENTICATION_CLASSES\": [\n        \"banks.authentication.BankTokenAuthentication\",\n    ],\n    \"DEFAULT_PERMISSION_CLASSES\": [\n        \"rest_framework.permissions.IsAuthenticated\",\n    ],",
+        "peekOfCode": "MEDIA_URL = \"/media/\"\nMEDIA_ROOT = BASE_DIR / \"media\"\nDEFAULT_AUTO_FIELD = \"django.db.models.BigAutoField\"\nAUTH_USER_MODEL = 'banks.User'\nREST_FRAMEWORK = {\n    \"DEFAULT_AUTHENTICATION_CLASSES\": [\n        'rest_framework.authentication.TokenAuthentication',\n        'rest_framework.authentication.SessionAuthentication',\n        \"banks.authentication.BankTokenAuthentication\",\n    ],",
         "detail": "backend.multibank_backend.settings",
         "documentation": {}
     },
@@ -1605,7 +1823,7 @@
         "kind": 5,
         "importPath": "backend.multibank_backend.settings",
         "description": "backend.multibank_backend.settings",
-        "peekOfCode": "MEDIA_ROOT = BASE_DIR / \"media\"\nDEFAULT_AUTO_FIELD = \"django.db.models.BigAutoField\"\nREST_FRAMEWORK = {\n    \"DEFAULT_AUTHENTICATION_CLASSES\": [\n        \"banks.authentication.BankTokenAuthentication\",\n    ],\n    \"DEFAULT_PERMISSION_CLASSES\": [\n        \"rest_framework.permissions.IsAuthenticated\",\n    ],\n    \"DEFAULT_PAGINATION_CLASS\": \"rest_framework.pagination.PageNumberPagination\",",
+        "peekOfCode": "MEDIA_ROOT = BASE_DIR / \"media\"\nDEFAULT_AUTO_FIELD = \"django.db.models.BigAutoField\"\nAUTH_USER_MODEL = 'banks.User'\nREST_FRAMEWORK = {\n    \"DEFAULT_AUTHENTICATION_CLASSES\": [\n        'rest_framework.authentication.TokenAuthentication',\n        'rest_framework.authentication.SessionAuthentication',\n        \"banks.authentication.BankTokenAuthentication\",\n    ],\n    \"DEFAULT_PERMISSION_CLASSES\": [",
         "detail": "backend.multibank_backend.settings",
         "documentation": {}
     },
@@ -1614,7 +1832,16 @@
         "kind": 5,
         "importPath": "backend.multibank_backend.settings",
         "description": "backend.multibank_backend.settings",
-        "peekOfCode": "DEFAULT_AUTO_FIELD = \"django.db.models.BigAutoField\"\nREST_FRAMEWORK = {\n    \"DEFAULT_AUTHENTICATION_CLASSES\": [\n        \"banks.authentication.BankTokenAuthentication\",\n    ],\n    \"DEFAULT_PERMISSION_CLASSES\": [\n        \"rest_framework.permissions.IsAuthenticated\",\n    ],\n    \"DEFAULT_PAGINATION_CLASS\": \"rest_framework.pagination.PageNumberPagination\",\n    \"PAGE_SIZE\": env.int(\"API_PAGE_SIZE\", default=50),",
+        "peekOfCode": "DEFAULT_AUTO_FIELD = \"django.db.models.BigAutoField\"\nAUTH_USER_MODEL = 'banks.User'\nREST_FRAMEWORK = {\n    \"DEFAULT_AUTHENTICATION_CLASSES\": [\n        'rest_framework.authentication.TokenAuthentication',\n        'rest_framework.authentication.SessionAuthentication',\n        \"banks.authentication.BankTokenAuthentication\",\n    ],\n    \"DEFAULT_PERMISSION_CLASSES\": [\n        \"rest_framework.permissions.IsAuthenticated\",",
+        "detail": "backend.multibank_backend.settings",
+        "documentation": {}
+    },
+    {
+        "label": "AUTH_USER_MODEL",
+        "kind": 5,
+        "importPath": "backend.multibank_backend.settings",
+        "description": "backend.multibank_backend.settings",
+        "peekOfCode": "AUTH_USER_MODEL = 'banks.User'\nREST_FRAMEWORK = {\n    \"DEFAULT_AUTHENTICATION_CLASSES\": [\n        'rest_framework.authentication.TokenAuthentication',\n        'rest_framework.authentication.SessionAuthentication',\n        \"banks.authentication.BankTokenAuthentication\",\n    ],\n    \"DEFAULT_PERMISSION_CLASSES\": [\n        \"rest_framework.permissions.IsAuthenticated\",\n    ],",
         "detail": "backend.multibank_backend.settings",
         "documentation": {}
     },
@@ -1623,7 +1850,7 @@
         "kind": 5,
         "importPath": "backend.multibank_backend.settings",
         "description": "backend.multibank_backend.settings",
-        "peekOfCode": "REST_FRAMEWORK = {\n    \"DEFAULT_AUTHENTICATION_CLASSES\": [\n        \"banks.authentication.BankTokenAuthentication\",\n    ],\n    \"DEFAULT_PERMISSION_CLASSES\": [\n        \"rest_framework.permissions.IsAuthenticated\",\n    ],\n    \"DEFAULT_PAGINATION_CLASS\": \"rest_framework.pagination.PageNumberPagination\",\n    \"PAGE_SIZE\": env.int(\"API_PAGE_SIZE\", default=50),\n    \"DEFAULT_FILTER_BACKENDS\": [\"django_filters.rest_framework.DjangoFilterBackend\"],",
+        "peekOfCode": "REST_FRAMEWORK = {\n    \"DEFAULT_AUTHENTICATION_CLASSES\": [\n        'rest_framework.authentication.TokenAuthentication',\n        'rest_framework.authentication.SessionAuthentication',\n        \"banks.authentication.BankTokenAuthentication\",\n    ],\n    \"DEFAULT_PERMISSION_CLASSES\": [\n        \"rest_framework.permissions.IsAuthenticated\",\n    ],\n    \"DEFAULT_PAGINATION_CLASS\": \"rest_framework.pagination.PageNumberPagination\",",
         "detail": "backend.multibank_backend.settings",
         "documentation": {}
     },
@@ -1749,7 +1976,7 @@
         "kind": 5,
         "importPath": "backend.multibank_backend.urls",
         "description": "backend.multibank_backend.urls",
-        "peekOfCode": "urlpatterns = [\n    path(\"admin/\", admin.site.urls),\n    path(\"api/auth/\", include(\"rest_framework.urls\")),\n    path(\"api/banking/\", include(\"banks.urls\")),\n    path(\"api/accounts/\", include(\"accounts.urls\")),\n    path(\"api/payments/\", include(\"payments.urls\")),\n    path(\"api/products/\", include(\"products.urls\")),\n]\nif settings.DEBUG:\n    urlpatterns += static(",
+        "peekOfCode": "urlpatterns = [\n    path(\"admin/\", admin.site.urls),\n    path(\"api/auth/\", include(\"rest_framework.urls\")),\n    path(\"api/banking/\", include(\"banks.urls\")),\n    path(\"api/accounts/\", include(\"accounts.urls\")),\n    path(\"api/\", include(\"payments.urls\")),\n    path(\"api/products/\", include(\"products.urls\")),\n]\nif settings.DEBUG:\n    urlpatterns += static(",
         "detail": "backend.multibank_backend.urls",
         "documentation": {}
     },
@@ -1760,6 +1987,15 @@
         "description": "backend.multibank_backend.wsgi",
         "peekOfCode": "application = get_wsgi_application()",
         "detail": "backend.multibank_backend.wsgi",
+        "documentation": {}
+    },
+    {
+        "label": "Migration",
+        "kind": 6,
+        "importPath": "backend.payments.migrations.0001_initial",
+        "description": "backend.payments.migrations.0001_initial",
+        "peekOfCode": "class Migration(migrations.Migration):\n    initial = True\n    dependencies = [\n        ('banks', '0001_initial'),\n    ]\n    operations = [\n        migrations.CreateModel(\n            name='PaymentLimit',\n            fields=[\n                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),",
+        "detail": "backend.payments.migrations.0001_initial",
         "documentation": {}
     },
     {
@@ -1880,6 +2116,24 @@
         "documentation": {}
     },
     {
+        "label": "router",
+        "kind": 5,
+        "importPath": "backend.payments.urls",
+        "description": "backend.payments.urls",
+        "peekOfCode": "router = DefaultRouter()\nrouter.register(r\"payments\", views.PaymentViewSet, basename=\"payment\")\nrouter.register(r\"consents\", views.PaymentConsentViewSet, basename=\"payment-consent\")\nrouter.register(r\"limits\", views.PaymentLimitViewSet, basename=\"payment-limit\")\nurlpatterns = [path(\"\", include(router.urls))]",
+        "detail": "backend.payments.urls",
+        "documentation": {}
+    },
+    {
+        "label": "urlpatterns",
+        "kind": 5,
+        "importPath": "backend.payments.urls",
+        "description": "backend.payments.urls",
+        "peekOfCode": "urlpatterns = [path(\"\", include(router.urls))]",
+        "detail": "backend.payments.urls",
+        "documentation": {}
+    },
+    {
         "label": "PaymentViewSet",
         "kind": 6,
         "importPath": "backend.payments.views",
@@ -1904,6 +2158,15 @@
         "description": "backend.payments.views",
         "peekOfCode": "class PaymentLimitViewSet(viewsets.ReadOnlyModelViewSet):\n    permission_classes = [IsAuthenticated]\n    serializer_class = PaymentLimitSerializer\n    def get_queryset(self):\n        user_profile = get_object_or_404(UserBankProfile, user=self.request.user)\n        return PaymentLimit.objects.filter(user_profile=user_profile)\n    @action(detail=True, methods=[\"post\"])\n    def reset(self, request, pk=None):\n        limit = self.get_object()\n        user_profile = get_object_or_404(UserBankProfile, user=request.user)",
         "detail": "backend.payments.views",
+        "documentation": {}
+    },
+    {
+        "label": "Migration",
+        "kind": 6,
+        "importPath": "backend.products.migrations.0001_initial",
+        "description": "backend.products.migrations.0001_initial",
+        "peekOfCode": "class Migration(migrations.Migration):\n    initial = True\n    dependencies = [\n        ('accounts', '0001_initial'),\n        ('banks', '0001_initial'),\n    ]\n    operations = [\n        migrations.CreateModel(\n            name='Product',\n            fields=[",
+        "detail": "backend.products.migrations.0001_initial",
         "documentation": {}
     },
     {

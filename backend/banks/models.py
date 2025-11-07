@@ -1,7 +1,27 @@
+from django.contrib.auth.models import AbstractUser
 from django.db import models
-from django.contrib.auth.models import User
 from django.utils import timezone
 import uuid
+
+
+class User(AbstractUser):
+    phone = models.CharField(max_length=15, unique=True)
+    photo = models.TextField(blank=True, null=True)  # base64 encoded image
+    invitation_code = models.CharField(max_length=20, blank=True, null=True)
+    created_at = models.DateTimeField(default=timezone.now)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    username = None
+    email = models.EmailField(blank=True, null=True)
+
+    USERNAME_FIELD = 'phone'
+    REQUIRED_FIELDS = ['first_name']
+
+    class Meta:
+        db_table = "auth_users"
+
+    def __str__(self):
+        return f"{self.phone} - {self.first_name}"
 
 
 class Bank(models.Model):

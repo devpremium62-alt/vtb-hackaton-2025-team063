@@ -3,10 +3,36 @@ from django.contrib.auth.models import User
 from .models import Bank, BankToken, Consent, UserBankProfile, AccountSharing
 
 
+class UserLoginSerializer(serializers.Serializer):
+    phone = serializers.CharField(max_length=15, required=True)
+    photo = serializers.CharField(required=True)  # base64 string
+    invitation_code = serializers.CharField(max_length=20, required=False, allow_blank=True)
+    first_name = serializers.CharField(max_length=150, required=True)
+
+    def validate(self, attrs):
+        phone = attrs.get('phone')
+        photo = attrs.get('photo')
+        first_name = attrs.get('first_name')
+
+        if not phone:
+            raise serializers.ValidationError('Phone number is required')
+
+        if not photo:
+            raise serializers.ValidationError('Photo is required')
+
+        if not first_name:
+            raise serializers.ValidationError('First name is required')
+
+        return attrs
+
+
 class UserSerializer(serializers.ModelSerializer):
+    team_id = serializers.CharField(source='bank_profile.team_id', read_only=True)
+
     class Meta:
         model = User
-        fields = ["id", "username", "email", "first_name", "last_name"]
+        fields = ['id', 'phone', 'first_name', 'last_name', 'email', 'photo', 'invitation_code', 'team_id', 'created_at']
+        read_only_fields = ['id', 'team_id', 'created_at']
 
 
 class UserBankProfileSerializer(serializers.ModelSerializer):
@@ -18,6 +44,7 @@ class UserBankProfileSerializer(serializers.ModelSerializer):
 
 
 class BankSerializer(serializers.ModelSerializer):
+
     class Meta:
         model = Bank
         fields = [

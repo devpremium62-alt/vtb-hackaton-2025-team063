@@ -1,17 +1,16 @@
 from django.db.models.signals import post_save
 from django.dispatch import receiver
-from django.contrib.auth.models import User
-from .models import UserBankProfile
+from .models import User, UserBankProfile  # меняем импорт
 
 
 @receiver(post_save, sender=User)
 def create_user_bank_profile(sender, instance, created, **kwargs):
     if created:
-        team_id = f"{instance.username}-1"
+        team_id = f"{instance.phone}-1"  # используем phone вместо username
         counter = 1
         while UserBankProfile.objects.filter(team_id=team_id).exists():
             counter += 1
-            team_id = f"{instance.username}-{counter}"
+            team_id = f"{instance.phone}-{counter}"
         UserBankProfile.objects.create(user=instance, team_id=team_id)
 
 
