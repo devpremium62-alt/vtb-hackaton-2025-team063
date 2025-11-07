@@ -7,6 +7,7 @@ import localFont from "next/font/local";
 import MantineClientProvider from "@/providers/MantineClientProvider";
 import {ColorSchemeScript} from "@mantine/core";
 import ServiceWorker from "@/providers/ServiceWorker";
+import ReactQueryProvider from "@/providers/ReactQueryProvider";
 
 const sfPro = localFont({
     src: [
@@ -57,10 +58,12 @@ export default function RootLayout({children}: Readonly<{ children: React.ReactN
         <ColorSchemeScript defaultColorScheme="light"/>
     </head>
     <body className={`${sfPro.variable} antialiased bg-[#F8F9FB] text-white`}>
-    <MantineClientProvider>
-        {children}
-    </MantineClientProvider>
-    <ServiceWorker/>
+        <ReactQueryProvider>
+            <MantineClientProvider>
+                {children}
+            </MantineClientProvider>
+            <ServiceWorker/>
+        </ReactQueryProvider>
     </body>
     </html>
 }

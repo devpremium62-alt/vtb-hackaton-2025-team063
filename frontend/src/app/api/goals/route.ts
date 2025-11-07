@@ -1,22 +1,20 @@
-import { NextResponse } from "next/server";
+import {NextResponse} from "next/server";
+import {getGoals, addGoal, deleteGoal} from "./data";
 
 export async function GET() {
-    const mockData = [
-        {
-            id: 1,
-            name: "Поездка на море",
-            deadline: new Date(2025, 8, 29),
-            moneyCollected: 200000,
-            moneyNeed: 230000
-        },
-        {
-            id: 2,
-            name: "Квартира у моря",
-            deadline: new Date(2026, 3, 14),
-            moneyCollected: 80000000,
-            moneyNeed: 450000000
-        },
-    ];
+    return NextResponse.json(getGoals());
+}
 
-    return NextResponse.json(mockData);
+export async function POST(req: Request) {
+    const data = await req.json();
+    const newGoal = addGoal(data);
+    return NextResponse.json(newGoal);
+}
+
+export async function DELETE(req: Request) {
+    const { searchParams } = new URL(req.url);
+    const id = Number(searchParams.get("id"));
+    deleteGoal(id);
+
+    return new NextResponse(null, { status: 204 });
 }

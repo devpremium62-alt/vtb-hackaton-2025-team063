@@ -4,15 +4,22 @@ import ShortGoals from "@/app/(main)/dashboard/ShortGoals";
 import ShortUpcomingPayments from "@/app/(main)/dashboard/ShortUpcomingPayments";
 import fetchWrap from "@/shared/lib/fetchWrap";
 import {ChildAccountSimple} from "@/entities/child-account";
-import {GoalType} from "@/entities/goal";
+import {getGoals} from "@/entities/goal";
 import {PaymentType} from "@/entities/payment";
+import {dehydrate, HydrationBoundary, QueryClient} from "@tanstack/react-query";
 
 export default async function Dashboard() {
     const members = await fetchWrap("/api/users/family");
     const sharedAccounts = await fetchWrap("/api/accounts");
     const payments = (await fetchWrap("/api/payments")).map((p: PaymentType) => ({...p, date: new Date(p.date)}));
-    const goals = (await fetchWrap("/api/goals")).map((p: GoalType) => ({...p, deadline: new Date(p.deadline)}));
     const childAccount = await fetchWrap("/api/accounts/child");
+
+    const queryClient = new QueryClient();
+
+    await queryClient.prefetchQuery({
+        queryKey: ["goals"],
+        queryFn: getGoals,
+    });
 
     return <div>
         <SharedBalance personFirst={members[0]}
@@ -24,7 +31,9 @@ export default async function Dashboard() {
                 <ShortUpcomingPayments payments={payments}/>
             </div>
             <div>
-                <ShortGoals goals={goals}/>
+                <HydrationBoundary state={dehydrate(queryClient)}>
+                    <ShortGoals/>
+                </HydrationBoundary>
                 <ChildAccountSimple account={childAccount}/>
             </div>
         </div>
