@@ -1,7 +1,6 @@
 "use client";
 
 import Heading from "@/shared/ui/typography/Heading";
-import Image from "next/image";
 import ProgressBar from "@/shared/ui/ProgressBar";
 import MoneyAmount from "@/shared/ui/MoneyAmount";
 import {motion} from "framer-motion";

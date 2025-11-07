@@ -2,10 +2,8 @@
 
 import {type ExpenseType, Expense, toExcelData} from "@/entities/expense";
 import Heading from "@/shared/ui/typography/Heading";
-import React, {useMemo} from "react";
+import React from "react";
 import useShowingSkeleton from "@/shared/hooks/useShowingSkeleton";
-import {ChevronRight} from "@/shared/ui/icons/ChevronRight";
-import {ChevronLeft} from "@/shared/ui/icons/ChevronLeft";
 import usePagination from "@/shared/hooks/usePagination";
 import Pagination from "@/shared/ui/Pagination";
 import {Export} from "@/shared/ui/icons/Export";

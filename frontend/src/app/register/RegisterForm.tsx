@@ -1,38 +1,47 @@
 "use client";
 
-import {useEffect, useState} from "react";
+import {useState} from "react";
 import MainStep from "@/app/register/MainStep";
 import PhotoStep from "@/app/register/PhotoStep";
-import Image from "next/image";
-import { motion } from "framer-motion";
+import {UserType} from "@/entities/user";
+import BankSelectStep from "@/app/register/BankSelectStep";
+import FinalStep from "@/app/register/FinalStep";
 
 const RegisterForm = () => {
     const [step, setStep] = useState(0);
+    const [userData, setUserData] = useState<Partial<UserType>>({});
 
-    return <section className="h-screen flex flex-col justify-center p-4 relative">
-        <motion.div initial={{opacity: 0}}
-                    animate={{opacity: 1}}
-                    exit={{opacity: 0}}
-                    transition={{duration: 0.3}} className="mb-10 flex flex-col items-center">
-            <div className="mb-1">
-                <Image width={70} height={51} src="/images/logo.png" alt="Семейный мультибанк"></Image>
-            </div>
-            <div className="flex flex-col items-center text-center">
-                <h1 className="text-3xl font-semibold leading-none mb-1.5">Добро пожаловать в семейный
-                    мультибанк!</h1>
-                <p className="max-w-72 font-normal text-secondary leading-tight">Единое финансовое пространство для
-                    вас и ваших
-                    близких</p>
-            </div>
-        </motion.div>
-        {step === 0 ? <MainStep onSuccess={() => setStep(1)}/> : <PhotoStep/>}
+    function onMainStepEnd(user: Partial<UserType>) {
+        setUserData((prevUser) => ({...prevUser, ...user}));
+        setStep(1);
+    }
+
+    function onPhotoStepEnd(photo: string) {
+        setUserData((prevUser) => ({...prevUser, photo}));
+        setStep(2);
+    }
+
+    function onBanksStepEnd(banks: string[]) {
+        setUserData((prevUser) => ({...prevUser, banks}));
+        setStep(3);
+    }
+
+    function onRegisterFinished() {
+
+    }
+
+    return <section className="min-h-screen w-full login-page flex flex-col px-4 relative">
+        {step === 0 && <MainStep onSuccess={onMainStepEnd}/>}
+        {step === 1 && <PhotoStep onSuccess={onPhotoStepEnd}/>}
+        {step === 2 && <BankSelectStep onSuccess={onBanksStepEnd}/>}
+        {step === 3 && <FinalStep user={userData} onSuccess={onRegisterFinished}/>}
 
         <div
             className="absolute bottom-7 left-1/2 -translate-x-1/2 flex items-center justify-center gap-0.5 w-full">
-            <div
-                className={`${step === 0 ? "w-14" : "w-1.5"} transition-all duration-500 h-1.5 bg-primary rounded-full`}></div>
-            <div
-                className={`${step === 1 ? "w-14" : "w-1.5"} transition-all duration-500 h-1.5 bg-primary rounded-full`}></div>
+            {Array.from({length: 4}).map((_, i) => (
+                <div key={i}
+                     className={`${step === i ? "w-14" : "w-1.5"} transition-all duration-500 h-1.5 bg-primary rounded-full`}></div>
+            ))}
         </div>
     </section>
 }

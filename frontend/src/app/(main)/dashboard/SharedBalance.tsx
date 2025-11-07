@@ -3,7 +3,6 @@ import Heading from "@/shared/ui/typography/Heading";
 import MoneyAmount from "@/shared/ui/MoneyAmount";
 import BalanceCounter from "@/shared/ui/MoneyCounting";
 import CoupleAvatars from "@/shared/ui/CoupleAvatars";
-import dayjs from "dayjs";
 import "dayjs/locale/ru";
 
 type Person = {

@@ -1,11 +1,12 @@
-import Goals from "@/app/budget/Goals";
-import {ExpenseCategoryType} from "@/entities/expense-category";
-import {ExpensesCategoryColors, ExpensesCategoryIcons} from "@/entities/expense-category/model/types";
-import Wallet from "@/app/budget/Wallet";
-import UpcomingPayments from "@/app/budget/UpcomingPayments";
-import ChildAccount from "@/app/budget/ChildAccount";
-import ExpenseStats from "@/app/budget/ExpenseStats";
-import ExpenseList from "@/app/budget/ExpenseList";
+import Limits from "@/app/(main)/expenses/Limits";
+import SharedExpenses from "@/app/(main)/expenses/SharedExpenses";
+import {
+    ExpenseCategoryType,
+    ExpensesCategoryColors,
+    ExpensesCategoryIcons
+} from "@/entities/expense-category/model/types";
+import ExpensesDistribution from "@/app/(main)/expenses/ExpensesDistribution";
+import InteractiveExpenses from "@/app/(main)/expenses/InteractiveExpenses";
 
 const categories: ExpenseCategoryType[] = [
     {
@@ -46,68 +47,20 @@ const categories: ExpenseCategoryType[] = [
     }
 ];
 
-export default async function Budget() {
-    return <div className="py-4">
+export default function Expenses() {
+    return <div>
         <div className="grid grid-cols-1 md:grid-cols-2 md:gap-8">
             <div>
-                <Goals goals={[
-                    {
-                        id: 1,
-                        name: "Поездка на море",
-                        deadline: new Date(2025, 8, 29),
-                        moneyCollected: 200000,
-                        moneyNeed: 230000
-                    },
-                    {
-                        id: 2,
-                        name: "Квартира у моря",
-                        deadline: new Date(2026, 3, 14),
-                        moneyCollected: 80000000,
-                        moneyNeed: 450000000
-                    },
-                ]}/>
-                <Wallet walletItems={[
+                <Limits limits={[
                     {category: categories[0], limit: 20000},
                     {category: categories[1], limit: 40000},
                     {category: categories[2], limit: 5000},
                 ]}/>
-                <UpcomingPayments payments={[
-                    {
-                        date: new Date(2025, 10, 3),
-                        money: 5000,
-                        name: "На квартиру",
-                        payed: true
-                    },
-                    {
-                        date: new Date(2025, 10, 2),
-                        money: 4500,
-                        name: "Детский счет",
-                        payed: false
-                    },
-                    {
-                        date: new Date(2025, 10, 10),
-                        name: "Подписка",
-                        money: 500,
-                        payed: false
-                    },
-                    {
-                        date: new Date(2025, 10, 20),
-                        name: "Кредит",
-                        money: 10000,
-                        payed: false
-                    },
-                    {
-                        date: new Date(2025, 11, 3),
-                        money: 5000,
-                        name: "На квартиру",
-                        payed: false
-                    }
-                ]}/>
+                <SharedExpenses firstAvatar="/images/man.png" secondAvatar="/images/woman.png"
+                                expenseCategories={categories}/>
             </div>
             <div>
-                <ChildAccount moneyCollected={50000} moneyPerDay={2500} avatar="/images/woman.png"/>
-                <ExpenseStats expenseCategories={categories}/>
-                <ExpenseList expenses={[
+                <InteractiveExpenses avatar="/images/woman.png" categories={categories} expenses={[
                     {
                         id: "1",
                         category: categories[5],
@@ -163,6 +116,7 @@ export default async function Budget() {
                         bank:"Альфабанк"
                     }
                 ]}/>
+                <ExpensesDistribution firstPerson={{value: 10000, avatar:"/images/woman.png"}} secondPerson={{value: 19000, avatar:"/images/man.png"}}/>
             </div>
         </div>
     </div>

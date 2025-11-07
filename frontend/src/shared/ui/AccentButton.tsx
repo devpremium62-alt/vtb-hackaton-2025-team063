@@ -4,6 +4,7 @@ type Props = {
     children: any;
     background?: string;
     large?: boolean;
+    disabled?: boolean;
     type?: "submit" | "reset" | "button";
 }
 

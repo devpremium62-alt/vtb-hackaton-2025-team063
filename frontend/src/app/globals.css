@@ -282,3 +282,14 @@ input.large::placeholder {
     color: #9ca3af !important;
     background: transparent !important;
 }
+
+.login-page {
+    padding-top: 15vh;
+    padding-bottom: 4rem;
+}
+
+@media screen and (max-height: 700px) {
+    .login-page {
+        padding-top: 2rem;
+    }
+}

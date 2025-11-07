@@ -1,11 +1,11 @@
 import Heading from "@/shared/ui/typography/Heading";
-import {ExpenseCategory, ExpenseCategoryType} from "@/entities/expense-category";
+import {ExpenseCategoryType} from "@/entities/expense-category";
 import React from "react";
 import 'dayjs/locale/ru';
 import dayjs from "dayjs";
 import Avatar from "@/shared/ui/Avatar";
 import BalanceCounter from "@/shared/ui/MoneyCounting";
-import ExpensesHistogram from "@/app/expenses/ExpensesHistogram";
+import ExpensesHistogram from "@/app/(main)/expenses/ExpensesHistogram";
 
 type Props = {
     avatar: string;

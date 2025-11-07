@@ -2,7 +2,7 @@
 
 import Heading from "@/shared/ui/typography/Heading";
 import Avatar from "@/shared/ui/Avatar";
-import EditableField from "@/app/settings/EditableField";
+import EditableField from "@/app/(main)/settings/EditableField";
 import {useState} from "react";
 import Checkbox from "@/shared/ui/inputs/Checkbox";
 import { motion } from "framer-motion";
@@ -27,8 +27,6 @@ const MyProfile = ({profileData, pushEnabled}: Props) => {
         </div>
         <div className="flex flex-col items-stretch gap-1 mb-[1.875rem]">
             <EditableField value={profileData.name} onChange={() => {
-            }}/>
-            <EditableField value={profileData.email} onChange={() => {
             }}/>
             <EditableField value={profileData.phone} onChange={() => {
             }}/>

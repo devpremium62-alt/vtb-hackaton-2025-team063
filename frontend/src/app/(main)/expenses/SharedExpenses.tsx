@@ -2,12 +2,10 @@
 
 import Heading from "@/shared/ui/typography/Heading";
 import CoupleAvatars from "@/shared/ui/CoupleAvatars";
-import DonutChart from "@/shared/ui/charts/DonutChart";
-import {ExpenseCategory, ExpenseCategoryType} from "@/entities/expense-category";
-import React, {useMemo} from "react";
+import {ExpenseCategoryType} from "@/entities/expense-category";
+import React from "react";
 import 'dayjs/locale/ru';
 import dayjs from "dayjs";
-import useShowingSkeleton from "@/shared/hooks/useShowingSkeleton";
 import {Expenses} from "@/widgets/expenses";
 
 type Props = {

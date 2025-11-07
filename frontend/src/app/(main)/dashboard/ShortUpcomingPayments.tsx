@@ -3,7 +3,6 @@
 import Heading from "@/shared/ui/typography/Heading";
 import {Payment, PaymentType} from "@/entities/payment";
 import React, {useMemo, useState} from "react";
-import {AnimatePresence, motion} from "framer-motion";
 import useShowingSkeleton from "@/shared/hooks/useShowingSkeleton";
 import {PaymentsCalendar} from "@/widgets/payments-calendar";
 import {PaymentsList} from "@/widgets/payments-list";

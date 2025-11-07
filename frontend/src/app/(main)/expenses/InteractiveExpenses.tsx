@@ -2,8 +2,8 @@
 
 import {ExpenseCategoryType} from "@/entities/expense-category";
 import {ExpenseType} from "@/entities/expense";
-import PersonalExpenses from "@/app/expenses/PersonalExpenses";
-import ExpenseHistory from "@/app/expenses/ExpenseHistory";
+import PersonalExpenses from "@/app/(main)/expenses/PersonalExpenses";
+import ExpenseHistory from "@/app/(main)/expenses/ExpenseHistory";
 import {DndContext, pointerWithin} from "@dnd-kit/core";
 
 type Props = {

@@ -5,7 +5,6 @@ import {
     isPaymentActual,
     isPaymentExpired,
     isPaymentPayed,
-    Payment,
     PaymentLarge,
     PaymentType
 } from "@/entities/payment";
@@ -16,7 +15,7 @@ import {Plus} from "@/shared/ui/icons/Plus";
 import SearchInput from "@/shared/ui/inputs/SearchInput";
 import Select from "@/shared/ui/inputs/Select";
 import {Filter} from "@/shared/ui/icons/Filter";
-import NearestPayment from "@/app/budget/NearestPayment";
+import NearestPayment from "@/app/(main)/budget/NearestPayment";
 import {PaymentsList} from "@/widgets/payments-list";
 import {CreatePayment} from "@/widgets/create-payment";
 

@@ -4,11 +4,9 @@ import '@mantine/core/styles/global.css';
 import '@mantine/dates/styles.css';
 import "./globals.css";
 import localFont from "next/font/local";
-import {Navbar} from "@/widgets/navbar";
 import MantineClientProvider from "@/providers/MantineClientProvider";
 import {ColorSchemeScript} from "@mantine/core";
 import ServiceWorker from "@/providers/ServiceWorker";
-import {usePathname} from "next/navigation";
 
 const sfPro = localFont({
     src: [
@@ -60,10 +58,7 @@ export default function RootLayout({children}: Readonly<{ children: React.ReactN
     </head>
     <body className={`${sfPro.variable} antialiased bg-[#F8F9FB] text-white`}>
     <MantineClientProvider>
-        <main className="w-full mx-auto max-w-screen-2xl relative">
-            {children}
-        </main>
-        <Navbar />
+        {children}
     </MantineClientProvider>
     <ServiceWorker/>
     </body>

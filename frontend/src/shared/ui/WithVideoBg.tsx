@@ -1,6 +1,6 @@
 const WithVideoBg = ({children}: any) => {
     return (
-        <div className="relative w-full h-screen overflow-hidden">
+        <div className="relative w-full min-h-screen overflow-hidden">
             <video
                 autoPlay
                 loop

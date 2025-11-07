@@ -1,11 +1,11 @@
-import SharedBalance from "@/app/dashboard/SharedBalance";
-import Accounts from "@/app/dashboard/Accounts";
-import ShortGoals from "@/app/dashboard/ShortGoals";
-import ShortUpcomingPayments from "@/app/dashboard/ShortUpcomingPayments";
-import ShortChildAccount from "@/app/dashboard/ShortChildAccount";
+import SharedBalance from "@/app/(main)/dashboard/SharedBalance";
+import Accounts from "@/app/(main)/dashboard/Accounts";
+import ShortGoals from "@/app/(main)/dashboard/ShortGoals";
+import ShortUpcomingPayments from "@/app/(main)/dashboard/ShortUpcomingPayments";
+import ShortChildAccount from "@/app/(main)/dashboard/ShortChildAccount";
 
 export default async function Dashboard() {
-    return <div className="py-4">
+    return <div>
         <SharedBalance personFirst={{avatar: "/images/man.png", accountDigits: "0934"}}
                        personSecond={{avatar: "/images/woman.png", accountDigits: "1289"}} balance={12345000}
                        monthlyIncome={120000}/>
