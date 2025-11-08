@@ -1,14 +1,19 @@
-import {AccountAggregate, type AccountAggregateType} from "@/entities/account";
+"use client";
 
-type Props = {
-    firstAccount: AccountAggregateType;
-    secondAccount: AccountAggregateType;
-}
+import {AccountAggregate, getPersonalAccounts} from "@/entities/account";
+import {useQuery} from "@tanstack/react-query";
 
-const Accounts = ({firstAccount, secondAccount}: Props) => {
+const Accounts = () => {
+    const {data: personalAccounts = null} = useQuery({
+        queryKey: ["personal-accounts"],
+        queryFn: getPersonalAccounts,
+    });
+
+    const persons = Object.values(personalAccounts || {});
+
     return <section className="flex items-center mb-6 gap-2.5 mx-4 md:mr-0">
-        <AccountAggregate className="flex-1" account={firstAccount}/>
-        <AccountAggregate className="flex-1" account={secondAccount}/>
+        <AccountAggregate className="flex-1" account={persons[0]}/>
+        <AccountAggregate className="flex-1" account={persons[1]}/>
     </section>
 }
 

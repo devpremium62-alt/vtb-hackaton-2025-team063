@@ -8,9 +8,10 @@ type Props = {
     height?: number;
     size?: number;
     children?: any;
+    clickable?: boolean;
 }
 
-const DonutChart = ({data, height = 140, size = 70, children}: Props) => {
+const DonutChart = ({data, height = 140, size = 70, clickable = true, children}: Props) => {
     const total = useMemo(() => {
         return data.reduce((acc, c) => acc + c.value, 0);
     }, [data]);
@@ -30,7 +31,7 @@ const DonutChart = ({data, height = 140, size = 70, children}: Props) => {
                     animationDuration={1000}
                     animationBegin={0}
                     labelLine={false}
-                    label={({ cx, cy, midAngle, innerRadius, outerRadius, fill }: any) => {
+                    label={({cx, cy, midAngle, innerRadius, outerRadius, fill}: any) => {
                         const elem = data.find(d => d.color === fill);
                         if (!elem?.label) return null;
 
@@ -45,10 +46,12 @@ const DonutChart = ({data, height = 140, size = 70, children}: Props) => {
                                 y={y - 12}
                                 width={60}
                                 height={24}
-                                style={{ overflow: "visible" }}
+                                style={{overflow: "visible"}}
                             >
-                                <div className="flex flex-col bg-tertiary text-primary text-xs px-2 py-0.5 rounded-md text-center select-none">
-                                    <span className="text-sm font-semibold">{Math.round(elem.value / total * 100)}%</span>
+                                <div
+                                    className="flex flex-col bg-tertiary text-primary text-xs px-2 py-0.5 rounded-md text-center select-none">
+                                    <span
+                                        className="text-sm font-semibold">{Math.round(elem.value / total * 100)}%</span>
                                     {elem.value.toLocaleString("ru-RU")}₽
                                 </div>
                             </foreignObject>
@@ -63,7 +66,7 @@ const DonutChart = ({data, height = 140, size = 70, children}: Props) => {
                         />
                     ))}
                 </Pie>
-                <Tooltip
+                {clickable && <Tooltip
                     cursor={false}
                     formatter={(value: number) => {
                         const percent = ((value / total) * 100).toFixed(1);
@@ -77,9 +80,10 @@ const DonutChart = ({data, height = 140, size = 70, children}: Props) => {
                         padding: "0.25rem 0.5rem",
                         fontSize: "0.875rem",
                     }}
-                />
+                />}
             </PieChart>
-            {children ? <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">{children}</div> : ""}
+            {children ?
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">{children}</div> : ""}
         </ResponsiveContainer>
     </>
 }

@@ -1,4 +1,5 @@
 import {ChildAccountType} from "@/entities/child-account";
+import {getFamilyAccounts} from "@/app/api/users/family/data";
 
 let childAccount: ChildAccountType = {
     moneyCollected: 50000,
@@ -16,6 +17,9 @@ export function changeLimit({limit}: {limit: number}) {
 }
 
 export function depositMoney({amount}: {amount: number}) {
+    getFamilyAccounts()[1].balance -= amount;
+    getFamilyAccounts()[1].expenses += amount;
+    
     childAccount.moneyCollected += amount;
     return childAccount;
 }

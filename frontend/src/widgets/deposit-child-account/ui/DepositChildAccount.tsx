@@ -41,7 +41,8 @@ export const DepositChildAccount = ({isActive, setActive}: Props) => {
             reset();
             setActive(false);
             queryClient.invalidateQueries({queryKey: ["child-account"]});
-            queryClient.invalidateQueries({queryKey: ["payments"]});
+            queryClient.invalidateQueries({queryKey: ["shared-accounts"]});
+            queryClient.invalidateQueries({queryKey: ["personal-accounts"]});
         },
     });
 

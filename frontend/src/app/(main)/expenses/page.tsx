@@ -3,24 +3,39 @@ import SharedExpenses from "@/app/(main)/expenses/SharedExpenses";
 import ExpensesDistribution from "@/app/(main)/expenses/ExpensesDistribution";
 import InteractiveExpenses from "@/app/(main)/expenses/InteractiveExpenses";
 import fetchWrap from "@/shared/lib/fetchWrap";
-import {ExpenseType} from "@/entities/expense";
+import {getExpenses} from "@/entities/expense";
+import {dehydrate, HydrationBoundary, QueryClient} from "@tanstack/react-query";
+import {getExpenseCategories} from "@/entities/expense-category";
 
 export default async function Expenses() {
     const members = await fetchWrap("/api/users/family");
-    const expensesByCategories = await fetchWrap("/api/expenses/categories");
     const limits = await fetchWrap("/api/expenses/limits");
-    const expenses = (await fetchWrap("/api/expenses")).map((e:ExpenseType) => ({...e, date: new Date(e.date)}));
+
+    const queryClient = new QueryClient();
+
+    await queryClient.prefetchQuery({
+        queryKey: ["expenses"],
+        queryFn: getExpenses,
+    });
+
+    await queryClient.prefetchQuery({
+        queryKey: ["expense-categories"],
+        queryFn: getExpenseCategories,
+    });
 
     return <div>
         <div className="grid grid-cols-1 md:grid-cols-2 md:gap-8">
             <div>
                 <Limits limits={limits}/>
-                <SharedExpenses firstAvatar={members[0].avatar} secondAvatar={members[1].avatar}
-                                expenseCategories={expensesByCategories}/>
+                <HydrationBoundary state={dehydrate(queryClient)}>
+                    <SharedExpenses firstAvatar={members[1].avatar} secondAvatar={members[2].avatar}/>
+                </HydrationBoundary>
             </div>
             <div>
-                <InteractiveExpenses avatar={members[0].avatar} categories={expensesByCategories} expenses={expenses}/>
-                <ExpensesDistribution firstPerson={members[0]} secondPerson={members[1]}/>
+                <HydrationBoundary state={dehydrate(queryClient)}>
+                    <InteractiveExpenses avatar={members[1].avatar}/>
+                </HydrationBoundary>
+                <ExpensesDistribution firstPerson={members[1]} secondPerson={members[2]}/>
             </div>
         </div>
     </div>

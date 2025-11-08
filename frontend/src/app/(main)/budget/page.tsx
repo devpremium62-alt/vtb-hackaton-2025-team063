@@ -12,7 +12,6 @@ import {getGoals} from "@/entities/goal";
 import {getWallets} from "@/entities/wallet";
 
 export default async function Budget() {
-    const childAccount = await fetchWrap("/api/accounts/child");
     const expensesByCategories = await fetchWrap("/api/expenses/categories");
     const expenses = (await fetchWrap("/api/expenses")).map((e:ExpenseType) => ({...e, date: new Date(e.date)}));
 

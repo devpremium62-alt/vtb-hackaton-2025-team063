@@ -14,15 +14,15 @@ type Props = {
 const ExpensesHistogram = ({expenseCategories}: Props) => {
     const [isHelpActive, setHelpActive] = React.useState(false);
 
-    const filteredCategories = useMemo(() => {
+    const nonEmptyCategories = useMemo(() => {
         return expenseCategories.filter(c => c.spent !== 0);
-    }, [expenseCategories])
+    }, [expenseCategories]);
 
     const histogramData = useMemo(() => {
-        return filteredCategories.map(cat => ({value: cat.spent, color: cat.color}));
-    }, [filteredCategories]);
+        return expenseCategories.map(cat => ({id: cat.id, value: cat.spent, color: cat.color}));
+    }, [expenseCategories]);
 
-    const isLoading = useShowingSkeleton(filteredCategories);
+    const isLoading = useShowingSkeleton(expenseCategories);
 
     return <>
         <div className="mb-2.5 relative">
@@ -37,7 +37,7 @@ const ExpensesHistogram = ({expenseCategories}: Props) => {
                        setActive={setHelpActive}/>
         </div>
         <div className="flex items-center justify-start gap-1 flex-wrap">
-            {filteredCategories.map(cat => (
+            {nonEmptyCategories.map(cat => (
                 <ExpenseCategory key={cat.name} overflowText={false} expenseCategory={cat}/>
             ))}
         </div>

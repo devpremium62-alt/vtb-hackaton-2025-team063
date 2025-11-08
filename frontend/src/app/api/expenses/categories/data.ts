@@ -1,45 +1,46 @@
 import {ExpenseCategoryType, ExpensesCategoryColors, ExpensesCategoryIcons} from "@/entities/expense-category";
+import {getExpenses} from "@/app/api/expenses/data";
 
 let categories: ExpenseCategoryType[] = [
     {
         id: 1,
         name: "Развлечения",
-        spent: 5000,
+        spent: 0,
         color: ExpensesCategoryColors["Развлечения"],
         icon: ExpensesCategoryIcons["Развлечения"]
     },
     {
         id: 2,
         name: "Продукты",
-        spent: 45000,
+        spent: 0,
         color: ExpensesCategoryColors["Продукты"],
         icon: ExpensesCategoryIcons["Продукты"]
     },
     {
         id: 3,
         name: "ЖКХ и связь",
-        spent: 4000,
+        spent: 0,
         color: ExpensesCategoryColors["ЖКХ и связь"],
         icon: ExpensesCategoryIcons["ЖКХ и связь"]
     },
     {
         id: 4,
         name: "Транспорт",
-        spent: 10000,
+        spent: 0,
         color: ExpensesCategoryColors["Транспорт"],
         icon: ExpensesCategoryIcons["Транспорт"]
     },
     {
         id: 5,
         name: "Одежда и обувь",
-        spent: 12000,
+        spent: 0,
         color: ExpensesCategoryColors["Одежда и обувь"],
         icon: ExpensesCategoryIcons["Одежда и обувь"]
     },
     {
         id: 6,
         name: "Подарки",
-        spent: 1000,
+        spent: 0,
         color: ExpensesCategoryColors["Подарки"],
         icon: ExpensesCategoryIcons["Подарки"]
     },
@@ -67,5 +68,19 @@ let categories: ExpenseCategoryType[] = [
 ];
 
 export function getExpenseCategories() {
+    const expenses = getExpenses();
+    const newCategories = [...categories].map(c => structuredClone(c));
+    expenses.map(e => {
+        newCategories.forEach(c => {
+            if(c.id === e.category.id && e.outcome) {
+                c.spent += e.value;
+            }
+        });
+    });
+
+    return newCategories;
+}
+
+export function getExpenseCategoriesWithoutPopulation() {
     return categories;
 }

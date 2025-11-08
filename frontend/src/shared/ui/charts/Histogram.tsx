@@ -5,7 +5,7 @@ import {useMemo} from "react";
 import useShowingSkeleton from "@/shared/hooks/useShowingSkeleton";
 import {useDroppable} from "@dnd-kit/core";
 
-type Col = { color: string; value: number };
+type Col = { id:number; color: string; value: number };
 
 type ColProps = {
     index: number;
@@ -16,7 +16,8 @@ type ColProps = {
 
 const HistogramColumn = ({index, maxValue, col}: ColProps) => {
     const {isOver, setNodeRef} = useDroppable({
-        id: `droppable-col-${index}`
+        id: `droppable-col-${index}`,
+        data: {id: col.id}
     })
 
     const style = {
@@ -30,7 +31,7 @@ const HistogramColumn = ({index, maxValue, col}: ColProps) => {
         className="w-8 rounded-lg transition-colors duration-500"
         style={{...style}}
         initial={{height: 0}}
-        animate={{height: `${height}%`}}
+        animate={{height: `${Math.max(5, height)}%`}}
         transition={{
             type: "spring",
             stiffness: 120,

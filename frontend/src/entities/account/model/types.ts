@@ -1,10 +1,11 @@
-export type AccountAggregateType = {
+export type PersonalAccountType = {
     name: string;
     avatar: string;
     balance: number;
+    accountDigits: string;
 }
 
-export type AccountType = {
-    accountId: string;
+export type SharedAccountType = {
     balance: number;
+    monthlyIncome: number;
 }

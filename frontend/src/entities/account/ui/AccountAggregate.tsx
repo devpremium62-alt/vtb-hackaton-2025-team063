@@ -1,6 +1,6 @@
 "use client";
 
-import {type AccountAggregateType} from "@/entities/account/model/types";
+import {type PersonalAccountType} from "@/entities/account/model/types";
 import Heading from "@/shared/ui/typography/Heading";
 import Image from "next/image";
 import MoneyAmount from "@/shared/ui/MoneyAmount";
@@ -10,7 +10,7 @@ import Avatar from "@/shared/ui/Avatar";
 type Props = {
     className?: string;
     style?: object;
-    account: AccountAggregateType;
+    account: PersonalAccountType;
 }
 
 export const AccountAggregate = ({account, className = "", ...props}: Props) => {
