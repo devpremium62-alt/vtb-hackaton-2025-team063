@@ -15,6 +15,9 @@ import {useMutation, useQueryClient} from "@tanstack/react-query";
 import {addGoal} from "@/entities/goal";
 import * as yup from "yup";
 import DatePicker from "@/shared/ui/inputs/DatePicker";
+import Loader from "@/shared/ui/loaders/Loader";
+import {AnimatePresence} from "framer-motion";
+import AnimatedLoader from "@/shared/ui/loaders/AnimatedLoader";
 
 type Props = {
     isActive: boolean;
@@ -107,7 +110,8 @@ export const CreateGoal = ({isActive, setActive}: Props) => {
                         name="goalIcon"
                         control={control}
                         render={({field}) => {
-                            return <IconPick id="goalIcon" icon={field.value} onIconChange={(val) => field.onChange(val)}/>
+                            return <IconPick id="goalIcon" icon={field.value}
+                                             onIconChange={(val) => field.onChange(val)}/>
                         }}
                     />
                 </div>
@@ -117,6 +121,7 @@ export const CreateGoal = ({isActive, setActive}: Props) => {
                         Создать цель
                     </AccentButton>
                 </div>
+                <AnimatedLoader isLoading={isPending}/>
             </form>
         </div>
     </ModalWindow>

@@ -1,15 +1,20 @@
 import Heading from "@/shared/ui/typography/Heading";
 import ModalWindow from "@/shared/ui/ModalWindow";
 import {Dispatch, SetStateAction} from "react";
-import {useForm} from "react-hook-form";
+import {Controller, useForm} from "react-hook-form";
 import Input from "@/shared/ui/inputs/Input";
 import {Plus} from "@/shared/ui/icons/Plus";
 import AccentButton from "@/shared/ui/AccentButton";
 import Select from "@/shared/ui/inputs/Select";
 import {Card} from "@/shared/ui/icons/Card";
-import { yupResolver } from "@hookform/resolvers/yup"
+import {yupResolver} from "@hookform/resolvers/yup"
 import {schema} from "@/widgets/create-wallet/model/schema";
 import {ExpensesCategoriesOptions} from "@/entities/expense-category";
+import {useMutation, useQueryClient} from "@tanstack/react-query";
+import {addWallet} from "@/entities/wallet";
+import {BankKeys, banks} from "@/entities/bank";
+import * as yup from "yup";
+import AnimatedLoader from "@/shared/ui/loaders/AnimatedLoader";
 
 type Props = {
     isActive: boolean;
@@ -18,31 +23,40 @@ type Props = {
 
 export const CreateWallet = ({isActive, setActive}: Props) => {
     const {
-        register,
         handleSubmit,
-        setValue,
         reset,
-        formState: { errors },
+        control,
+        formState: {errors},
     } = useForm({
         resolver: yupResolver(schema),
+        defaultValues: {
+            walletName: "",
+            walletBank: "",
+            walletCategory: "",
+            walletPeriod: "",
+            walletLimit: "" as any,
+        },
     });
 
-    const onSubmit = (data: unknown) => {
-        console.log(data);
-        setActive(false);
+    const queryClient = useQueryClient();
+
+    const {mutate: createWallet, isPending} = useMutation({
+        mutationFn: addWallet,
+        onSuccess: () => {
+            queryClient.invalidateQueries({queryKey: ["wallets"]});
+        },
+    });
+
+    const onSubmit = (data: yup.InferType<typeof schema>) => {
+        createWallet({
+            limit: data.walletLimit,
+            name: data.walletName,
+            bank: data.walletBank as BankKeys,
+            category: Number(data.walletCategory),
+            period: data.walletPeriod as "week" | "month"
+        });
         reset();
-    }
-
-    function onPeriodChange(period: string) {
-        setValue("walletPeriod", period);
-    }
-
-    function onCategoryChange(category: string) {
-        setValue("walletCategory", category);
-    }
-
-    function onBankChange(bank: string) {
-        setValue("walletBank", bank);
+        setActive(false);
     }
 
     return <ModalWindow isActive={isActive} setActive={setActive}>
@@ -53,37 +67,70 @@ export const CreateWallet = ({isActive, setActive}: Props) => {
             <form onSubmit={handleSubmit(onSubmit)}>
                 <div className="mb-2.5 flex flex-col">
                     <label className="font-medium text-sm mb-1" htmlFor="walletName">Название кошелька</label>
-                    <Input id="walletName" placeholder="Продукты" error={errors.walletName?.message}
-                           large {...register("walletName")}/>
+                    <Controller
+                        name="walletName"
+                        control={control}
+                        render={({field}) => (
+                            <Input id="walletName" placeholder="Продукты" error={errors.walletName?.message}
+                                   large {...field}/>
+                        )}
+                    />
                 </div>
                 <div className="mb-2.5 flex flex-col">
                     <label className="font-medium text-sm mb-1" htmlFor="walletLimit">Лимит</label>
                     <div className="relative text-placeholder">
-                        <Input className="w-full pr-9" id="walletLimit" type="number" placeholder="Например, 100 000₽"
-                               error={errors.walletLimit?.message} large {...register("walletLimit")}/>
-                        <Card className="absolute right-2 top-[0.5rem] w-5"/>
+                        <Controller
+                            name="walletLimit"
+                            control={control}
+                            render={({field}) => (
+                                <>
+                                    <Input className="w-full pr-9" id="walletLimit" type="number"
+                                           placeholder="Например, 100 000₽"
+                                           error={errors.walletLimit?.message} large {...field}/>
+                                    <Card className="absolute right-2 top-[0.5rem] w-5"/>
+                                </>
+                            )}
+                        />
                     </div>
                 </div>
                 <div className="mb-2.5 flex flex-col">
-                    <label className="font-medium text-sm mb-1" htmlFor="paymentCategory">Категория</label>
-                    <Select error={errors.walletCategory?.message} onChange={onCategoryChange} large
-                            placeholder="Выберите категорию" id="paymentCategory"
-                            options={ExpensesCategoriesOptions}/>
+                    <label className="font-medium text-sm mb-1" htmlFor="walletCategory">Категория</label>
+                    <Controller
+                        name="walletCategory"
+                        control={control}
+                        render={({field}) => (
+                            <Select error={errors.walletCategory?.message} onChange={(value) => field.onChange(value)}
+                                    large value={field.value} placeholder="Выберите категорию" id="walletCategory"
+                                    options={ExpensesCategoriesOptions}/>
+                        )}
+                    />
                 </div>
                 <div className="mb-2.5 flex flex-col">
                     <label className="font-medium text-sm mb-1" htmlFor="walletPeriod">Период</label>
-                    <Select error={errors.walletPeriod?.message} onChange={onPeriodChange} large
-                            placeholder="Выберите период" id="walletPeriod"
-                            options={[{value: "week", label: "Неделя"}, {value: "month", label: "Месяц"}]}/>
+                    <Controller
+                        name="walletPeriod"
+                        control={control}
+                        render={({field}) => (
+                            <Select error={errors.walletPeriod?.message} onChange={(value) => field.onChange(value)}
+                                    large value={field.value} placeholder="Выберите период" id="walletPeriod"
+                                    options={[{value: "week", label: "Неделя"}, {value: "month", label: "Месяц"}]}/>
+                        )}
+                    />
                 </div>
                 <div className="mb-2.5 flex flex-col">
                     <label className="font-medium text-sm mb-1" htmlFor="walletBank">Банк</label>
-                    <Select error={errors.walletBank?.message} onChange={onBankChange} large placeholder="Выберите банк"
-                            id="walletBank"
-                            options={[{value: "vbank", label: "Virtual Bank"}, {
-                                value: "abank",
-                                label: "Awesome Bank"
-                            }, {value: "sbank", label: "Smart Bank"}]}/>
+                    <Controller
+                        name="walletBank"
+                        control={control}
+                        render={({field}) => (
+                            <Select error={errors.walletBank?.message} onChange={(value) => field.onChange(value)}
+                                    large placeholder="Выберите банк" value={field.value} id="walletBank"
+                                    options={Object.entries(banks).map(([key, value]) => ({
+                                        value: key,
+                                        label: value.name
+                                    }))}/>
+                        )}
+                    />
                 </div>
                 <div className="mb-2.5">
                     <AccentButton className="w-full justify-center" large>
@@ -91,6 +138,7 @@ export const CreateWallet = ({isActive, setActive}: Props) => {
                         Создать кошелек
                     </AccentButton>
                 </div>
+                <AnimatedLoader isLoading={isPending}/>
             </form>
         </div>
     </ModalWindow>

@@ -1,5 +1,5 @@
 import Goals from "@/app/(main)/budget/Goals";
-import Wallet from "@/app/(main)/budget/Wallet";
+import Wallets from "@/app/(main)/budget/Wallets";
 import UpcomingPayments from "@/app/(main)/budget/UpcomingPayments";
 import ExpenseStats from "@/app/(main)/budget/ExpenseStats";
 import ExpenseList from "@/app/(main)/budget/ExpenseList";
@@ -9,6 +9,7 @@ import {ExpenseType} from "@/entities/expense";
 import {PaymentType} from "@/entities/payment";
 import {dehydrate, HydrationBoundary, QueryClient} from "@tanstack/react-query";
 import {getGoals} from "@/entities/goal";
+import {getWallets} from "@/entities/wallet";
 
 export default async function Budget() {
     const childAccount = await fetchWrap("/api/accounts/child");
@@ -24,13 +25,18 @@ export default async function Budget() {
         queryFn: getGoals,
     });
 
+    await queryClient.prefetchQuery({
+        queryKey: ["wallets"],
+        queryFn: getWallets,
+    });
+
     return <div>
         <div className="grid grid-cols-1 md:grid-cols-2 md:gap-8">
             <div>
                 <HydrationBoundary state={dehydrate(queryClient)}>
                     <Goals />
+                    <Wallets />
                 </HydrationBoundary>
-                <Wallet walletItems={wallets}/>
                 <UpcomingPayments payments={payments}/>
             </div>
             <div>

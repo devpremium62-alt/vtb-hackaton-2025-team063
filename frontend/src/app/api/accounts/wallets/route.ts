@@ -1,16 +1,20 @@
 import {NextResponse} from "next/server";
-import fetchWrap from "@/shared/lib/fetchWrap";
+import {addWallet, deleteWallet, getWallets} from "@/app/api/accounts/wallets/data";
 
 export async function GET() {
-    const mockData = [
-        {id: 1, category: 1, spent: 10000, limit: 20000},
-        {id: 2, category: 2, spent: 40000, limit: 40000},
-        {id: 3, category: 3, spent: 4500, limit: 5000},
-    ];
+    return NextResponse.json(getWallets());
+}
 
-    const categories = await fetchWrap("/api/expenses/categories");
-    return NextResponse.json(mockData.map(item => ({
-        ...item,
-        category: categories.find((c: any) => c.id === item.category)
-    })));
+export async function POST(req: Request) {
+    const data = await req.json();
+    const newWallet = addWallet(data);
+    return NextResponse.json(newWallet);
+}
+
+export async function DELETE(req: Request) {
+    const { searchParams } = new URL(req.url);
+    const id = Number(searchParams.get("id"));
+    deleteWallet(id);
+
+    return new NextResponse(null, { status: 204 });
 }

@@ -3,7 +3,9 @@ type Bank = {
     color: string;
 }
 
-export const banks: Record<string, Bank> = {
+export type BankKeys = "alfa" | "sber" | "vtb" | "family";
+
+export const banks: Record<BankKeys, Bank> = {
     "alfa": {name: "Альфабанк", color: "#FF5A5F"},
     "sber": {name: "Сбербанк", color: "#00C897"},
     "vtb": {name: "ВТБ", color: "#0066FF"},

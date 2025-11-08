@@ -10,9 +10,14 @@ type Props = {
 }
 
 export const Expenses = ({expenseCategories}: Props) => {
+    const filteredCategories = useMemo(() => {
+        return expenseCategories.filter(c => c.spent !== 0);
+    }, [expenseCategories])
+
     const sortedCategories = useMemo(() => {
-        return [...expenseCategories].sort((c1, c2) => c2.spent - c1.spent);
-    }, [expenseCategories]);
+        return [...filteredCategories].sort((c1, c2) => c2.spent - c1.spent);
+    }, [filteredCategories]);
+
     const chartData = useMemo(() => {
         return [...sortedCategories].reverse().map(c => ({value: c.spent, color: c.color}));
     }, [sortedCategories]);

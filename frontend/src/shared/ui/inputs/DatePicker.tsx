@@ -8,7 +8,7 @@ import Input from "@/shared/ui/inputs/Input";
 import {DatePicker} from "@mantine/dates";
 
 type Props = {
-    date: string | null;
+    date?: string | null;
     dateChange: (date: string | null) => void;
     large?: boolean;
     error?: string;
@@ -20,7 +20,7 @@ export default function DatePickerCompoent({date, large, error, dateChange}: Pro
     const wrapperRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
-        setValue(date);
+        setValue(date || null);
     }, [date]);
 
     const handleChange = (date: string | null) => {

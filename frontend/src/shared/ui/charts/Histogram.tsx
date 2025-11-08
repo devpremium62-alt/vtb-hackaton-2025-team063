@@ -20,15 +20,15 @@ const HistogramColumn = ({index, maxValue, col}: ColProps) => {
     })
 
     const style = {
-        boxShadow: isOver ? "0 0 12px rgba(0, 102, 255, 0.3)" : "none",
+        backgroundColor: isOver ? "var(--primary-color)" : col.color
     };
 
     const height = Math.round((col.value / maxValue) * 100);
 
     return <motion.div
         ref={setNodeRef}
-        className="w-8 rounded-lg"
-        style={{backgroundColor: col.color, ...style}}
+        className="w-8 rounded-lg transition-colors duration-500"
+        style={{...style}}
         initial={{height: 0}}
         animate={{height: `${height}%`}}
         transition={{

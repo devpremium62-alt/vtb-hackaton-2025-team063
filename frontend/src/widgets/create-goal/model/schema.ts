@@ -10,8 +10,6 @@ export const schema = yup
 
         goalValue: yup
             .number()
-            .transform((v, o) => (o === "" ? null : v))
-            .nullable()
             .typeError("Введите числовое значение")
             .required("Укажите сумму цели")
             .min(1, "Минимальный сумма - 1₽")
@@ -19,8 +17,6 @@ export const schema = yup
 
         goalDate: yup
             .date()
-            .transform((v, o) => (o === "" ? null : v))
-            .nullable()
             .required("Выберите дату цели")
             .test('is-future', 'Дата должна быть в будущем', (value) => {
                 if (!value) {

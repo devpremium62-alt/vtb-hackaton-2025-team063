@@ -22,18 +22,17 @@ const SwipeForDelete = ({onDelete, children}: Props) => {
     };
 
     return <>
-        <motion.div
-            className={`absolute cursor-pointer right-0 top-0 bottom-0 rounded-xl w-[40px] bg-error flex items-center justify-center text-white ${open ? "pointer-events-auto" : "pointer-events-none"}`}
+        <motion.button
+            className={`absolute cursor-pointer right-0 z-1 top-0 bottom-0 rounded-xl w-[40px] bg-error flex items-center justify-center text-white ${open ? "pointer-events-auto" : "pointer-events-none"}`}
             initial={{opacity: 0}}
             animate={{opacity: open ? 1 : 0}}
             transition={{duration: 0.25}}
             onClick={() => onDelete()}
         >
-            <Delete/>
-        </motion.div>
+            <Delete className="pointer-events-none"/>
+        </motion.button>
 
         <motion.article
-            className="bg-tertiary rounded-xl"
             drag="x"
             dragConstraints={{left: -45, right: 0}}
             style={{x}}

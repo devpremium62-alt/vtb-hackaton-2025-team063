@@ -7,6 +7,7 @@ let goals: GoalType[] = [
         moneyNeed: 150000,
         moneyCollected: 20000,
         deadline: new Date("2025-12-01"),
+        avatar: "target",
     },
     {
         id: 2,
@@ -14,6 +15,7 @@ let goals: GoalType[] = [
         moneyNeed: 100000,
         moneyCollected: 40000,
         deadline: new Date("2025-09-01"),
+        avatar: "vacation",
     },
 ];
 

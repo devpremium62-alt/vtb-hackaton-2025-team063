@@ -42,13 +42,13 @@ export const ExpensesCategoryColors: Record<ExpenseCategoryName, string> = {
 }
 
 export const ExpensesCategoriesOptions = [
-    {label: "ЖКХ и связь", value: "internet"},
-    {label: "Продукты", value: "products"},
-    {label: "Транспорт", value: "transport"},
-    {label: "Кафе и рестораны", value: "restaurants"},
-    {label: "Развлечения", value: "entertainment"},
-    {label: "Одежда и обувь", value: "clothes"},
-    {label: "Здоровье", value: "health"},
-    {label: "Подарки", value: "gifts"},
-    {label: "Прочее", value: "other"},
+    {label: "Развлечения", value: "1"},
+    {label: "Продукты", value: "2"},
+    {label: "ЖКХ и связь", value: "3"},
+    {label: "Транспорт", value: "4"},
+    {label: "Одежда и обувь", value: "5"},
+    {label: "Подарки", value: "6"},
+    {label: "Здоровье", value: "7"},
+    {label: "Кафе и рестораны", value: "8"},
+    {label: "Прочее", value: "9"},
 ]
