@@ -1,119 +1,77 @@
 version: "3.9"
 
 services:
-  postgres:
-    image: postgres:15
-    restart: unless-stopped
-    environment:
-      POSTGRES_DB: ${POSTGRES_DB:-open_banking}
-      POSTGRES_USER: ${POSTGRES_USER:-postgres}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
-    ports:
-      - "5432:5432"
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-      - ./backend/postgres/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-postgres}"]
-      interval: 30s
-      timeout: 10s
-      retries: 5
-    networks:
-      - multibank_net
-
-  redis:
-    image: redis:7-alpine
-    restart: unless-stopped
-    ports:
-      - "6379:6379"
-    volumes:
-      - redis_data:/data
-    healthcheck:
-      test: ["CMD", "redis-cli", "ping"]
-      interval: 30s
-      timeout: 10s
-      retries: 5
-    networks:
-      - multibank_net
-
-  backend:
+  api:
     build:
-      context: ./backend
+      context: ./backnd-api
       dockerfile: Dockerfile
     restart: unless-stopped
-    env_file:
-      - ./backend/.env.docker
     environment:
-      DJANGO_SETTINGS_MODULE: multibank_backend.settings
+      DATABASE_URL: ${BACKND_DATABASE_URL:-postgresql+asyncpg://backnd_api:backnd_api_password@backnd-postgres:5432/backnd_api}
+      DATABASE_POOL_SIZE: ${BACKND_DATABASE_POOL_SIZE:-5}
+      DATABASE_MAX_OVERFLOW: ${BACKND_DATABASE_MAX_OVERFLOW:-10}
+      DATABASE_ECHO: ${BACKND_DATABASE_ECHO:-0}
+      JWT_SECRET: ${BACKND_JWT_SECRET:-change_me_to_random_string}
+      JWT_ALGORITHM: ${BACKND_JWT_ALGORITHM:-HS256}
+      JWT_ACCESS_TOKEN_EXPIRE_MINUTES: ${BACKND_JWT_ACCESS_TOKEN_EXPIRE_MINUTES:-60}
+    volumes:
+      - ./backnd-api/app:/app/app
     ports:
       - "8000:8000"
     depends_on:
-      postgres:
+      backnd-postgres:
         condition: service_healthy
-      redis:
-        condition: service_healthy
+    command:
+      [
+        "uvicorn",
+        "app.main:app",
+        "--host",
+        "0.0.0.0",
+        "--port",
+        "8000"
+      ]
     networks:
-      - multibank_net
+      - app_net
 
-  celery:
-    build:
-      context: ./backend
-      dockerfile: Dockerfile
+  backnd-postgres:
+    image: postgres:16-alpine
     restart: unless-stopped
-    env_file:
-      - ./backend/.env.docker
     environment:
-      DJANGO_SETTINGS_MODULE: multibank_backend.settings
-    command: ["celery", "-A", "multibank_backend", "worker", "--loglevel=info"]
-    depends_on:
-      postgres:
-        condition: service_healthy
-      redis:
-        condition: service_healthy
+      POSTGRES_DB: backnd_api
+      POSTGRES_USER: backnd_api
+      POSTGRES_PASSWORD: backnd_api_password
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U backnd_api -d backnd_api"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+    volumes:
+      - backnd_postgres_data:/var/lib/postgresql/data
     networks:
-      - multibank_net
-
-  celery-beat:
-    build:
-      context: ./backend
-      dockerfile: Dockerfile
-    restart: unless-stopped
-    env_file:
-      - ./backend/.env.docker
-    environment:
-      DJANGO_SETTINGS_MODULE: multibank_backend.settings
-    command: ["celery", "-A", "multibank_backend", "beat", "--loglevel=info"]
-    depends_on:
-      postgres:
-        condition: service_healthy
-      redis:
-        condition: service_healthy
-    networks:
-      - multibank_net
+      - app_net
 
   frontend:
     build:
       context: ./frontend
       dockerfile: Dockerfile
       args:
-        NEXT_PUBLIC_API_BASE_URL: http://backend:8000
+        NEXT_PUBLIC_API_BASE_URL: http://api:8000
     restart: unless-stopped
     env_file:
       - ./frontend/.env.docker
     environment:
-      NEXT_PUBLIC_API_BASE_URL: http://backend:8000
+      NEXT_PUBLIC_API_BASE_URL: http://api:8000
     ports:
       - "3000:3000"
     depends_on:
-      backend:
+      api:
         condition: service_started
     networks:
-      - multibank_net
+      - app_net
 
 volumes:
-  postgres_data:
-  redis_data:
+  backnd_postgres_data:
 
 networks:
-  multibank_net:
+  app_net:
     driver: bridge
