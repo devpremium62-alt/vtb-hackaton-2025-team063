@@ -12,7 +12,7 @@ const AnimatedLoader = ({isLoading}: Props) => {
                            exit={{opacity: 0}}
                            transition={{duration: 0.3}}
                            layout>
-                <Loader size={7}/>
+                <Loader size={1.75}/>
             </motion.div>
         }
     </AnimatePresence>;

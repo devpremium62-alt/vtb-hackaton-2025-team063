@@ -4,7 +4,7 @@ import Heading from "@/shared/ui/typography/Heading";
 import ModalWindow from "@/shared/ui/ModalWindow";
 import {Dispatch, SetStateAction, useEffect, useRef, useState} from "react";
 import AccentButton from "@/shared/ui/AccentButton";
-import InfoPopup from "@/shared/ui/InfoPopup";
+import InfoPopup from "@/shared/ui/popups/InfoPopup";
 
 type Props = {
     isActive: boolean;

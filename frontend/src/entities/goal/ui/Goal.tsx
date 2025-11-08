@@ -10,23 +10,31 @@ import {FlashOn} from "@/shared/ui/icons/FlashOn";
 import SwipeForDelete from "@/shared/ui/SwipeForDelete";
 import {useMutation, useQueryClient} from "@tanstack/react-query";
 import {deleteGoal} from "@/entities/goal";
-import {useState} from "react";
+import {usePopup} from "@/providers/GlobalPopupProvider";
+import {Delete} from "@/shared/ui/icons/Delete";
 
 type Props = {
     goal: GoalType;
 }
 
 export const Goal = ({goal}: Props) => {
+    const {showPopup, closePopup} = usePopup();
     const queryClient = useQueryClient();
 
     const {mutate: removeGoal, isPending} = useMutation({
         mutationFn: deleteGoal,
         onSuccess: () => {
+            closePopup();
             queryClient.invalidateQueries({queryKey: ["goals"]});
         },
     });
 
     function onDelete() {
+        showPopup({
+            text: "Удаление цели...",
+            background: "var(--error-color)",
+            icon: () => <Delete />,
+        });
         removeGoal(goal.id);
     }
 

@@ -4,7 +4,7 @@ import Histogram from "@/shared/ui/charts/Histogram";
 import {ExpenseCategory, ExpenseCategoryType} from "@/entities/expense-category";
 import React, {useMemo} from "react";
 import {Info} from "@/shared/ui/icons/Info";
-import InfoPopup from "@/shared/ui/InfoPopup";
+import InfoPopup from "@/shared/ui/popups/InfoPopup";
 import useShowingSkeleton from "@/shared/hooks/useShowingSkeleton";
 
 type Props = {

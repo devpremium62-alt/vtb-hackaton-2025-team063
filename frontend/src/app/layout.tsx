@@ -8,6 +8,7 @@ import MantineClientProvider from "@/providers/MantineClientProvider";
 import {ColorSchemeScript} from "@mantine/core";
 import ServiceWorker from "@/providers/ServiceWorker";
 import ReactQueryProvider from "@/providers/ReactQueryProvider";
+import {PopupProvider} from "@/providers/GlobalPopupProvider";
 
 const sfPro = localFont({
     src: [
@@ -57,10 +58,12 @@ export default function RootLayout({children}: Readonly<{ children: React.ReactN
     <head>
         <ColorSchemeScript defaultColorScheme="light"/>
     </head>
-    <body className={`${sfPro.variable} antialiased bg-[#F8F9FB] text-white`}>
+    <body className={`${sfPro.variable} antialiased bg-[#F8F9FB] text-white relative`}>
         <ReactQueryProvider>
             <MantineClientProvider>
-                {children}
+                <PopupProvider>
+                    {children}
+                </PopupProvider>
             </MantineClientProvider>
             <ServiceWorker/>
         </ReactQueryProvider>

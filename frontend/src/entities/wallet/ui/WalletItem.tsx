@@ -8,6 +8,8 @@ import {Status} from "@/entities/wallet/ui/Status";
 import SwipeForDelete from "@/shared/ui/SwipeForDelete";
 import {deleteWallet, WalletType} from "@/entities/wallet";
 import {useMutation, useQueryClient} from "@tanstack/react-query";
+import {Delete} from "@/shared/ui/icons/Delete";
+import {usePopup} from "@/providers/GlobalPopupProvider";
 
 type Props = {
     item: WalletType;
@@ -17,16 +19,23 @@ export const WalletItem = ({item}: Props) => {
     const percent = Math.round(((item.limit - item.money) / item.limit) * 100);
     const isOverflow = percent >= 100;
 
+    const {showPopup, closePopup} = usePopup();
     const queryClient = useQueryClient();
 
     const {mutate: removeWallet, isPending} = useMutation({
         mutationFn: deleteWallet,
         onSuccess: () => {
+            closePopup();
             queryClient.invalidateQueries({queryKey: ["wallets"]});
         },
     });
 
     function onDelete() {
+        showPopup({
+            text: "Удаление кошелька...",
+            background: "var(--error-color)",
+            icon: () => <Delete />,
+        });
         removeWallet(item.id);
     }
 
