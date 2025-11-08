@@ -1,11 +1,12 @@
 import { NextResponse } from "next/server";
+import {changeLimit, getChildAccount} from "@/app/api/accounts/child/data";
 
 export async function GET() {
-    const mockData = {
-        moneyCollected: 50000,
-        moneyPerDay: 2500,
-        avatar: "/images/woman.png",
-    };
+    return NextResponse.json(getChildAccount());
+}
 
-    return NextResponse.json(mockData);
+export async function PATCH(req: Request) {
+    const data = await req.json();
+    const newAccount = changeLimit(data);
+    return NextResponse.json(newAccount);
 }

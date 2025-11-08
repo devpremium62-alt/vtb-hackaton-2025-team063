@@ -43,7 +43,9 @@ export default async function Budget() {
                 </HydrationBoundary>
             </div>
             <div>
-                <ChildAccountExtended account={childAccount}/>
+                <HydrationBoundary state={dehydrate(queryClient)}>
+                    <ChildAccountExtended/>
+                </HydrationBoundary>
                 <ExpenseStats expenseCategories={expensesByCategories}/>
                 <ExpenseList expenses={expenses}/>
             </div>
