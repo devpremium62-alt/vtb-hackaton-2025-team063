@@ -1,4 +1,5 @@
 from datetime import datetime
+from enum import Enum
 
 from pydantic import BaseModel, EmailStr, HttpUrl, constr, field_validator
 
@@ -47,3 +48,23 @@ class Token(BaseModel):
 class LoginRequest(BaseModel):
     email: EmailStr
     password: str
+
+
+class AccountRole(str, Enum):
+    OWNER = "owner"
+    USER = "user"
+
+
+class AccountBase(BaseModel):
+    account_id: int
+    user_id: int
+    title: constr(strip_whitespace=True, min_length=1, max_length=100)
+    balance: int
+    currency: constr(strip_whitespace=True, min_length=1, max_length=8)
+    bank: constr(strip_whitespace=True, min_length=1, max_length=100)
+    role: AccountRole
+
+
+class AccountRead(AccountBase):
+    class Config:
+        from_attributes = True

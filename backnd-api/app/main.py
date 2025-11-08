@@ -4,9 +4,15 @@ from fastapi.middleware.cors import CORSMiddleware
 from .config import settings
 from .database import engine
 from .models import Base
-from .routers import auth
+from .routers import accounts, auth
 
-app = FastAPI(title=settings.app_name)
+app = FastAPI(
+    title=settings.app_name,
+    description="API Description",
+    version="1.0.0",
+    docs_url="/docs",
+    redoc_url="/redoc"
+)
 
 app.add_middleware(
     CORSMiddleware,
@@ -17,6 +23,7 @@ app.add_middleware(
 )
 
 app.include_router(auth.router)
+app.include_router(accounts.router)
 
 
 @app.on_event("startup")
