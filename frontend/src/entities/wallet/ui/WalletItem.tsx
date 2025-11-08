@@ -3,17 +3,17 @@
 import {motion} from "framer-motion";
 import MoneyAmount from "@/shared/ui/MoneyAmount";
 import ProgressBar from "@/shared/ui/ProgressBar";
-import {LimitType} from "@/entities/limit";
 import {ExpenseCategoryAvatar} from "@/entities/expense-category";
 import {Status} from "@/entities/limit/ui/Status";
 import SwipeForDelete from "@/shared/ui/SwipeForDelete";
+import {WalletType} from "@/entities/wallet";
 
 type Props = {
-    item: LimitType;
+    item: WalletType;
 };
 
 export const WalletItem = ({item}: Props) => {
-    const percent = Math.round((item.category.spent / item.limit) * 100);
+    const percent = Math.round((item.spent / item.limit) * 100);
     const isOverflow = percent >= 100;
 
     return (
@@ -33,7 +33,7 @@ export const WalletItem = ({item}: Props) => {
                         </p>
                         <p className="text-light font-light text-xs flex items-center gap-[0.15rem]">
                             <span className="hidden xxs:inline-block">Осталось</span>
-                            <span><MoneyAmount value={Math.max(0, item.limit - item.category.spent)}/></span>
+                            <span><MoneyAmount value={Math.max(0, item.limit - item.spent)}/></span>
                             <span>из</span>
                             <span><MoneyAmount value={item.limit}/></span>
                         </p>
@@ -43,7 +43,7 @@ export const WalletItem = ({item}: Props) => {
                             {percent}%
                         </p>
                         <div className="w-20 mb-1.5">
-                            <ProgressBar value={item.category.spent} max={item.limit} indicators/>
+                            <ProgressBar value={item.spent} max={item.limit} indicators/>
                         </div>
                         <Status percent={percent}/>
                     </div>

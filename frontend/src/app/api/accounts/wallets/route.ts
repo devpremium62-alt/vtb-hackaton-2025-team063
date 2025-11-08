@@ -3,9 +3,9 @@ import fetchWrap from "@/shared/lib/fetchWrap";
 
 export async function GET() {
     const mockData = [
-        {id: 1, category: 1, limit: 20000},
-        {id: 2, category: 2, limit: 40000},
-        {id: 3, category: 3, limit: 5000},
+        {id: 1, category: 1, spent: 10000, limit: 20000},
+        {id: 2, category: 2, spent: 40000, limit: 40000},
+        {id: 3, category: 3, spent: 4500, limit: 5000},
     ];
 
     const categories = await fetchWrap("/api/expenses/categories");

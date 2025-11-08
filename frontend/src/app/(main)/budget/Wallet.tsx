@@ -3,13 +3,12 @@
 import Heading from "@/shared/ui/typography/Heading";
 import AccentButton from "@/shared/ui/AccentButton";
 import {Plus} from "@/shared/ui/icons/Plus";
-import {type LimitType} from "@/entities/limit";
-import {WalletItem} from "@/entities/limit";
+import {WalletItem, WalletType} from "@/entities/wallet";
 import {useState} from "react";
 import { CreateWallet } from "@/widgets/create-wallet";
 
 type Props = {
-    walletItems: LimitType[];
+    walletItems: WalletType[];
 };
 
 const Wallet = ({walletItems}: Props) => {
