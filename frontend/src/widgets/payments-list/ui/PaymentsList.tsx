@@ -6,6 +6,7 @@ import useShowingSkeleton from "@/shared/hooks/useShowingSkeleton";
 type Props = {
     onDepositClick: (id: number) => void;
     currentDate: Date;
+    limit?: number;
     payments: PaymentType[];
     paymentMarkup: (payment: PaymentType, onDepositClick: (id: number) => void) => JSX.Element;
     skeletonMarkup: (key: number) => JSX.Element;
@@ -15,7 +16,7 @@ function isSameMonth(d1: Date, d2: Date): boolean {
     return d1.getFullYear() === d2.getFullYear() && d1.getMonth() === d2.getMonth();
 }
 
-export const PaymentsList = ({currentDate, payments, paymentMarkup, skeletonMarkup, onDepositClick}: Props) => {
+export const PaymentsList = ({currentDate, payments, paymentMarkup, skeletonMarkup, onDepositClick, limit = 4}: Props) => {
     const isLoading = useShowingSkeleton(currentDate);
 
     const sortedPayments = useMemo(() => {
@@ -27,7 +28,7 @@ export const PaymentsList = ({currentDate, payments, paymentMarkup, skeletonMark
     return <AnimatePresence mode="popLayout">
         {isLoading ? (
             <div className="flex-1 flex flex-col gap-1">
-                {Array.from({length: 4}).map((_, i) => skeletonMarkup(i))}
+                {Array.from({length: limit}).map((_, i) => skeletonMarkup(i))}
             </div>
         ) : hasPayments ? (
             <motion.div
@@ -38,13 +39,14 @@ export const PaymentsList = ({currentDate, payments, paymentMarkup, skeletonMark
                 transition={{duration: 0.25, ease: "easeOut"}}
                 className="flex-1 flex flex-col gap-1"
             >
-                {sortedPayments.slice(0, 4).map(payment => (
+                {sortedPayments.slice(0, limit).map(payment => (
                     <motion.div
                         key={payment.id}
                         initial={{opacity: 0, x: -5}}
                         animate={{opacity: 1, x: 0}}
                         exit={{opacity: 0, x: 5}}
                         transition={{duration: 0.2}}
+                        layout
                     >
                         {paymentMarkup(payment, onDepositClick)}
                     </motion.div>

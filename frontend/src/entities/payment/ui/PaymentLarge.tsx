@@ -1,6 +1,10 @@
-import {isPaymentExpired, isPaymentPayed, PaymentType} from "@/entities/payment";
+import {deletePayment, isPaymentExpired, isPaymentPayed, PaymentType} from "@/entities/payment";
 import MoneyAmount from "@/shared/ui/MoneyAmount";
 import SwipeForDelete from "@/shared/ui/SwipeForDelete";
+import {usePopup} from "@/providers/GlobalPopupProvider";
+import {useMutation, useQueryClient} from "@tanstack/react-query";
+import {Delete} from "@/shared/ui/icons/Delete";
+import {motion} from "framer-motion";
 
 type Props = {
     payment: PaymentType;
@@ -8,12 +12,33 @@ type Props = {
 }
 
 export const PaymentLarge = ({payment, onDepositClick}: Props) => {
-    return <div className="relative overflow-hidden">
-        <SwipeForDelete onDelete={() => {
-        }}>
-            <article
-                className={`${!payment.payed && payment.date < new Date() ? "bg-error-transparent" : "bg-tertiary"} flex items-center justify-between p-2.5 rounded-xl gap-2`}>
+    const {showPopup, closePopup} = usePopup();
+    const queryClient = useQueryClient();
 
+    const {mutate: removePayment, isPending} = useMutation({
+        mutationFn: deletePayment,
+        onSuccess: () => {
+            closePopup();
+            queryClient.invalidateQueries({queryKey: ["payments"]});
+        },
+    });
+
+    function onDelete() {
+        showPopup({
+            text: "Удаление платежа...",
+            background: "var(--error-color)",
+            icon: () => <Delete/>,
+        });
+        removePayment(payment.id);
+    }
+
+    return <div className="relative overflow-hidden">
+        <SwipeForDelete onDelete={onDelete}>
+            <motion.article
+                className={`${!payment.payed && payment.date < new Date() ? "bg-error-transparent" : "bg-tertiary"} flex items-center justify-between p-2.5 rounded-xl gap-2`}
+                exit={{opacity: 0, height: 0, paddingTop: 0, paddingBottom: 0}}
+                transition={{duration: 0.3}}
+                layout>
                 <div className="flex flex-col min-w-0">
                     <time className="text-secondary text-xs font-medium">{payment.date.toLocaleDateString()}</time>
                     <p className="font-semibold min-w-0 text-xl text-ellipsis overflow-hidden whitespace-nowrap">{payment.name}</p>
@@ -24,7 +49,7 @@ export const PaymentLarge = ({payment, onDepositClick}: Props) => {
                     </p>
                     <Status onDepositClick={onDepositClick} payment={payment}/>
                 </div>
-            </article>
+            </motion.article>
         </SwipeForDelete>
     </div>;
 }

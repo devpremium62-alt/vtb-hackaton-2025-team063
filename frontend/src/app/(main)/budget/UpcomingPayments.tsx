@@ -2,11 +2,11 @@
 
 import Heading from "@/shared/ui/typography/Heading";
 import {
+    getPayments,
     isPaymentActual,
     isPaymentExpired,
     isPaymentPayed,
     PaymentLarge,
-    PaymentType
 } from "@/entities/payment";
 import React, {ChangeEvent, useMemo, useState} from "react";
 import {PaymentsCalendar} from "@/widgets/payments-calendar";
@@ -19,18 +19,20 @@ import NearestPayment from "@/app/(main)/budget/NearestPayment";
 import {PaymentsList} from "@/widgets/payments-list";
 import {CreatePayment} from "@/widgets/create-payment";
 import {DepositPayment} from "@/widgets/deposit-payment";
+import {useQuery} from "@tanstack/react-query";
 
-type Props = {
-    payments: PaymentType[];
-}
-
-const UpcomingPayments = ({payments}: Props) => {
+const UpcomingPayments = () => {
     const [isDepositModalOpen, setDepositModalOpen] = useState(false);
     const [isCreateModalOpen, setCreateModalOpen] = useState(false);
     const [currentDate, setCurrentDate] = useState<Date>(new Date());
     const [search, setSearch] = useState("");
     const [selectedStatus, setSelectedStatus] = useState("all");
     const [selectedName, setSelectedName] = useState("all");
+
+    const {data: payments = []} = useQuery({
+        queryKey: ["payments"],
+        queryFn: getPayments,
+    });
 
     const uniquePaymentNames = useMemo(() => {
         return Array.from(new Set(payments.map(p => p.name)));
@@ -98,7 +100,7 @@ const UpcomingPayments = ({payments}: Props) => {
         </div>
         <div>
             <Heading level={3}>Все платежи</Heading>
-            <PaymentsList currentDate={currentDate} payments={filteredPayments}
+            <PaymentsList limit={filteredPayments.length} currentDate={currentDate} payments={filteredPayments}
                           onDepositClick={onDepositClick}
                           paymentMarkup={(payment, onDepositClick) => <PaymentLarge onDepositClick={onDepositClick}
                                                                                     payment={payment}/>}

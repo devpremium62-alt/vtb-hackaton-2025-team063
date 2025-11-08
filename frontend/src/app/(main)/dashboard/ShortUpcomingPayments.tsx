@@ -1,20 +1,21 @@
 "use client";
 
 import Heading from "@/shared/ui/typography/Heading";
-import {Payment, PaymentType} from "@/entities/payment";
+import {getPayments, Payment, PaymentType} from "@/entities/payment";
 import React, {useMemo, useState} from "react";
-import useShowingSkeleton from "@/shared/hooks/useShowingSkeleton";
 import {PaymentsCalendar} from "@/widgets/payments-calendar";
 import {PaymentsList} from "@/widgets/payments-list";
 import {DepositPayment} from "@/widgets/deposit-payment";
+import {useQuery} from "@tanstack/react-query";
 
-type Props = {
-    payments: PaymentType[];
-}
-
-const ShortUpcomingPayments = ({payments}: Props) => {
+const ShortUpcomingPayments = () => {
     const [isModalActive, setModalActive] = useState(false);
     const [currentDate, setCurrentDate] = useState<Date>(new Date());
+
+    const {data: payments = []} = useQuery({
+        queryKey: ["payments"],
+        queryFn: getPayments,
+    });
 
     const dateToPayment = useMemo(() => {
         return Object.fromEntries(payments.map(p => [p.date.toISOString().slice(0, 10), {...p}]));

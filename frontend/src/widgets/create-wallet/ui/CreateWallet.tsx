@@ -43,6 +43,8 @@ export const CreateWallet = ({isActive, setActive}: Props) => {
     const {mutate: createWallet, isPending} = useMutation({
         mutationFn: addWallet,
         onSuccess: () => {
+            reset();
+            setActive(false);
             queryClient.invalidateQueries({queryKey: ["wallets"]});
         },
     });
@@ -55,8 +57,6 @@ export const CreateWallet = ({isActive, setActive}: Props) => {
             category: Number(data.walletCategory),
             period: data.walletPeriod as "week" | "month"
         });
-        reset();
-        setActive(false);
     }
 
     return <ModalWindow isActive={isActive} setActive={setActive}>

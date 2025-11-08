@@ -45,14 +45,14 @@ export const CreateGoal = ({isActive, setActive}: Props) => {
     const {mutate: createGoal, isPending} = useMutation({
         mutationFn: addGoal,
         onSuccess: () => {
+            reset();
+            setActive(false);
             queryClient.invalidateQueries({queryKey: ["goals"]});
         },
     });
 
     const onSubmit = (data: yup.InferType<typeof schema>) => {
         createGoal({name: data.goalName, avatar: data.goalIcon, deadline: data.goalDate, moneyNeed: data.goalValue});
-        reset();
-        setActive(false);
     }
 
     return <ModalWindow isActive={isActive} setActive={setActive}>
