@@ -10,7 +10,7 @@ app = FastAPI(
     title=settings.app_name,
     description="API Description",
     version="1.0.0",
-    docs_url="/docs",
+    docs_url="/api/docs",
     redoc_url="/redoc"
 )
 
