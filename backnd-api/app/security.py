@@ -9,13 +9,25 @@ from .config import settings
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
+_MAX_PASSWORD_BYTES = 72
+
+
+def _truncate_password(password: str) -> str:
+    password_bytes = password.encode("utf-8")
+    if len(password_bytes) <= _MAX_PASSWORD_BYTES:
+        return password
+    truncated_bytes = password_bytes[:_MAX_PASSWORD_BYTES]
+    return truncated_bytes.decode("utf-8", errors="ignore")
+
 
 def verify_password(plain_password: str, password_hash: str) -> bool:
-    return pwd_context.verify(plain_password, password_hash)
+    truncated = _truncate_password(plain_password)
+    return pwd_context.verify(truncated, password_hash)
 
 
 def hash_password(password: str) -> str:
-    return pwd_context.hash(password)
+    truncated = _truncate_password(password)
+    return pwd_context.hash(truncated)
 
 
 def create_access_token(
