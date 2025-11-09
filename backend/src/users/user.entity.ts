@@ -1,4 +1,5 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn, Index } from 'typeorm';
+import {Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn, Index, OneToMany} from 'typeorm';
+import {Consent} from "../banks/consents/consent.entity";
 
 @Entity()
 export class User {
@@ -18,4 +19,7 @@ export class User {
     @ManyToOne(() => User, { nullable: true })
     @JoinColumn({ name: 'partner_id' })
     partner?: User;
+
+    @OneToMany(() => Consent, (consent) => consent.user)
+    consents: Consent[];
 }

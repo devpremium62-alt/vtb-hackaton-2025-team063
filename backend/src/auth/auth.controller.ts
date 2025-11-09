@@ -1,4 +1,4 @@
-import {Body, Controller, Post, Put, Res, Get, UseGuards, Req} from '@nestjs/common';
+import {Body, Controller, Post, Put, Res, Get, UseGuards, Req, HttpCode} from '@nestjs/common';
 import {UserDTO, UserLoginDTO} from "../users/user.dto";
 import {AuthService} from "./auth.service";
 import {type Request, type Response} from 'express';
@@ -10,6 +10,7 @@ export class AuthController {
     }
 
     @Post()
+    @HttpCode(201)
     public async register(@Body() dto: UserDTO, @Res() res: Response) {
         const data = await this.authService.register(dto);
 

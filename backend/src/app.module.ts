@@ -1,13 +1,18 @@
 import {Module} from '@nestjs/common';
-import {AppController} from './app.controller';
-import {AppService} from './app.service';
 import {TypeOrmModule} from '@nestjs/typeorm';
 import {UsersModule} from './users/users.module';
 import {ServeStaticModule} from '@nestjs/serve-static';
-import {User} from "./users/user.entity";
 import {join} from 'path';
 import {CommonModule} from './common/common.module';
+import { ConfigModule } from '@nestjs/config';
+import {User} from "./users/user.entity";
+import {Consent} from "./banks/consents/consent.entity";
+import {AppController} from './app.controller';
+import {AppService} from './app.service';
 import {AuthModule} from './auth/auth.module';
+import { ConsentsModule } from './banks/consents/consents.module';
+import { BanksModule } from './banks/banks.module';
+
 
 @Module({
     imports: [
@@ -18,16 +23,21 @@ import {AuthModule} from './auth/auth.module';
             username: process.env.DB_USER || 'postgres',
             password: process.env.DB_PASSWORD || '',
             database: process.env.DB_NAME || 'family_multibank',
-            entities: [User],
+            entities: [User, Consent],
             synchronize: true,
         }),
         ServeStaticModule.forRoot({
             rootPath: join(__dirname, '..', 'uploads'),
             serveRoot: '/uploads',
         }),
+        ConfigModule.forRoot({
+            isGlobal: true,
+        }),
         UsersModule,
         CommonModule,
         AuthModule,
+        ConsentsModule,
+        BanksModule,
     ],
     controllers: [AppController],
     providers: [AppService],
