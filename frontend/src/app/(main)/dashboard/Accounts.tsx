@@ -1,12 +1,14 @@
 "use client";
 
-import {AccountAggregate, getPersonalAccounts, PersonalAccountType, SharedAccountType} from "@/entities/account";
-import {useQuery, useQueryClient} from "@tanstack/react-query";
+import {AccountAggregate, getPersonalAccounts} from "@/entities/account";
+import {useQuery} from "@tanstack/react-query";
 
 const Accounts = () => {
-    const queryClient = useQueryClient();
-
-    const personalAccounts = queryClient.getQueryData(["personal-accounts"]) as Record<number, PersonalAccountType>;
+    const {data: personalAccounts = null} = useQuery({
+        queryKey: ["personal-accounts"],
+        queryFn: getPersonalAccounts,
+        refetchInterval: 5000
+    });
 
     const persons = Object.values(personalAccounts || {});
 

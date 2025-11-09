@@ -5,15 +5,21 @@ import MoneyAmount from "@/shared/ui/MoneyAmount";
 import BalanceCounter from "@/shared/ui/MoneyCounting";
 import CoupleAvatars from "@/shared/ui/CoupleAvatars";
 import "dayjs/locale/ru";
-import {useQueryClient} from "@tanstack/react-query";
-import {PersonalAccountType, SharedAccountType} from "@/entities/account";
-
+import {useQuery} from "@tanstack/react-query";
+import {getPersonalAccounts, getSharedAccounts} from "@/entities/account";
 
 const SharedBalance = () => {
-    const queryClient = useQueryClient();
+    const {data: sharedAccounts = null} = useQuery({
+        queryKey: ["shared-accounts"],
+        queryFn: getSharedAccounts,
+        refetchInterval: 5000
+    });
 
-    const sharedAccounts = queryClient.getQueryData(["shared-accounts"]) as SharedAccountType;
-    const personalAccounts = queryClient.getQueryData(["personal-accounts"]) as Record<number, PersonalAccountType>;
+    const {data: personalAccounts = null} = useQuery({
+        queryKey: ["personal-accounts"],
+        queryFn: getPersonalAccounts,
+        refetchInterval: 5000
+    });
 
     const persons = Object.values(personalAccounts || {});
 

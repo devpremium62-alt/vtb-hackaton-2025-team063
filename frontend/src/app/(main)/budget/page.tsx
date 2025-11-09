@@ -11,8 +11,6 @@ import {getGoals} from "@/entities/goal";
 import {getWallets} from "@/entities/wallet";
 import {getExpenseCategories} from "@/entities/expense-category";
 
-export const revalidate = 0;
-
 export default async function Budget() {
     const queryClient = new QueryClient();
 

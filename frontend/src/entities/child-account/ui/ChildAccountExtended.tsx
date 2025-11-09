@@ -9,17 +9,18 @@ import AccentButton from "@/shared/ui/AccentButton";
 import {useState} from "react";
 import {DepositChildAccount} from "@/widgets/deposit-child-account";
 import {ChangeChildAccountLimit} from "@/widgets/change-child-account-limit";
-import {useQuery, useQueryClient} from "@tanstack/react-query";
-import {ChildAccountType, getChildAccount} from "@/entities/child-account";
-import {ExpenseCategoryType} from "@/entities/expense-category";
+import {useQuery} from "@tanstack/react-query";
+import {getChildAccount} from "@/entities/child-account";
 
 export const ChildAccountExtended = () => {
     const [isAddMoneyModalActive, setAddMoneyModalActive] = useState(false);
     const [isChangeLimitModalActive, setChangeLimitModalActive] = useState(false);
 
-    const queryClient = useQueryClient();
-
-    const account = queryClient.getQueryData(["child-account"]) as ChildAccountType;
+    const {data: account = null} = useQuery({
+        queryKey: ["child-account"],
+        queryFn: getChildAccount,
+        refetchInterval: 5000
+    });
 
     return <section className="mx-4 md:ml-0 mb-[1.875rem]">
         <div className="mb-2.5">

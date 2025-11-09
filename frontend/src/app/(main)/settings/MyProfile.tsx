@@ -15,8 +15,6 @@ const MaskedPhoneInput = forwardRef<HTMLInputElement, any>((props, ref) => (
         inputRef={ref}
         mask="+{7} (000) 000-00-00"
         unmask={false}
-        type="tel"
-        inputMode="numeric"
         className="min-w-0 flex-1 large text-sm text-primary py-2.5 px-2.5 bg-tertiary rounded-xl font-normal outline-primary"
     />
 ));
@@ -32,30 +30,25 @@ const MyProfile = ({settings}: Props) => {
     const [isPushEnabled, setPushEnabled] = useState(settings.pushEnabled);
 
     useEffect(() => {
-        // const userJSON = localStorage.getItem("user");
-        // if (!userJSON) {
-        //     return;
-        // }
-        //
-        // const userData = JSON.parse(userJSON);
-        setProfileData({
-            name: "Мария",
-            phone: "+7 (998) 675-34-34",
-            image_url: "/images/woman.png",
-            id: 1
-        });
+        const userJSON = localStorage.getItem("user");
+        if (!userJSON) {
+            return;
+        }
+
+        const userData = JSON.parse(userJSON);
+        setProfileData(userData.user);
     }, []);
 
     function updateProfileData(newProfile: UserFromResponse) {
         setProfileData(newProfile);
-        // const userJSON = localStorage.getItem("user");
-        // if (!userJSON) {
-        //     return;
-        // }
-        //
-        // const userData = JSON.parse(userJSON);
-        // userData.user = newProfile;
-        // localStorage.setItem("user", JSON.stringify(userData));
+        const userJSON = localStorage.getItem("user");
+        if (!userJSON) {
+            return;
+        }
+
+        const userData = JSON.parse(userJSON);
+        userData.user = newProfile;
+        localStorage.setItem("user", JSON.stringify(userData));
     }
 
     return <section className="mx-4 md:mr-0 mb-[1.875rem]">

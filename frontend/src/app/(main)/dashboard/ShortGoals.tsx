@@ -4,13 +4,15 @@ import {getGoals, Goal, type GoalType} from "@/entities/goal";
 import Heading from "@/shared/ui/typography/Heading";
 import CollectionEmpty from "@/shared/ui/CollectionEmpty";
 import {AnimatePresence} from "framer-motion";
-import {useQuery, useQueryClient} from "@tanstack/react-query";
-import {SharedAccountType} from "@/entities/account";
+import {useQuery} from "@tanstack/react-query";
 
 
 const ShortGoals = () => {
-    const queryClient = useQueryClient();
-    const goals = queryClient.getQueryData(["goals"]) as GoalType[];
+    const {data: goals = []} = useQuery({
+        queryKey: ["goals"],
+        queryFn: getGoals,
+        refetchInterval: 5000
+    });
 
     return <section className="mx-4 md:mx-0 md:mr-4 mb-5">
         <Heading level={2}>Наши цели</Heading>

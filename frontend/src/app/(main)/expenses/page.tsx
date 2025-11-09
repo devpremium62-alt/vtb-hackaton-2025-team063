@@ -8,8 +8,6 @@ import {dehydrate, HydrationBoundary, QueryClient} from "@tanstack/react-query";
 import {getExpenseCategories} from "@/entities/expense-category";
 import {getLimits} from "@/entities/limit";
 
-export const revalidate = 0;
-
 export default async function Expenses() {
     const members = await fetchMock("/api/users/family");
 

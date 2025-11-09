@@ -4,8 +4,6 @@ import AppData from "@/app/(main)/settings/AppData";
 import { fetchMock } from "@/shared/lib/fetchMock";
 import {PartnerType} from "@/entities/partner";
 
-export const revalidate = 0;
-
 export default async function Settings() {
     const profile = await fetchMock("/api/users");
     profile.partners = profile.partners.map((p: PartnerType) => ({...p, date: new Date(p.date)}));

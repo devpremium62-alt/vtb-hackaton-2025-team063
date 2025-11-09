@@ -20,7 +20,6 @@ const InfoPopup = ({text, time, isActive, setActive, top = 0, className = "", ba
 
     useEffect(() => {
         if (isActive) {
-            clearTimeout(timeout.current!);
             timeout.current = setTimeout(() => {
                 setActive(false);
             }, time);

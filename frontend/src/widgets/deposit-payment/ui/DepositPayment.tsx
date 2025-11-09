@@ -20,25 +20,23 @@ export const DepositPayment = ({isActive, setActive, currentPaymentId}: Props) =
     } = useForm();
 
     const queryClient = useQueryClient();
-    const isPending = false;
-    // const {mutate: depositPayment, isPending} = useMutation({
-    //     mutationFn: executePayment,
-    //     onSuccess: () => {
-    //         reset();
-    //         setActive(false);
-    //         queryClient.invalidateQueries({queryKey: ["payments"]});
-    //         queryClient.invalidateQueries({queryKey: ["shared-accounts"]});
-    //         queryClient.invalidateQueries({queryKey: ["personal-accounts"]});
-    //         queryClient.invalidateQueries({queryKey: ["expenses"]});
-    //         queryClient.invalidateQueries({queryKey: ["expense-categories"]});
-    //     },
-    // });
+
+    const {mutate: depositPayment, isPending} = useMutation({
+        mutationFn: executePayment,
+        onSuccess: () => {
+            reset();
+            setActive(false);
+            queryClient.invalidateQueries({queryKey: ["payments"]});
+            queryClient.invalidateQueries({queryKey: ["shared-accounts"]});
+            queryClient.invalidateQueries({queryKey: ["personal-accounts"]});
+            queryClient.invalidateQueries({queryKey: ["expenses"]});
+            queryClient.invalidateQueries({queryKey: ["expense-categories"]});
+        },
+    });
 
     const onSubmit = () => {
         if(currentPaymentId) {
-            //depositPayment(currentPaymentId);
-            reset();
-            setActive(false);
+            depositPayment(currentPaymentId);
         }
     }
 

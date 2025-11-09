@@ -7,9 +7,8 @@ import React from "react";
 import 'dayjs/locale/ru';
 import dayjs from "dayjs";
 import {Expenses} from "@/widgets/expenses";
-import {useQuery, useQueryClient} from "@tanstack/react-query";
+import {useQuery} from "@tanstack/react-query";
 import {getExpenses} from "@/entities/expense";
-import {ChildAccountType} from "@/entities/child-account";
 
 type Props = {
     firstAvatar: string;
@@ -17,9 +16,11 @@ type Props = {
 }
 
 const SharedExpenses = ({firstAvatar, secondAvatar}: Props) => {
-    const queryClient = useQueryClient();
-
-    const expenseCategories = queryClient.getQueryData(["expense-categories"]) as ExpenseCategoryType[];
+    const {data: expenseCategories = []} = useQuery({
+        queryKey: ["expense-categories"],
+        queryFn: getExpenseCategories,
+        refetchInterval: 5000
+    });
 
     return <section className="ml-4 md:mr-0 mb-[1.875rem]">
         <div className="flex items-center justify-between mr-4 mb-2.5">

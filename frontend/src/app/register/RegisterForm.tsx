@@ -15,6 +15,13 @@ const RegisterForm = () => {
     const [userData, setUserData] = useState<Partial<UserType>>({});
     const router = useRouter();
 
+    useEffect(() => {
+        const value = localStorage.getItem("user");
+        if(value) {
+            router.push("/dashboard");
+        }
+    }, []);
+
     function onMainStepEnd(user: Partial<UserType>) {
         setUserData((prevUser) => ({...prevUser, ...user}));
         setStep(1);
@@ -30,17 +37,16 @@ const RegisterForm = () => {
         setStep(3);
     }
 
-    // const {mutate: register, isPending} = useMutation({
-    //     mutationFn: registerUser,
-    //     onSuccess: (response) => {
-    //         localStorage.setItem("user", JSON.stringify(response));
-    //         router.push("/dashboard");
-    //     },
-    // });
+    const {mutate: register, isPending} = useMutation({
+        mutationFn: registerUser,
+        onSuccess: (response) => {
+            localStorage.setItem("user", JSON.stringify(response));
+            router.push("/dashboard");
+        },
+    });
 
     function onRegisterFinished() {
-        router.push("/dashboard");
-        //register({name: userData.name!, phone: userData.phone!, image_url: userData.photo!});
+        register({name: userData.name!, phone: userData.phone!, image_url: userData.photo!});
     }
 
     return <section className="min-h-screen w-full max-w-md login-page flex flex-col px-4 relative">

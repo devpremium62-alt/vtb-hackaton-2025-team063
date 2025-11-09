@@ -3,20 +3,21 @@
 import Heading from "@/shared/ui/typography/Heading";
 import AccentButton from "@/shared/ui/AccentButton";
 import {Plus} from "@/shared/ui/icons/Plus";
-import {getWallets, WalletItem, WalletType} from "@/entities/wallet";
+import {getWallets, WalletItem} from "@/entities/wallet";
 import {useState} from "react";
 import {CreateWallet} from "@/widgets/create-wallet";
-import {useQuery, useQueryClient} from "@tanstack/react-query";
+import {useQuery} from "@tanstack/react-query";
 import CollectionEmpty from "@/shared/ui/CollectionEmpty";
 import {AnimatePresence} from "framer-motion";
-import {ExpenseCategoryType} from "@/entities/expense-category";
 
 const Wallets = () => {
     const [isModalOpen, setModalOpen] = useState(false);
 
-    const queryClient = useQueryClient();
-
-    const wallets = queryClient.getQueryData(["wallets"]) as WalletType[];
+    const {data: wallets = []} = useQuery({
+        queryKey: ["wallets"],
+        queryFn: getWallets,
+        refetchInterval: 5000
+    });
 
     return <section className="mx-4 md:mr-0 mb-[1.875rem]">
         <div className="flex items-center justify-between mb-2.5">

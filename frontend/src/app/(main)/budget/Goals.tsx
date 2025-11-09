@@ -1,22 +1,23 @@
 "use client";
 
-import {getGoals, Goal, GoalType} from "@/entities/goal";
+import {getGoals, Goal} from "@/entities/goal";
 import Heading from "@/shared/ui/typography/Heading";
 import AccentButton from "@/shared/ui/AccentButton";
 import {Plus} from "@/shared/ui/icons/Plus";
 import {CreateGoal} from "@/widgets/create-goal";
 import {useState} from "react";
-import {useQuery, useQueryClient} from "@tanstack/react-query";
+import {useQuery} from "@tanstack/react-query";
 import {AnimatePresence} from "framer-motion";
 import CollectionEmpty from "@/shared/ui/CollectionEmpty";
-import {WalletType} from "@/entities/wallet";
 
 const Goals = () => {
     const [isModalOpen, setModalOpen] = useState(false);
 
-    const queryClient = useQueryClient();
-
-    const goals = queryClient.getQueryData(["goals"]) as GoalType[];
+    const {data: goals = []} = useQuery({
+        queryKey: ["goals"],
+        queryFn: getGoals,
+        refetchInterval: 5000,
+    });
 
     return <section className="mx-4 md:mr-0 mb-[1.875rem]">
         <div className="flex items-center justify-between mb-2.5">

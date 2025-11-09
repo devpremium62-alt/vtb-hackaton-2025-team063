@@ -1,20 +1,21 @@
 "use client";
 
 import Heading from "@/shared/ui/typography/Heading";
-import {ExpenseLight, ExpenseType, getExpenses, toExcelData} from "@/entities/expense";
+import {ExpenseLight, getExpenses, toExcelData} from "@/entities/expense";
 import useShowingSkeleton from "@/shared/hooks/useShowingSkeleton";
 import React from "react";
 import usePagination from "@/shared/hooks/usePagination";
 import Pagination from "@/shared/ui/Pagination";
 import {exportToExcel} from "@/shared/lib/exportToExcel";
 import {Export} from "@/shared/ui/icons/Export";
-import {useQuery, useQueryClient} from "@tanstack/react-query";
-import {GoalType} from "@/entities/goal";
+import {useQuery} from "@tanstack/react-query";
 
 const ExpenseList = () => {
-    const queryClient = useQueryClient();
-
-    const expenses = queryClient.getQueryData(["expenses"]) as ExpenseType[];
+    const {data: expenses = []} = useQuery({
+        queryKey: ["expenses"],
+        queryFn: getExpenses,
+        refetchInterval: 5000
+    });
 
     const [currentExpenses, {setPage, firstPage, lastPage}] = usePagination(expenses, 5);
     const isShowindSkeletons = useShowingSkeleton(expenses);

@@ -32,20 +32,18 @@ export const ChangeChildAccountLimit = ({isActive, setActive}: Props) => {
     });
 
     const queryClient = useQueryClient();
-    const isPending = false;
-    // const {mutate: sendNewLimit, isPending} = useMutation({
-    //     mutationFn: changeLimit,
-    //     onSuccess: () => {
-    //         reset();
-    //         setActive(false);
-    //         queryClient.invalidateQueries({queryKey: ["child-account"]});
-    //     },
-    // });
+
+    const {mutate: sendNewLimit, isPending} = useMutation({
+        mutationFn: changeLimit,
+        onSuccess: () => {
+            reset();
+            setActive(false);
+            queryClient.invalidateQueries({queryKey: ["child-account"]});
+        },
+    });
 
     const onSubmit = (data: yup.InferType<typeof schema>) => {
-        reset();
-        setActive(false);
-        //sendNewLimit(data.chilAccountnewLimit);
+        sendNewLimit(data.chilAccountnewLimit);
     }
 
     return <ModalWindow isActive={isActive} setActive={setActive}>

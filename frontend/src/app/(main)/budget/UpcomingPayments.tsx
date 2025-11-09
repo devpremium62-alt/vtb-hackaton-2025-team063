@@ -6,7 +6,7 @@ import {
     isPaymentActual,
     isPaymentExpired,
     isPaymentPayed,
-    PaymentLarge, PaymentType,
+    PaymentLarge,
 } from "@/entities/payment";
 import React, {ChangeEvent, useMemo, useState} from "react";
 import {PaymentsCalendar} from "@/widgets/payments-calendar";
@@ -19,8 +19,7 @@ import NearestPayment from "@/app/(main)/budget/NearestPayment";
 import {PaymentsList} from "@/widgets/payments-list";
 import {CreatePayment} from "@/widgets/create-payment";
 import {DepositPayment} from "@/widgets/deposit-payment";
-import {useQuery, useQueryClient} from "@tanstack/react-query";
-import {ChildAccountType} from "@/entities/child-account";
+import {useQuery} from "@tanstack/react-query";
 
 const UpcomingPayments = () => {
     const [isDepositModalOpen, setDepositModalOpen] = useState(false);
@@ -31,9 +30,11 @@ const UpcomingPayments = () => {
     const [selectedName, setSelectedName] = useState("all");
     const [currentPaymentId, setCurrentPaymentId] = useState<number | null>(null);
 
-    const queryClient = useQueryClient();
-
-    const payments = queryClient.getQueryData(["payments"]) as PaymentType[];
+    const {data: payments = []} = useQuery({
+        queryKey: ["payments"],
+        queryFn: getPayments,
+        refetchInterval: 5000
+    });
 
     const uniquePaymentNames = useMemo(() => {
         return Array.from(new Set(payments.map(p => p.name)));
