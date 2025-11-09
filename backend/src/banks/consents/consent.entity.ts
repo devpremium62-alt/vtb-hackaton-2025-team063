@@ -9,6 +9,9 @@ export class Consent {
     @Column()
     bankId: string;
 
+    @Column()
+    clientId: string;
+
     @ManyToOne(() => User, (user) => user.consents, { onDelete: 'CASCADE' })
     user: User;
 }

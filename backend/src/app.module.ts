@@ -12,6 +12,7 @@ import {AppService} from './app.service';
 import {AuthModule} from './auth/auth.module';
 import { ConsentsModule } from './banks/consents/consents.module';
 import { BanksModule } from './banks/banks.module';
+import {AccountsModule} from "./banks/accounts/accounts.module";
 
 
 @Module({
@@ -36,6 +37,7 @@ import { BanksModule } from './banks/banks.module';
         UsersModule,
         CommonModule,
         AuthModule,
+        AccountsModule,
         ConsentsModule,
         BanksModule,
     ],

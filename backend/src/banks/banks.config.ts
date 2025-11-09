@@ -5,7 +5,7 @@ export const BanksConfig = {
     },
     abank: {
         name: "Awesome Bank",
-        baseUrl: 'https://vbank.open.bankingapi.ru',
+        baseUrl: 'https://abank.open.bankingapi.ru',
     },
     sbank: {
         name: "Smart Bank",

@@ -8,6 +8,7 @@ import { ConsentsService } from './consents.service';
 @Module({
   imports: [TypeOrmModule.forFeature([Consent]), BanksModule],
   controllers: [ConsentsController],
-  providers: [ConsentsService]
+  providers: [ConsentsService],
+  exports: [ConsentsService]
 })
 export class ConsentsModule {}

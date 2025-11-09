@@ -1,4 +1,4 @@
-import {Injectable, NotFoundException} from '@nestjs/common';
+import {ForbiddenException, Injectable, NotFoundException} from '@nestjs/common';
 import {BanksService} from "../banks.service";
 import {InjectRepository} from "@nestjs/typeorm";
 import {Repository} from "typeorm";
@@ -17,7 +17,7 @@ export class ConsentsService {
     }
 
     public async createConsent(bankId: string, userId: number, consentDTO: CreateConsentDto) {
-        const clientId = this.configService.get<string>("CLIENT_ID");
+        const requestingBank = this.configService.get<string>("CLIENT_ID");
 
         const consentData = await this.bankService.requestBankAPI<{ consent_id: string }>(bankId, {
             url: "/account-consents/request",
@@ -26,14 +26,19 @@ export class ConsentsService {
                 "client_id": consentDTO.client_id,
                 "permissions": ["ReadAccountsDetail", "ReadBalances"],
                 "reason": "Агрегация счетов для HackAPI",
-                "requesting_bank": clientId,
+                "requesting_bank": requestingBank,
                 "requesting_bank_name": "Семейный Мультибанк"
             }
         });
 
         await this.consentsRepository.delete({bankId, user: {id: userId}});
 
-        const consent = this.consentsRepository.create({bankId, user: {id: userId}, id: consentData.consent_id});
+        const consent = this.consentsRepository.create({
+            bankId,
+            user: {id: userId},
+            id: consentData.consent_id,
+            clientId: consentDTO.client_id
+        });
         await this.consentsRepository.save(consent);
 
         return consent;
@@ -53,5 +58,18 @@ export class ConsentsService {
         if (!response) {
             await this.consentsRepository.remove(consent);
         }
+    }
+
+    public async getUserConsents(userId: number) {
+        return this.consentsRepository.find({where: {user: {id: userId}}});
+    }
+
+    public async getUserBankConsent(bankId:string, userId: number) {
+        const consent = await this.consentsRepository.findOne({where: {bankId, user: {id: userId}}});
+        if(!consent) {
+            throw new ForbiddenException("У вас нет согласия на эту операцию");
+        }
+
+        return consent;
     }
 }
