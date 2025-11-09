@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import date, datetime
 from enum import Enum
 
 from pydantic import BaseModel, EmailStr, HttpUrl, constr, field_validator
@@ -72,6 +72,7 @@ class AccountRead(AccountBase):
 
 class ConsentBase(BaseModel):
     user_id: int
+    bank_id: int
     concentID: constr(strip_whitespace=True, min_length=1, max_length=255)
 
 
@@ -80,11 +81,68 @@ class ConsentCreate(ConsentBase):
 
 
 class ConsentUpdate(BaseModel):
+    bank_id: int | None = None
     concentID: constr(strip_whitespace=True, min_length=1, max_length=255) | None = None
 
 
 class ConsentRead(ConsentBase):
     id: int
+    created_at: datetime
+    updated_at: datetime
+
+    class Config:
+        from_attributes = True
+
+
+class BankBase(BaseModel):
+    name: constr(strip_whitespace=True, min_length=1, max_length=100)
+    website_url: HttpUrl
+
+
+class BankCreate(BankBase):
+    pass
+
+
+class BankUpdate(BaseModel):
+    name: constr(strip_whitespace=True, min_length=1, max_length=100) | None = None
+    website_url: HttpUrl | None = None
+
+
+class BankRead(BankBase):
+    id: int
+    created_at: datetime
+    updated_at: datetime
+
+    class Config:
+        from_attributes = True
+
+
+class GoalBase(BaseModel):
+    account_id: int
+    name: constr(strip_whitespace=True, min_length=1, max_length=200)
+    end_date: date
+    target_amount: float
+    description: constr(strip_whitespace=True, max_length=1000) | None = None
+
+
+class GoalCreate(GoalBase):
+    start_date: date | None = None
+    collected_amount: float = 0.0
+
+
+class GoalUpdate(BaseModel):
+    name: constr(strip_whitespace=True, min_length=1, max_length=200) | None = None
+    start_date: date | None = None
+    end_date: date | None = None
+    target_amount: float | None = None
+    description: constr(strip_whitespace=True, max_length=1000) | None = None
+    collected_amount: float | None = None
+
+
+class GoalRead(GoalBase):
+    id: int
+    start_date: date
+    collected_amount: float
     created_at: datetime
     updated_at: datetime
 

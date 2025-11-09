@@ -1,3 +1,3 @@
-from . import accounts, auth, consent
+from . import accounts, auth, consent, goals
 
-__all__ = ["auth", "accounts", "consent"]
+__all__ = ["auth", "accounts", "consent", "goals"]
