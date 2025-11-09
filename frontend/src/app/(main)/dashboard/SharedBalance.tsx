@@ -21,6 +21,10 @@ const SharedBalance = () => {
 
     const persons = Object.values(personalAccounts || {});
 
+    if (!persons[0] || !persons[1]) {
+        return null;
+    }
+
     return <section className="p-2 rounded-xl bg-shared-balance mb-5 text-white mx-4">
         <div className="mb-12 flex items-center justify-between">
             <CoupleAvatars firstAvatar={persons[0].avatar} secondAvatar={persons[1].avatar}/>

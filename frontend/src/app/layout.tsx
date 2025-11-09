@@ -1,4 +1,4 @@
-import type {Metadata} from "next";
+import type {Metadata, Viewport} from "next";
 import '@mantine/core/styles/default-css-variables.css';
 import '@mantine/core/styles/global.css';
 import '@mantine/dates/styles.css';
@@ -46,11 +46,14 @@ export const metadata: Metadata = {
     title: "Семейный Мультибанк",
     description: "Семейный Мультибанк - приложение для управления общими финансами пары. Общий баланс, планирование бюджета, финансовые цели, детские счета и аналитика расходов. Безопасное подключение банковских счетов.",
     manifest: "/manifest.json",
-    themeColor: "#0066ff",
     icons: {
         icon: "/icons/icon-192x192.png",
         apple: "/icons/icon-512x512.png",
     },
+};
+
+export const viewport: Viewport = {
+    themeColor: "#0066ff",
 };
 
 export default function RootLayout({children}: Readonly<{ children: React.ReactNode; }>) {
