@@ -16,6 +16,7 @@ const Goals = () => {
     const {data: goals = []} = useQuery({
         queryKey: ["goals"],
         queryFn: getGoals,
+        refetchInterval: 5000,
     });
 
     return <section className="mx-4 md:mr-0 mb-[1.875rem]">

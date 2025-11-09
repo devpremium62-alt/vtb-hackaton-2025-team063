@@ -11,6 +11,7 @@ const ShortGoals = () => {
     const {data: goals = []} = useQuery({
         queryKey: ["goals"],
         queryFn: getGoals,
+        refetchInterval: 5000
     });
 
     return <section className="mx-4 md:mx-0 md:mr-4 mb-5">

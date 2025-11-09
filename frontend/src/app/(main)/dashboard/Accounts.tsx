@@ -7,6 +7,7 @@ const Accounts = () => {
     const {data: personalAccounts = null} = useQuery({
         queryKey: ["personal-accounts"],
         queryFn: getPersonalAccounts,
+        refetchInterval: 5000
     });
 
     const persons = Object.values(personalAccounts || {});

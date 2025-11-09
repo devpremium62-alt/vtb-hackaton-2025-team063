@@ -17,6 +17,7 @@ const Limits = () => {
     const {data: limits = []} = useQuery({
         queryKey: ["limits"],
         queryFn: getLimits,
+        refetchInterval: 5000
     });
 
     return <section className="mx-4 md:mr-0 mb-[1.875rem]">

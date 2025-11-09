@@ -33,6 +33,7 @@ const UpcomingPayments = () => {
     const {data: payments = []} = useQuery({
         queryKey: ["payments"],
         queryFn: getPayments,
+        refetchInterval: 5000
     });
 
     const uniquePaymentNames = useMemo(() => {

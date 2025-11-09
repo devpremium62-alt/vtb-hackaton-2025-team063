@@ -16,11 +16,13 @@ const InteractiveExpenses = ({avatar}: Props) => {
     const {data: expenses = []} = useQuery({
         queryKey: ["expenses"],
         queryFn: getExpenses,
+        refetchInterval: 5000
     });
 
     const {data: categories = []} = useQuery({
         queryKey: ["expense-categories"],
         queryFn: getExpenseCategories,
+        refetchInterval: 5000
     });
 
     const queryClient = useQueryClient();

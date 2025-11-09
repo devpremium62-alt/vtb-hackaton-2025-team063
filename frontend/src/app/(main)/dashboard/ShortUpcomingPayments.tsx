@@ -16,6 +16,7 @@ const ShortUpcomingPayments = () => {
     const {data: payments = []} = useQuery({
         queryKey: ["payments"],
         queryFn: getPayments,
+        refetchInterval: 5000
     });
 
     const dateToPayment = useMemo(() => {

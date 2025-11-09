@@ -9,6 +9,7 @@ const ExpenseStats = () => {
     const {data: expenseCategories = []} = useQuery({
         queryKey: ["expense-categories"],
         queryFn: getExpenseCategories,
+        refetchInterval: 5000
     });
 
     return <section className="ml-4 md:ml-0 mb-[1.875rem]">

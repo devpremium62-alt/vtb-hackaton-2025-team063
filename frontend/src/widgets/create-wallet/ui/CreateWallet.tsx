@@ -12,7 +12,7 @@ import {schema} from "@/widgets/create-wallet/model/schema";
 import {ExpensesCategoriesOptions} from "@/entities/expense-category";
 import {useMutation, useQueryClient} from "@tanstack/react-query";
 import {addWallet} from "@/entities/wallet";
-import {BankKeys, banks} from "@/entities/bank";
+import {BankKey, banks} from "@/entities/bank";
 import * as yup from "yup";
 import AnimatedLoader from "@/shared/ui/loaders/AnimatedLoader";
 
@@ -53,7 +53,7 @@ export const CreateWallet = ({isActive, setActive}: Props) => {
         createWallet({
             limit: data.walletLimit,
             name: data.walletName,
-            bank: data.walletBank as BankKeys,
+            bank: data.walletBank as BankKey,
             category: Number(data.walletCategory),
             period: data.walletPeriod as "week" | "month"
         });

@@ -19,6 +19,7 @@ export const ChildAccountExtended = () => {
     const {data: account = null} = useQuery({
         queryKey: ["child-account"],
         queryFn: getChildAccount,
+        refetchInterval: 5000
     });
 
     return <section className="mx-4 md:ml-0 mb-[1.875rem]">

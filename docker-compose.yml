@@ -56,11 +56,14 @@ services:
       dockerfile: Dockerfile
       args:
         NEXT_PUBLIC_API_BASE_URL: http://api:8000
+        NEXT_PUBLIC_MOCK_BASE_URL: http://fambank.ru:3000
     restart: unless-stopped
     env_file:
       - ./frontend/.env.docker
     environment:
       NEXT_PUBLIC_API_BASE_URL: http://api:8000
+      NEXT_PUBLIC_MOCK_BASE_URL: http://fambank.ru:3000
+      MOCK_BASE_URL_INTERNAL: http://frontend:3000
     ports:
       - "3000:3000"
     depends_on:

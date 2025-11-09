@@ -14,6 +14,7 @@ const ExpenseList = () => {
     const {data: expenses = []} = useQuery({
         queryKey: ["expenses"],
         queryFn: getExpenses,
+        refetchInterval: 5000
     });
 
     const [currentExpenses, {setPage, firstPage, lastPage}] = usePagination(expenses, 5);

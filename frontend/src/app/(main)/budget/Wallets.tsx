@@ -16,6 +16,7 @@ const Wallets = () => {
     const {data: wallets = []} = useQuery({
         queryKey: ["wallets"],
         queryFn: getWallets,
+        refetchInterval: 5000
     });
 
     return <section className="mx-4 md:mr-0 mb-[1.875rem]">

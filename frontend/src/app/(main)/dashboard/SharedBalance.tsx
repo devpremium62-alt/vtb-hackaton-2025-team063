@@ -12,11 +12,13 @@ const SharedBalance = () => {
     const {data: sharedAccounts = null} = useQuery({
         queryKey: ["shared-accounts"],
         queryFn: getSharedAccounts,
+        refetchInterval: 5000
     });
 
     const {data: personalAccounts = null} = useQuery({
         queryKey: ["personal-accounts"],
         queryFn: getPersonalAccounts,
+        refetchInterval: 5000
     });
 
     const persons = Object.values(personalAccounts || {});
