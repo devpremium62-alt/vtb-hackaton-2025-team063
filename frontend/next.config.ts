@@ -20,7 +20,7 @@ export default withPWA({
             {
                 source: "/api/:path*",
                 headers: [
-                    { key: "Access-Control-Allow-Origin", value: "http://fambank.ru" },
+                    { key: "Access-Control-Allow-Origin", value: "http://localhost:3000" },
                 ]
             }
         ]
