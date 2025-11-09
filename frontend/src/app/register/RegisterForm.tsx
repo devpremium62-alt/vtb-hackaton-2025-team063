@@ -1,6 +1,6 @@
 "use client";
 
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import MainStep from "@/app/register/MainStep";
 import PhotoStep from "@/app/register/PhotoStep";
 import {registerUser, UserType} from "@/entities/user";
@@ -14,6 +14,13 @@ const RegisterForm = () => {
     const [step, setStep] = useState(0);
     const [userData, setUserData] = useState<Partial<UserType>>({});
     const router = useRouter();
+
+    useEffect(() => {
+        const value = localStorage.getItem("user");
+        if(value) {
+            router.push("/dashboard");
+        }
+    }, []);
 
     function onMainStepEnd(user: Partial<UserType>) {
         setUserData((prevUser) => ({...prevUser, ...user}));
@@ -32,7 +39,8 @@ const RegisterForm = () => {
 
     const {mutate: register, isPending} = useMutation({
         mutationFn: registerUser,
-        onSuccess: () => {
+        onSuccess: (response) => {
+            localStorage.setItem("user", JSON.stringify(response));
             router.push("/dashboard");
         },
     });

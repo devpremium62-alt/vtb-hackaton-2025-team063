@@ -14,3 +14,17 @@ export type UserType = {
     code?: number | null;
     banks: BankKey[];
 }
+
+export type UserFromResponse = {
+    id: number;
+    name: string;
+    phone: string;
+    image_url: string;
+}
+
+export type UserResponse = {
+    access_token: string;
+    token_type: "bearer";
+    epires_in: number;
+    user: UserFromResponse;
+}

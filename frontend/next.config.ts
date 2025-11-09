@@ -24,5 +24,13 @@ export default withPWA({
                 ]
             }
         ]
-    }
+    },
+    images: {
+        remotePatterns: [
+            {
+                protocol: 'https',
+                hostname: '*',
+            },
+        ],
+    },
 });

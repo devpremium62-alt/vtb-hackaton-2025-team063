@@ -11,7 +11,7 @@ export default async function Settings() {
     return <div>
         <div className="grid grid-cols-1 md:grid-cols-2 md:gap-8">
             <div>
-                <MyProfile profileData={profile.profile} settings={profile.settings}/>
+                <MyProfile settings={profile.settings}/>
             </div>
             <div>
                 <ManageFamily partners={profile.partners}/>

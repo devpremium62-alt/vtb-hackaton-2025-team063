@@ -17,7 +17,7 @@ export async function fetchMock(url: string, data?: any): Promise<any> {
 }
 
 export async function fetchData(url: string, data?: any): Promise<any> {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000"}${url}`, data);
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || "http://fambank.ru:8000"}${url}`, data);
 
     if (response.status === 204) {
         return null;

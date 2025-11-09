@@ -12,7 +12,7 @@ const Avatar = ({avatar, className = "", alt = ""}: Props) => {
     }
 
     return <div className={`w-[2.375rem] h-[2.375rem] relative ${className}`}>
-        <Image className="rounded-xl" fill src={avatar} alt={alt} sizes="38px"/>
+        <Image className="rounded-full" fill src={avatar} alt={alt} sizes="38px"/>
     </div>
 }
 

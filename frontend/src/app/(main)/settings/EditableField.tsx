@@ -8,9 +8,10 @@ import { motion } from "framer-motion";
 type Props = {
     value: string;
     onChange: (value: string) => void;
+    InputComponent?: React.ElementType;
 }
 
-const EditableField = ({value, onChange, ...props}: Props) => {
+const EditableField = ({value, onChange, InputComponent = "input"}: Props) => {
     const [isEditing, setEditing] = useState(false);
     const [currValue, setValue] = useState(value);
     const [isSaved, setSaved] = useState(false);
@@ -22,6 +23,10 @@ const EditableField = ({value, onChange, ...props}: Props) => {
             clearTimeout(timeout.current!);
         }
     }, []);
+
+    useEffect(() => {
+        setValue(value);
+    }, [value]);
 
     useEffect(() => {
         if (isEditing && input.current) {
@@ -45,8 +50,12 @@ const EditableField = ({value, onChange, ...props}: Props) => {
                     transition={{duration: 0.3}}>
             <form className="flex items-center justify-between w-full" action="">
                 {isEditing
-                    ? <input ref={input} className="text-sm font-medium" value={currValue}
-                             onChange={(e) => setValue(e.target.value)}/>
+                    ? <InputComponent
+                        ref={input}
+                        className="text-sm font-medium"
+                        value={currValue}
+                        onChange={(e: any) => setValue(e.target?.value ?? e)}
+                    />
                     : <p className="text-sm font-medium">{value}</p>
                 }
 
