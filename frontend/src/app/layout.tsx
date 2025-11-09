@@ -1,4 +1,5 @@
 import type {Metadata, Viewport} from "next";
+import {ReactNode} from "react";
 import '@mantine/core/styles/default-css-variables.css';
 import '@mantine/core/styles/global.css';
 import '@mantine/dates/styles.css';
@@ -56,7 +57,7 @@ export const viewport: Viewport = {
     themeColor: "#0066ff",
 };
 
-export default function RootLayout({children}: Readonly<{ children: React.ReactNode; }>) {
+export default function RootLayout({children}: Readonly<{ children: ReactNode; }>) {
     return <html lang="ru" data-mantine-color-scheme="light">
     <head>
         <ColorSchemeScript defaultColorScheme="light"/>

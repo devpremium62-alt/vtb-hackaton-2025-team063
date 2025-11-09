@@ -8,7 +8,7 @@ type PopupData = {
     opened?: boolean;
     text: string;
     background?: string;
-    icon?: () => React.ReactNode;
+    icon?: () => ReactNode;
 };
 
 type PopupContextType = {

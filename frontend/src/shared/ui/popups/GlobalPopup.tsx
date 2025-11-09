@@ -1,14 +1,14 @@
 "use client";
 
 import InfoPopup from "@/shared/ui/popups/InfoPopup";
-import {useEffect, useState} from "react";
+import {ReactNode, useEffect, useState} from "react";
 
 type Props = {
     id?: number;
     text: string;
     background?: string;
     opened?: boolean;
-    icon?: () => React.ReactNode;
+    icon?: () => ReactNode;
 }
 
 const GlobalPopup = ({text, icon, background, id, opened}: Props) => {

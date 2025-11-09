@@ -1,6 +1,6 @@
 "use client";
 
-import {useEffect, useRef, useState} from "react";
+import {ElementType, useEffect, useRef, useState} from "react";
 import AccentButton from "@/shared/ui/AccentButton";
 import {Edit} from "@/shared/ui/icons/Edit";
 import { motion } from "framer-motion";
@@ -8,7 +8,7 @@ import { motion } from "framer-motion";
 type Props = {
     value: string;
     onChange: (value: string) => void;
-    InputComponent?: React.ElementType;
+    InputComponent?: ElementType;
 }
 
 const EditableField = ({value, onChange, InputComponent = "input"}: Props) => {

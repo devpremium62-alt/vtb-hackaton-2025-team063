@@ -2,7 +2,7 @@
 
 import Histogram from "@/shared/ui/charts/Histogram";
 import {ExpenseCategory, ExpenseCategoryType} from "@/entities/expense-category";
-import React, {useMemo} from "react";
+import React, {useMemo, useState} from "react";
 import {Info} from "@/shared/ui/icons/Info";
 import InfoPopup from "@/shared/ui/popups/InfoPopup";
 import useShowingSkeleton from "@/shared/hooks/useShowingSkeleton";
@@ -12,7 +12,7 @@ type Props = {
 }
 
 const ExpensesHistogram = ({expenseCategories}: Props) => {
-    const [isHelpActive, setHelpActive] = React.useState(false);
+    const [isHelpActive, setHelpActive] = useState(false);
 
     const nonEmptyCategories = useMemo(() => {
         return expenseCategories.filter(c => c.spent !== 0);

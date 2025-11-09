@@ -1,7 +1,7 @@
-import React, {useMemo} from "react";
+import {useMemo, useState} from "react";
 
 function usePagination<T>(data: T[], perPage = 5) {
-    const [page, setPage] = React.useState<number>(1);
+    const [page, setPage] = useState<number>(1);
 
     const firstPage = page === 1;
     const lastPage = page * perPage >= data.length;

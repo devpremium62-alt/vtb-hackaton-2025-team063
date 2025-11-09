@@ -1,4 +1,4 @@
-import {Dispatch, SetStateAction, useEffect, useRef, useState} from "react";
+import {ChangeEvent, Dispatch, SetStateAction, useEffect, useRef, useState} from "react";
 
 function usePhotoSelection(setPhoto: Dispatch<SetStateAction<string | null>>) {
     const [isCameraActive, setCameraActive] = useState(false);
@@ -45,7 +45,7 @@ function usePhotoSelection(setPhoto: Dispatch<SetStateAction<string | null>>) {
         setCameraActive(false);
     }
 
-    function onFileChange(e: React.ChangeEvent<HTMLInputElement>) {
+    function onFileChange(e: ChangeEvent<HTMLInputElement>) {
         const file = e.target.files?.[0];
         if (!file) {
             return;

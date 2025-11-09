@@ -1,6 +1,6 @@
 "use client";
 
-import {useEffect, useRef} from "react";
+import {Dispatch, ReactNode, SetStateAction, useEffect, useRef} from "react";
 import {Info} from "@/shared/ui/icons/Info";
 
 type Props = {
@@ -9,8 +9,8 @@ type Props = {
     time: number;
     isActive: boolean;
     className?: string;
-    setActive: React.Dispatch<React.SetStateAction<boolean>>;
-    icon?: () => React.ReactNode;
+    setActive: Dispatch<SetStateAction<boolean>>;
+    icon?: () => ReactNode;
     background?: string;
 }
 

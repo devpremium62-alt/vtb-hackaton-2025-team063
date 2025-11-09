@@ -1,9 +1,9 @@
 "use client";
 
 import {Navbar} from "@/widgets/navbar";
-import useAuthGuard from "@/shared/hooks/useAuthGuard";
+import {ReactNode} from "react";
 
-export default function MainLayout({children}: Readonly<{ children: React.ReactNode; }>) {
+export default function MainLayout({children}: Readonly<{ children: ReactNode; }>) {
     return <>
         <main className="w-full mx-auto max-w-screen-2xl relative py-4">
             {children}
