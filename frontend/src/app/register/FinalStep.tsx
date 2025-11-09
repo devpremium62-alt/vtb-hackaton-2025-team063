@@ -6,7 +6,7 @@ import {UserType} from "@/entities/user";
 import Image from "next/image";
 import Heading from "@/shared/ui/typography/Heading";
 import AccentButton from "@/shared/ui/AccentButton";
-import {banks} from "@/entities/bank";
+import {banks, type BankKeys} from "@/entities/bank";
 import IMask from "imask";
 import {useEffect, useState} from "react";
 
@@ -45,10 +45,13 @@ const FinalStep = ({user, onSuccess}: Props) => {
                     <p className="font-medium text-secondary text-lg leading-none">{formattedPhone}</p>
                 </div>
                 <div className="flex items-center flex-wrap gap-1">
-                    {user.banks?.map((b) => (
-                        <span key={b} className="text-xs font-normal rounded-2xl py-1 px-2.5 text-white"
-                              style={{background: banks[b].color}}>{banks[b].name}</span>
-                    ))}
+                    {user.banks?.map((b) => {
+                        const bankKey = b as BankKeys;
+                        return (
+                            <span key={b} className="text-xs font-normal rounded-2xl py-1 px-2.5 text-white"
+                                  style={{background: banks[bankKey].color}}>{banks[bankKey].name}</span>
+                        );
+                    })}
                 </div>
             </div>
             <div className="w-full flex items-center justify-center px-4">
