@@ -1,6 +1,19 @@
 version: "3.9"
 
 services:
+  nginx:
+    image: nginx:alpine
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on:
+      - api
+      - frontend
+    networks:
+      - app_net
+
   api:
     build:
       context: ./backnd-api
@@ -16,8 +29,8 @@ services:
       JWT_ACCESS_TOKEN_EXPIRE_MINUTES: ${BACKND_JWT_ACCESS_TOKEN_EXPIRE_MINUTES:-60}
     volumes:
       - ./backnd-api/app:/app/app
-    ports:
-      - "8000:8000"
+    expose:
+      - "8000"
     depends_on:
       backnd-postgres:
         condition: service_healthy
@@ -28,7 +41,9 @@ services:
         "--host",
         "0.0.0.0",
         "--port",
-        "8000"
+        "8000",
+        "--root-path",
+        "/api"
       ]
     networks:
       - app_net
@@ -55,20 +70,19 @@ services:
       context: ./frontend
       dockerfile: Dockerfile
       args:
-        NEXT_PUBLIC_API_BASE_URL: http://api:8000
+        NEXT_PUBLIC_API_BASE_URL: /api
         NEXT_PUBLIC_MOCK_BASE_URL: http://fambank.ru:3000
     restart: unless-stopped
     env_file:
       - ./frontend/.env.docker
     environment:
-      NEXT_PUBLIC_API_BASE_URL: http://api:8000
+      NEXT_PUBLIC_API_BASE_URL: /api
       NEXT_PUBLIC_MOCK_BASE_URL: http://fambank.ru:3000
       MOCK_BASE_URL_INTERNAL: http://frontend:3000
-    ports:
-      - "3000:3000"
+    expose:
+      - "3000"
     depends_on:
-      api:
-        condition: service_started
+      - api
     networks:
       - app_net
 
