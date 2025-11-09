@@ -1,3 +1,5 @@
+import {BankKey} from "@/entities/bank";
+
 export type UserInput = {
     name: string;
     phone: string;
@@ -10,5 +12,5 @@ export type UserType = {
     phone: string;
     photo: string;
     code?: number | null;
-    banks: string[];
+    banks: BankKey[];
 }

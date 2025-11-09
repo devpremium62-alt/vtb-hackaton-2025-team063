@@ -8,7 +8,7 @@ import BankSelectStep from "@/app/register/BankSelectStep";
 import FinalStep from "@/app/register/FinalStep";
 import { useRouter } from "next/navigation";
 import {useMutation} from "@tanstack/react-query";
-import {deleteWallet} from "@/entities/wallet";
+import {BankKey} from "@/entities/bank";
 
 const RegisterForm = () => {
     const [step, setStep] = useState(0);
@@ -25,7 +25,7 @@ const RegisterForm = () => {
         setStep(2);
     }
 
-    function onBanksStepEnd(banks: string[]) {
+    function onBanksStepEnd(banks: BankKey[]) {
         setUserData((prevUser) => ({...prevUser, banks}));
         setStep(3);
     }

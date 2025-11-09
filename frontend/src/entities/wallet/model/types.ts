@@ -1,5 +1,5 @@
 import {ExpenseCategoryType} from "@/entities/expense-category";
-import {BankKeys} from "@/entities/bank";
+import {BankKey} from "@/entities/bank";
 
 export type WalletType = {
     name: string;
@@ -7,7 +7,7 @@ export type WalletType = {
     category: ExpenseCategoryType;
     money: number;
     limit: number;
-    bank: BankKeys;
+    bank: BankKey;
     period: "month" | "week";
     isDirty?: boolean;
 }

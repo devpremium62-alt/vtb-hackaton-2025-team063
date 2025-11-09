@@ -1,1 +1,1 @@
-export {type BankKeys, banks} from "@/entities/bank/model/types"
+export {type Bank, type BankKey, banks} from "@/entities/bank/model/types"

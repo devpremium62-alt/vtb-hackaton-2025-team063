@@ -14,7 +14,5 @@ export default withPWA({
     },
     env: {
         NEXT_PUBLIC_APP_VERSION: version,
-        NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL || "http://fambank.ru:8000",
-        NEXT_PUBLIC_MOCK_BASE_URL: process.env.NEXT_PUBLIC_MOCK_BASE_URL || "http://localhost:3000",
     },
 });
