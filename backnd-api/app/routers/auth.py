@@ -27,7 +27,7 @@ async def register_user(
         name=payload.name,
         phone=payload.phone,
         email=payload.email,
-        image_url=payload.image_url,
+        image_url=str(payload.image_url) if payload.image_url else None,
         password_hash=hash_password(payload.password),
     )
 
