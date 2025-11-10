@@ -1,15 +1,17 @@
 import {HttpService} from '@nestjs/axios';
-import {HttpException, HttpStatus, Injectable} from '@nestjs/common';
+import {HttpException, HttpStatus, Inject, Injectable} from '@nestjs/common';
 import {lastValueFrom} from "rxjs";
 import {BanksConfig} from "./banks.config";
 import {ConfigService} from "@nestjs/config";
 import {AxiosRequestConfig} from "axios";
+import Redis from "ioredis";
 
 @Injectable()
 export class BanksService {
     private tokens: Record<string, { token: string; expiresAt: number }> = {};
 
     constructor(private readonly httpService: HttpService,
+                @Inject('REDIS_CLIENT') private readonly redis: Redis,
                 private readonly configService: ConfigService) {
     }
 
@@ -20,10 +22,20 @@ export class BanksService {
         const clientId = this.configService.get<string>("CLIENT_ID");
 
         return this.errorHandledRequest(async () => {
+            const url = `${bank.baseUrl}${requestConfig.url}`;
+            const key = `${url}-${clientId}`;
+
+            if(requestConfig.method === "GET") {
+                const response = await this.redis.get(key);
+                if(response) {
+                    return JSON.parse(response);
+                }
+            }
+
             const response = await lastValueFrom(
                 this.httpService.request({
                     ...requestConfig,
-                    url: `${bank.baseUrl}${requestConfig.url}`,
+                    url: url,
                     headers: {
                         ...requestConfig.headers,
                         Authorization: `Bearer ${token}`,
@@ -32,6 +44,10 @@ export class BanksService {
                     },
                 }),
             );
+
+            if(requestConfig.method === "GET") {
+                await this.redis.set(key, JSON.stringify(response.data), "EX", 300);
+            }
 
             return response.data as T;
         });
@@ -67,6 +83,8 @@ export class BanksService {
         try {
             return await callback();
         } catch (err) {
+            console.error(err);
+
             if (err.response?.data) {
                 throw new HttpException(
                     `Ошибка API банка: ${JSON.stringify(err.response.data)}`,

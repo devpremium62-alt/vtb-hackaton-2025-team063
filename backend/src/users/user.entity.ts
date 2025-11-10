@@ -16,7 +16,7 @@ export class User {
     @Column()
     avatar: string;
 
-    @ManyToOne(() => User, { nullable: true })
+    @ManyToOne(() => User, { nullable: true, onDelete: 'SET NULL' })
     @JoinColumn({ name: 'partner_id' })
     partner?: User;
 

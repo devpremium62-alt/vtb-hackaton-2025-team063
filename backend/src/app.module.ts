@@ -15,6 +15,7 @@ import { BanksModule } from './banks/banks.module';
 import {AccountsModule} from "./banks/accounts/accounts.module";
 import { FamilyModule } from './family/family.module';
 import { FamilyAccountsModule } from './family-accounts/family-accounts.module';
+import { RedisModule } from './redis/redis.module';
 
 
 @Module({
@@ -29,6 +30,7 @@ import { FamilyAccountsModule } from './family-accounts/family-accounts.module';
             entities: [User, Consent],
             synchronize: true,
         }),
+        RedisModule,
         ServeStaticModule.forRoot({
             rootPath: join(__dirname, '..', 'uploads'),
             serveRoot: '/uploads',

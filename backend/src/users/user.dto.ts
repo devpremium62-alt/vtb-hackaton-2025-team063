@@ -16,6 +16,11 @@ export class UserDTO {
     familyCode?: string;
 }
 
+export class UserCreateDTO extends UserDTO {
+    @IsOptional()
+    partner?: number;
+}
+
 export class UserEditDTO {
     @IsString()
     @IsOptional()
