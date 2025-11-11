@@ -15,6 +15,7 @@ import {addWallet} from "@/entities/wallet";
 import {BankKey, banks} from "@/entities/bank";
 import * as yup from "yup";
 import AnimatedLoader from "@/shared/ui/loaders/AnimatedLoader";
+import BankSelect from "@/shared/ui/inputs/BankSelect";
 
 type Props = {
     isActive: boolean;
@@ -117,21 +118,7 @@ export const CreateWallet = ({isActive, setActive}: Props) => {
                         )}
                     />
                 </div>
-                <div className="mb-2.5 flex flex-col">
-                    <label className="font-medium text-sm mb-1" htmlFor="walletBank">Банк</label>
-                    <Controller
-                        name="walletBank"
-                        control={control}
-                        render={({field}) => (
-                            <Select error={errors.walletBank?.message} onChange={(value) => field.onChange(value)}
-                                    large placeholder="Выберите банк" value={field.value} id="walletBank"
-                                    options={Object.entries(banks).map(([key, value]) => ({
-                                        value: key,
-                                        label: value.name
-                                    }))}/>
-                        )}
-                    />
-                </div>
+                <BankSelect name="walletBank" control={control} error={errors.walletBank?.message as string}/>
                 <div className="mb-2.5">
                     <AccentButton className="w-full justify-center" large>
                         <Plus className="mr-1"/>

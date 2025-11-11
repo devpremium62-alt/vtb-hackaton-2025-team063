@@ -36,25 +36,25 @@ export const Goal = ({goal}: Props) => {
                             transition={{duration: 0.3}}>
                     <div
                         className="shrink-0 w-[3.125rem] h-[3.125rem] rounded-full relative bg-health text-white flex justify-center items-center">
-                        {goal.avatar
-                            ? <Image className="p-3" src={`/images/categories/${goal.avatar}.png`} alt={goal.name}
+                        {goal.icon
+                            ? <Image className="p-3" src={`/images/categories/${goal.icon}.png`} alt={goal.name}
                                      fill sizes="50px"/>
                             : <FlashOn/>
                         }
                     </div>
                     <div className="flex flex-col min-w-0">
                         <p className="text-primary font-medium text-ellipsis overflow-hidden whitespace-nowrap">{goal.name}</p>
-                        <Date date={goal.deadline}/>
+                        <Date date={goal.date}/>
                     </div>
                     <div className="shrink-0 ml-auto flex flex-col items-end">
                         <p className="leading-none mb-1 font-bold text-lg xxs:text-xl">
-                            <MoneyAmount value={goal.moneyCollected}/>
+                            <MoneyAmount value={goal.collected}/>
                         </p>
                         <p className="text-light text-[0.6rem] self-end">
-                            из <MoneyAmount showCurrency={false} value={goal.moneyNeed}/>
+                            из <MoneyAmount showCurrency={false} value={goal.value}/>
                         </p>
                         <div className="w-20">
-                            <ProgressBar value={goal.moneyCollected} max={goal.moneyNeed}/>
+                            <ProgressBar value={goal.collected} max={goal.value}/>
                         </div>
                     </div>
                 </motion.div>

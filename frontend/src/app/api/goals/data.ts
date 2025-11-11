@@ -4,23 +4,23 @@ let goals: GoalType[] = [
     {
         id: 1,
         name: "Купить ноутбук",
-        moneyNeed: 150000,
-        moneyCollected: 20000,
-        deadline: new Date("2025-12-01"),
-        avatar: "target",
+        value: 150000,
+        collected: 20000,
+        date: new Date("2025-12-01"),
+        icon: "target",
     },
     {
         id: 2,
         name: "Путешествие",
-        moneyNeed: 100000,
-        moneyCollected: 40000,
-        deadline: new Date("2025-09-01"),
-        avatar: "vacation",
+        value: 100000,
+        collected: 40000,
+        date: new Date("2025-09-01"),
+        icon: "vacation",
     },
 ];
 
 export function getGoals() {
-    return goals.sort((g1, g2) => new Date(g1.deadline).getTime() - new Date(g2.deadline).getTime());
+    return goals.sort((g1, g2) => new Date(g1.date).getTime() - new Date(g2.date).getTime());
 }
 
 export function addGoal(goal: Omit<GoalType, "id">) {

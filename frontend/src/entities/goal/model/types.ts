@@ -1,8 +1,9 @@
 export type GoalType = {
     id: number;
     name: string;
-    avatar?: string;
-    deadline: Date;
-    moneyNeed: number;
-    moneyCollected: number;
+    icon?: string;
+    date: Date;
+    value: number;
+    bankId: string;
+    collected: number;
 };

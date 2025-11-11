@@ -20,7 +20,7 @@ const ShortGoals = () => {
             <AnimatePresence>
                 {goals.length
                     ? goals.slice(0, 2).map((goal) => (<Goal key={goal.id} goal={goal}/>))
-                    : <CollectionEmpty>Целей пока нет</CollectionEmpty>
+                    : <CollectionEmpty>У вас пока нет созданных целей</CollectionEmpty>
                 }
             </AnimatePresence>
         </div>

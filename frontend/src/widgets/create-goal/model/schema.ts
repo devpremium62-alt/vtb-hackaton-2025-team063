@@ -29,5 +29,9 @@ export const schema = yup
         goalIcon: yup
             .string()
             .required("Выберите иконку"),
+
+        goalBankId: yup
+            .string()
+            .required("Выберите банк"),
     })
     .required();

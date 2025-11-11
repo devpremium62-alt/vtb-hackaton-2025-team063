@@ -15,9 +15,8 @@ import {useMutation, useQueryClient} from "@tanstack/react-query";
 import {addGoal} from "@/entities/goal";
 import * as yup from "yup";
 import DatePicker from "@/shared/ui/inputs/DatePicker";
-import Loader from "@/shared/ui/loaders/Loader";
-import {AnimatePresence} from "framer-motion";
 import AnimatedLoader from "@/shared/ui/loaders/AnimatedLoader";
+import BankSelect from "@/shared/ui/inputs/BankSelect";
 
 type Props = {
     isActive: boolean;
@@ -37,6 +36,7 @@ export const CreateGoal = ({isActive, setActive}: Props) => {
             goalValue: "" as any,
             goalDate: null as any,
             goalIcon: "money",
+            goalBankId: null as any,
         },
     });
 
@@ -52,7 +52,13 @@ export const CreateGoal = ({isActive, setActive}: Props) => {
     });
 
     const onSubmit = (data: yup.InferType<typeof schema>) => {
-        createGoal({name: data.goalName, avatar: data.goalIcon, deadline: data.goalDate, moneyNeed: data.goalValue});
+        createGoal({
+            name: data.goalName,
+            icon: data.goalIcon,
+            date: data.goalDate,
+            value: data.goalValue,
+            bankId: data.goalBankId
+        });
     }
 
     return <ModalWindow isActive={isActive} setActive={setActive}>
@@ -89,6 +95,7 @@ export const CreateGoal = ({isActive, setActive}: Props) => {
                         />
                     </div>
                 </div>
+                <BankSelect name="goalBankId" control={control} error={errors.goalBankId?.message as string}/>
                 <div className="mb-2.5 flex flex-col">
                     <label className="font-medium text-sm mb-1" htmlFor="paymentDate">Дата цели</label>
                     <Controller
