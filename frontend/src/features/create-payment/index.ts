@@ -1,1 +1,1 @@
-export {CreatePayment} from "@/widgets/create-payment/ui/CreatePayment"
+export {CreatePayment} from "@/features/create-payment/ui/CreatePayment"

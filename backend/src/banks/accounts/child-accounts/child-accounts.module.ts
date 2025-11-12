@@ -6,9 +6,10 @@ import {ChildAccount} from "./child-account.entity";
 import {AccountsModule} from "../accounts.module";
 import {RedisModule} from "../../../redis/redis.module";
 import {FamilyModule} from "../../../family/family.module";
+import {TransactionsModule} from "../transactions/transactions.module";
 
 @Module({
-  imports:[TypeOrmModule.forFeature([ChildAccount]), AccountsModule, RedisModule, FamilyModule],
+  imports:[TypeOrmModule.forFeature([ChildAccount]), AccountsModule, RedisModule, FamilyModule, TransactionsModule],
   providers: [ChildAccountsService],
   controllers: [ChildAccountsController]
 })

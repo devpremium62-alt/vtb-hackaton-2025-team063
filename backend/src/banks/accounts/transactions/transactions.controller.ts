@@ -1,9 +1,9 @@
-import {Body, Controller, Get, Param, Patch, UseGuards} from '@nestjs/common';
+import {Body, Controller, Get, HttpCode, Param, Patch, Post, UseGuards} from '@nestjs/common';
 import {JwtAuthGuard} from "../../../auth/jwt-auth.guard";
 import {User} from "../../../common/decorators/user.decorator";
 import {TransactionsService} from "./transactions.service";
 import {ApiCookieAuth, ApiOperation, ApiResponse, ApiTags} from "@nestjs/swagger";
-import {TransactionDTO} from "./transaction.dto";
+import {TransactionDTO, UpdateTransactionDTO} from "./transaction.dto";
 
 @ApiTags('Транзакции')
 @Controller('transactions')
@@ -20,12 +20,22 @@ export class TransactionsController {
         return this.transactionService.getTransactions(userId);
     }
 
+    @ApiOperation({summary: 'Создание транзакции'})
+    @ApiResponse({status: 201, description: 'Созданная транзакция'})
+    @ApiCookieAuth('access_token')
+    @Post()
+    @HttpCode(201)
+    @UseGuards(JwtAuthGuard)
+    public create(@User("id") userId: number, @Body() transactionDTO: TransactionDTO) {
+        return this.transactionService.createTransaction(userId, transactionDTO);
+    }
+
     @ApiOperation({summary: 'Изменение категории транзакции'})
     @ApiResponse({status: 200, description: 'Обновленная транзакция'})
     @ApiCookieAuth('access_token')
     @Patch("/:transactionId")
     @UseGuards(JwtAuthGuard)
-    public update(@User("id") userId: number, @Param("transactionId") transactionId: string, @Body() transactionDTO: TransactionDTO) {
+    public update(@User("id") userId: number, @Param("transactionId") transactionId: string, @Body() transactionDTO: UpdateTransactionDTO) {
         return this.transactionService.updateTransaction(userId, transactionId, transactionDTO);
     }
 }

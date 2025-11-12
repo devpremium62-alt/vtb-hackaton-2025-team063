@@ -9,7 +9,7 @@ import {Plus} from "@/shared/ui/icons/Plus";
 import AccentButton from "@/shared/ui/AccentButton";
 import {Card} from "@/shared/ui/icons/Card";
 import {yupResolver} from "@hookform/resolvers/yup"
-import {schema} from "@/widgets/create-goal/model/schema";
+import {schema} from "@/features/create-goal/model/schema";
 import IconPick from "@/shared/ui/inputs/IconPick";
 import {useMutation, useQueryClient} from "@tanstack/react-query";
 import {addGoal} from "@/entities/goal";

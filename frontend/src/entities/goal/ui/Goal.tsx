@@ -22,6 +22,7 @@ export const Goal = ({goal}: Props) => {
 
     function onSuccess() {
         queryClient.invalidateQueries({queryKey: ["goals"]});
+        queryClient.invalidateQueries({queryKey: ["transactions"]});
     }
 
     return <div className="relative overflow-hidden">

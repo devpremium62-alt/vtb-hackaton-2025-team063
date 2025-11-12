@@ -4,7 +4,7 @@ import {getGoals, Goal} from "@/entities/goal";
 import Heading from "@/shared/ui/typography/Heading";
 import AccentButton from "@/shared/ui/AccentButton";
 import {Plus} from "@/shared/ui/icons/Plus";
-import {CreateGoal} from "@/widgets/create-goal";
+import {CreateGoal} from "@/features/create-goal";
 import {useState} from "react";
 import {useQuery} from "@tanstack/react-query";
 import {AnimatePresence} from "framer-motion";

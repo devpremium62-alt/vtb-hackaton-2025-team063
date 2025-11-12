@@ -1,0 +1,1 @@
+export {CreateChildAccount} from "@/features/create-child-account/ui/CreateChildAccount"

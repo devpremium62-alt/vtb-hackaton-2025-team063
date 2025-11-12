@@ -61,7 +61,7 @@ export const PaymentsList = ({currentDate, payments, paymentMarkup, skeletonMark
                 transition={{duration: 0.2}}
                 className="flex-1 flex items-center justify-center"
             >
-                <p className="text-center text-secondary text-sm font-medium py-8">
+                <p className="text-center text-secondary text-sm font-medium pt-6">
                     В этом месяце нет запланированных платежей
                 </p>
             </motion.div>

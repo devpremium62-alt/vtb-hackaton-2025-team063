@@ -1,63 +1,69 @@
 "use client";
 
-import Heading from "@/shared/ui/typography/Heading";
 import ProgressBar from "@/shared/ui/ProgressBar";
 import MoneyAmount from "@/shared/ui/MoneyAmount";
 import {motion} from "framer-motion";
 import Avatar from "@/shared/ui/Avatar";
 import AccentButton from "@/shared/ui/AccentButton";
-import {useState} from "react";
-import {DepositChildAccount} from "@/widgets/deposit-child-account";
-import {ChangeChildAccountLimit} from "@/widgets/change-child-account-limit";
-import {useQuery} from "@tanstack/react-query";
-import {getChildAccount} from "@/entities/child-account";
+import {ChildAccountType} from "@/entities/child-account";
+import getAbsoluteSeverUrl from "@/shared/lib/getAbsoluteServerUrl";
+import {useQueryClient} from "@tanstack/react-query";
+import useDelete from "@/shared/hooks/useDelete";
+import SwipeForDelete from "@/shared/ui/SwipeForDelete";
+import {deleteChildAccount} from "@/entities/child-account/api/api";
 
-export const ChildAccountExtended = () => {
-    const [isAddMoneyModalActive, setAddMoneyModalActive] = useState(false);
-    const [isChangeLimitModalActive, setChangeLimitModalActive] = useState(false);
+type Props = {
+    account: ChildAccountType;
+    onDepositClick: (account: ChildAccountType) => void;
+    onChangeLimitClick: (account: ChildAccountType) => void;
+}
 
-    const {data: account = null} = useQuery({
-        queryKey: ["child-account"],
-        queryFn: getChildAccount,
-        refetchInterval: 5000
-    });
+export const ChildAccountExtended = ({account, onDepositClick, onChangeLimitClick}: Props) => {
+    const queryClient = useQueryClient();
+    const onDelete = useDelete(account.id, deleteChildAccount, onSuccess, "Удаление детского счета...");
 
-    return <section className="mx-4 md:ml-0 mb-[1.875rem]">
-        <div className="mb-2.5">
-            <Heading level={2}>Детский счет</Heading>
-        </div>
-        <div className="bg-primary text-white rounded-xl py-2 px-1.5">
-            <motion.div initial={{opacity: 0, y: 10}}
-                        animate={{opacity: 1, y: 0}}
-                        exit={{opacity: 0, y: -10}}
-                        transition={{duration: 0.3}}>
-                <div className="flex items-baseline justify-between mb-5">
-                    <p className="text-3xl mb-0.5 leading-none font-bold">
-                        <MoneyAmount value={account?.moneyCollected || 0}/>
-                    </p>
-                    <Avatar avatar={account?.avatar || ""} alt="Ребенок"/>
-                </div>
-                <div className="flex items-center justify-between gap-5">
-                    <div className="flex-1">
-                        <p className="font-medium text-xs mb-0.5">
-                            <MoneyAmount value={account?.moneyPerDay || 0}/> в день
+    function onSuccess() {
+        queryClient.invalidateQueries({queryKey: ["child-accounts"]});
+        queryClient.invalidateQueries({queryKey: ["transactions"]});
+    }
+
+    return <div className="relative overflow-hidden">
+        <SwipeForDelete direction="y" onDelete={onDelete}>
+            <motion.article className="bg-primary text-white rounded-xl py-2 px-1.5"
+                            exit={{opacity: 0, height: 0, paddingTop: 0, paddingBottom: 0}}
+                            transition={{duration: 0.3}}
+                            layout>
+                <motion.div initial={{opacity: 0, y: 10}}
+                            animate={{opacity: 1, y: 0}}
+                            exit={{opacity: 0, y: -10}}
+                            transition={{duration: 0.3}}>
+                    <div className="flex items-baseline justify-between mb-5">
+                        <p className="text-3xl mb-0.5 leading-none font-bold">
+                            <MoneyAmount value={account?.balance || 0}/>
                         </p>
+                        <Avatar avatar={getAbsoluteSeverUrl(account?.avatar)} alt="Ребенок"/>
+                    </div>
+                    <div className="flex items-center justify-between gap-5">
                         <div className="flex-1">
-                            <ProgressBar indicators value={(account?.moneyPerDay || 0) * 30} max={account?.moneyCollected || 0}/>
+                            <p className="font-medium text-xs mb-0.5">
+                                <MoneyAmount value={account?.moneyPerDay || 0}/> в день
+                            </p>
+                            <div className="flex-1">
+                                <ProgressBar indicators value={(account?.moneyPerDay || 0) * 30}
+                                             max={account?.balance || 0}/>
+                            </div>
+                        </div>
+                        <div className="flex items-center gap-1">
+                            <button
+                                onClick={() => onChangeLimitClick(account)}
+                                className="bg-primary-dark text-white text-sm font-medium px-3 py-1 rounded-2xl cursor-pointer flex items-center bg-primary-dark">
+                                Изменить лимит
+                            </button>
+                            <AccentButton onClick={() => onDepositClick(account)}>Пополнить</AccentButton>
                         </div>
                     </div>
-                    <div className="flex items-center gap-1">
-                        <button
-                            onClick={() => setChangeLimitModalActive(true)}
-                            className="bg-primary-dark text-white text-sm font-medium px-3 py-1 rounded-2xl cursor-pointer flex items-center bg-primary-dark">
-                            Изменить лимит
-                        </button>
-                        <AccentButton onClick={() => setAddMoneyModalActive(true)}>Пополнить</AccentButton>
-                    </div>
-                </div>
-            </motion.div>
-        </div>
-        <ChangeChildAccountLimit isActive={isChangeLimitModalActive} setActive={setChangeLimitModalActive}/>
-        <DepositChildAccount isActive={isAddMoneyModalActive} setActive={setAddMoneyModalActive}/>
-    </section>
+                </motion.div>
+            </motion.article>
+        </SwipeForDelete>
+    </div>;
 }

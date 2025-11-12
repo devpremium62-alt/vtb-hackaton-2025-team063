@@ -28,6 +28,7 @@ import {Transaction} from "./banks/accounts/transactions/transaction.entity";
 import {ExpensesModule} from "./family/expenses/expenses.module";
 import {ChildAccount} from "./banks/accounts/child-accounts/child-account.entity";
 import {ChildAccountsModule} from "./banks/accounts/child-accounts/child-accounts.module";
+import {PaymentConsentsModule} from "./banks/accounts/transactions/payment-consents/payment-consents.module";
 
 
 @Module({
@@ -54,6 +55,7 @@ import {ChildAccountsModule} from "./banks/accounts/child-accounts/child-account
         UsersModule,
         CommonModule,
         AuthModule,
+        PaymentConsentsModule,
         TransactionsModule,
         GoalsModule,
         ChildAccountsModule,

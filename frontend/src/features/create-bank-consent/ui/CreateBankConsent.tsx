@@ -10,9 +10,9 @@ import {useMutation, useQueryClient} from "@tanstack/react-query";
 import {BankKey, banks, createConsent} from "@/entities/bank";
 import * as yup from "yup";
 import AnimatedLoader from "@/shared/ui/loaders/AnimatedLoader";
-import {schema} from "@/widgets/create-bank-consent";
 import {usePopup} from "@/providers/GlobalPopupProvider";
 import {Check} from "@/shared/ui/icons/Check";
+import {schema} from "@/features/create-bank-consent/model/schema";
 
 type Props = {
     isActive: boolean;

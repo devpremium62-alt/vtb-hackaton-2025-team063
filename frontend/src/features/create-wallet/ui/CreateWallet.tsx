@@ -8,7 +8,7 @@ import AccentButton from "@/shared/ui/AccentButton";
 import Select from "@/shared/ui/inputs/Select";
 import {Card} from "@/shared/ui/icons/Card";
 import {yupResolver} from "@hookform/resolvers/yup"
-import {schema} from "@/widgets/create-wallet/model/schema";
+import {schema} from "@/features/create-wallet/model/schema";
 import {TransactionsCategoriesOptions} from "@/entities/transaction-category";
 import {useMutation, useQueryClient} from "@tanstack/react-query";
 import {addWallet} from "@/entities/wallet";

@@ -7,9 +7,8 @@ import {Plus} from "@/shared/ui/icons/Plus";
 import AccentButton from "@/shared/ui/AccentButton";
 import {Card} from "@/shared/ui/icons/Card";
 import {yupResolver} from "@hookform/resolvers/yup"
-import {schema} from "@/widgets/deposit-child-account/model/schema";
+import {schema} from "@/features/deposit-child-account/model/schema";
 import {useMutation, useQueryClient} from "@tanstack/react-query";
-import {addGoal} from "@/entities/goal";
 import {ChildAccountType, depositMoney} from "@/entities/child-account";
 import AnimatedLoader from "@/shared/ui/loaders/AnimatedLoader";
 import * as yup from "yup";

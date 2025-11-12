@@ -27,8 +27,27 @@ export class RedisService {
         return response;
     }
 
-    public async invalidateCache(keyBase: string, entityId: number | string) {
-        await this.redis.del(`${keyBase}:${entityId}`);
-        this.emitter.emit(`cache.invalidate.${keyBase}`, new CacheInvalidateEvent(entityId));
+    public async invalidateCache(keyBase: string, ...entitiesId: (null | number | string)[]) {
+        const pattern = `${keyBase}:${entitiesId.join(":")}`;
+
+        if (pattern.includes('*')) {
+            const stream = this.redis.scanStream({
+                match: pattern,
+                count: 100,
+            });
+
+            const keysToDelete: string[] = [];
+            for await (const keys of stream) {
+                if (keys.length) keysToDelete.push(...keys);
+            }
+
+            if (keysToDelete.length > 0) {
+                await this.redis.del(...keysToDelete);
+            }
+        } else {
+            await this.redis.del(pattern);
+        }
+
+        this.emitter.emit(`cache.invalidate.${keyBase}`, new CacheInvalidateEvent(...entitiesId));
     }
 }

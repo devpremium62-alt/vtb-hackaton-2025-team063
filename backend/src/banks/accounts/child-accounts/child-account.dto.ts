@@ -13,7 +13,7 @@ export class ChildAccountDTO {
     @ApiProperty({description: 'Изображение'})
     avatar: string;
 
-    @ApiProperty({example: "abank", description: 'Иконка цели'})
+    @ApiProperty({example: "abank", description: 'Название банка'})
     @IsString()
     bankId: string;
 }

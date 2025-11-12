@@ -5,7 +5,7 @@ import AccentButton from "@/shared/ui/AccentButton";
 import {Plus} from "@/shared/ui/icons/Plus";
 import {getWallets, WalletItem} from "@/entities/wallet";
 import {useState} from "react";
-import {CreateWallet} from "@/widgets/create-wallet";
+import {CreateWallet} from "@/features/create-wallet";
 import {useQuery} from "@tanstack/react-query";
 import CollectionEmpty from "@/shared/ui/CollectionEmpty";
 import {AnimatePresence} from "framer-motion";

@@ -8,30 +8,36 @@ type Props = {
     canSwipe?: boolean;
     onDelete: () => void;
     children: ReactNode;
+    direction?: "x" | "y";
 }
 
-const SwipeForDelete = ({onDelete, children, canSwipe = true}: Props) => {
+const SwipeForDelete = ({onDelete, children, direction = "x", canSwipe = true}: Props) => {
     const [open, setOpen] = useState(false);
-    const x = useMotionValue(0);
+    const swipeVal = useMotionValue(0);
     const controls = useAnimation();
 
-    const handleDragEnd = (_: any, info: any) => {
-        if (info.offset.x < -40) {
+    const handleDragEnd = async (_: any, info: any) => {
+        if (info.offset[direction] < -40) {
             setOpen(true);
         } else {
             setOpen(false);
+            await swipeBack();
         }
     };
 
     async function handleDelete() {
-        await controls.start({ x: 0, transition: { duration: 0.25 } });
         setOpen(false);
+        await swipeBack();
         onDelete();
+    }
+
+    async function swipeBack() {
+        await controls.start({...(direction === "x" ? {x: 0} : {y: 0}), transition: {duration: 0.25}});
     }
 
     return <>
         <motion.button
-            className={`absolute cursor-pointer right-0 top-0 bottom-0 rounded-xl w-[40px] bg-error flex items-center justify-center text-white ${open ? "pointer-events-auto" : "pointer-events-none"}`}
+            className={`absolute cursor-pointer ${direction === "x" ? "right-0 top-0 w-[40px]" : "bottom-0 w-full h-[40px]"} bottom-0 rounded-xl bg-error flex items-center justify-center text-white ${open ? "pointer-events-auto" : "pointer-events-none"}`}
             initial={{opacity: 0}}
             animate={{opacity: open ? 1 : 0}}
             transition={{duration: 0.25}}
@@ -41,11 +47,13 @@ const SwipeForDelete = ({onDelete, children, canSwipe = true}: Props) => {
         </motion.button>
 
         <motion.article
-            drag={canSwipe ? "x" : false}
-            dragConstraints={{left: -45, right: 0}}
-            style={{x}}
+            drag={canSwipe ? direction : false}
+            dragConstraints={direction === "x"
+                ? {left: -45, right: 0}
+                : {top: -45, bottom: 0}}
+            style={{[direction]: swipeVal}}
             onDragEnd={handleDragEnd}
-            animate={{x: open ? -45 : 0}}
+            animate={controls}
             transition={{type: "spring", stiffness: 300, damping: 30}}
         >
             {children}

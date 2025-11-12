@@ -8,9 +8,10 @@ import {TransactionsTransformer} from "./transaction.transformer";
 import {RedisModule} from "../../../redis/redis.module";
 import {TypeOrmModule} from "@nestjs/typeorm";
 import {Transaction} from "./transaction.entity";
+import {PaymentConsentsModule} from "./payment-consents/payment-consents.module";
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Transaction]), BanksModule, ConsentsModule, AccountsModule, RedisModule],
+  imports: [TypeOrmModule.forFeature([Transaction]), BanksModule, ConsentsModule, AccountsModule, RedisModule, PaymentConsentsModule],
   providers: [TransactionsService, TransactionsTransformer],
   controllers: [TransactionsController],
   exports: [TransactionsService],

@@ -8,7 +8,7 @@ import AccentButton from "@/shared/ui/AccentButton";
 import Select from "@/shared/ui/inputs/Select";
 import {Card} from "@/shared/ui/icons/Card";
 import {yupResolver} from "@hookform/resolvers/yup"
-import {schema} from "@/widgets/create-payment/model/schema";
+import {schema} from "@/features/create-payment/model/schema";
 import {TransactionsCategoriesOptions} from "@/entities/transaction-category";
 import DatePicker from "@/shared/ui/inputs/DatePicker";
 import * as yup from "yup";

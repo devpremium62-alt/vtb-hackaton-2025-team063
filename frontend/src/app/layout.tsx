@@ -3,6 +3,7 @@ import {ReactNode} from "react";
 import '@mantine/core/styles/default-css-variables.css';
 import '@mantine/core/styles/global.css';
 import '@mantine/dates/styles.css';
+import '@mantine/carousel/styles.css';
 import "./globals.css";
 import localFont from "next/font/local";
 import MantineClientProvider from "@/providers/MantineClientProvider";

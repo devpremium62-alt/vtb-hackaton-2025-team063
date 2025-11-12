@@ -9,6 +9,10 @@ export class Goal {
 
     @Column()
     @Index()
+    account: string;
+
+    @Column()
+    @Index()
     bankId: string;
 
     @Column()

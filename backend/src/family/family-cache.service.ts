@@ -13,9 +13,13 @@ export class FamilyCacheService {
         return [userId, partnerId].filter(Boolean).sort().join(":");
     }
 
-    public async invalidateFamilyCache(baseKey: string, userId: number) {
-        const memberId = await this.familyService.getFamilyMemberId(userId);
-        const familyKey = this.getFamilyKey(userId, memberId);
+    public async invalidateFamilyCache(baseKey: string, userId: number | string) {
+        if(userId === "*") {
+            return;
+        }
+
+        const memberId = await this.familyService.getFamilyMemberId(userId as number);
+        const familyKey = this.getFamilyKey(userId as number, memberId);
         await this.redisService.invalidateCache(baseKey, familyKey);
     }
 }

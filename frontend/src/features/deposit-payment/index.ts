@@ -1,1 +1,1 @@
-export {DepositPayment} from "@/widgets/deposit-payment/ui/DepositPayment"
+export {DepositPayment} from "@/features/deposit-payment/ui/DepositPayment"

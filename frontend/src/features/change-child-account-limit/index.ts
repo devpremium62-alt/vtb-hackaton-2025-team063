@@ -1,1 +1,1 @@
-export {ChangeChildAccountLimit} from "@/widgets/change-child-account-limit/ui/ChangeChildAccountLimit"
+export {ChangeChildAccountLimit} from "@/features/change-child-account-limit/ui/ChangeChildAccountLimit"

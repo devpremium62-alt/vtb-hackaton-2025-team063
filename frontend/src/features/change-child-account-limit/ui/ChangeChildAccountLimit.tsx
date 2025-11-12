@@ -1,4 +1,4 @@
-import Heading from "@/shared/ui/typography/Heading";
+import Heading from "../../../shared/ui/typography/Heading";
 import ModalWindow from "@/shared/ui/ModalWindow";
 import {Dispatch, SetStateAction, useEffect} from "react";
 import {Controller, useForm} from "react-hook-form";
@@ -6,11 +6,11 @@ import Input from "@/shared/ui/inputs/Input";
 import AccentButton from "@/shared/ui/AccentButton";
 import {Card} from "@/shared/ui/icons/Card";
 import {yupResolver} from "@hookform/resolvers/yup"
-import {schema} from "@/widgets/change-child-account-limit/model/schema";
 import {useMutation, useQueryClient} from "@tanstack/react-query";
 import {changeLimit, ChildAccountType, depositMoney} from "@/entities/child-account";
 import * as yup from "yup";
 import AnimatedLoader from "@/shared/ui/loaders/AnimatedLoader";
+import {schema} from "@/features/change-child-account-limit/model/schema";
 
 type Props = {
     isActive: boolean;

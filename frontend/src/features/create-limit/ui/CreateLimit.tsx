@@ -9,7 +9,7 @@ import Select from "@/shared/ui/inputs/Select";
 import {Card} from "@/shared/ui/icons/Card";
 import {yupResolver} from "@hookform/resolvers/yup"
 import {TransactionsCategoriesOptions} from "@/entities/transaction-category";
-import {schema} from "@/widgets/create-limit/model/schema";
+import {schema} from "@/features/create-limit/model/schema";
 import {useMutation, useQueryClient} from "@tanstack/react-query";
 import {addLimit} from "@/entities/limit";
 import * as yup from "yup";

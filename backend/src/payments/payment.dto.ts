@@ -1,6 +1,6 @@
 import {IsString, MaxLength, IsNumber, Max, Min, IsDateString} from 'class-validator';
 import {ApiProperty} from "@nestjs/swagger";
-import {IsFutureDate} from "../common/decorators/is-future-date-decorator";
+import {IsFutureDate} from "../common/decorators/is-future-date.decorator";
 
 export class PaymentDTO {
     @ApiProperty({example: 'На квартиру', description: 'Название платежа'})

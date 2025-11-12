@@ -7,6 +7,8 @@ import {In, Repository} from "typeorm";
 import {AccountsService} from "../accounts.service";
 import {GoalDTO} from "./goal.dto";
 import {FamilyCacheService} from "../../../family/family-cache.service";
+import {TransactionsService} from "../transactions/transactions.service";
+import {DepositDTO} from "../transactions/transaction.dto";
 
 @Injectable()
 export class GoalsService {
@@ -17,9 +19,10 @@ export class GoalsService {
         private readonly goalsRepository: Repository<Goal>,
         private readonly redisService: RedisService,
         private readonly accountsService: AccountsService,
+        private readonly transactionsService: TransactionsService,
         private readonly familyService: FamilyService,
         private readonly familyCacheService: FamilyCacheService,
-        ) {
+    ) {
     }
 
     public async getGoals(userId: number) {
@@ -38,7 +41,12 @@ export class GoalsService {
     public async createGoal(userId: number, goalDTO: GoalDTO) {
         const account = await this.accountsService.createAccount(userId, goalDTO.bankId, {type: "savings"});
 
-        const goal = this.goalsRepository.create({...goalDTO, user: {id: userId}, id: account.accountId});
+        const goal = this.goalsRepository.create({
+            ...goalDTO,
+            user: {id: userId},
+            id: account.accountId,
+            account: account.account_number
+        });
         await this.goalsRepository.save(goal);
 
         await this.familyCacheService.invalidateFamilyCache(this.baseKey, userId);
@@ -47,16 +55,42 @@ export class GoalsService {
     }
 
     public async deleteGoal(userId: number, goalId: string) {
-        const goal = await this.goalsRepository.findOne({where: {user: {id: userId}, id: goalId}});
-        if(!goal) {
-            throw new NotFoundException("Финансовая цель не найдена");
-        }
+        const goal = await this.findGoal(userId, goalId);
 
         const account = await this.accountsService.closeAccount(userId, goal.bankId, goalId, {action: "transfer"});
-        if(account.status === "closed") {
+        if (account.status === "closed") {
             await this.goalsRepository.remove(goal);
 
             await this.familyCacheService.invalidateFamilyCache(this.baseKey, userId);
         }
+    }
+
+    public async depositGoal(userId: number, goalId: string, depositDTO: DepositDTO) {
+        const goal = await this.findGoal(userId, goalId);
+
+        const transaction = await this.transactionsService.createTransaction(userId, {
+            fromAccountId: depositDTO.fromAccountId,
+            fromAccount: depositDTO.fromAccount,
+            amount: depositDTO.amount,
+            toAccountId: goalId,
+            toAccount: goal.account,
+            fromBank: depositDTO.fromBank,
+            toBank: goal.bankId,
+            comment: "Перевод на счет финансовой цели",
+        });
+        console.log(transaction);
+
+        await this.familyCacheService.invalidateFamilyCache(this.baseKey, userId);
+
+        return goal;
+    }
+
+    private async findGoal(userId: number, goalId:string) {
+        const goal = await this.goalsRepository.findOne({where: {user: {id: userId}, id: goalId}});
+        if (!goal) {
+            throw new NotFoundException("Финансовая цель не найдена");
+        }
+
+        return goal;
     }
 }

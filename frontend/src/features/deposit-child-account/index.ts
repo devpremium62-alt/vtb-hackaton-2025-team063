@@ -1,1 +1,1 @@
-export {DepositChildAccount} from "@/widgets/deposit-child-account/ui/DepositChildAccount"
+export {DepositChildAccount} from "@/features/deposit-child-account/ui/DepositChildAccount"

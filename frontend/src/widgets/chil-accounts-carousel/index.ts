@@ -1,0 +1,1 @@
+export {ChildAccountsCarousel} from "@/widgets/chil-accounts-carousel/ui/ChildAccountsCarousel";

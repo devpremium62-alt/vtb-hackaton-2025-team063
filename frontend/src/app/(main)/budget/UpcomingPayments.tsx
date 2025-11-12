@@ -17,8 +17,8 @@ import Select from "@/shared/ui/inputs/Select";
 import {Filter} from "@/shared/ui/icons/Filter";
 import NearestPayment from "@/app/(main)/budget/NearestPayment";
 import {PaymentsList} from "@/widgets/payments-list";
-import {CreatePayment} from "@/widgets/create-payment";
-import {DepositPayment} from "@/widgets/deposit-payment";
+import {CreatePayment} from "@/features/create-payment";
+import {DepositPayment} from "@/features/deposit-payment";
 import {useQuery} from "@tanstack/react-query";
 
 const UpcomingPayments = () => {

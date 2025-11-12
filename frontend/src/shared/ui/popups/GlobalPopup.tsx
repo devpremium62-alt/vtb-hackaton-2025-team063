@@ -18,7 +18,7 @@ const GlobalPopup = ({text, icon, background, id, opened}: Props) => {
         setActive(Boolean(opened));
     }, [text, icon, background, id, opened]);
 
-    return <InfoPopup text={text} top={0.5} time={3000} isActive={isActive} setActive={setActive} icon={icon} background={background}/>
+    return <InfoPopup className="fixed!" text={text} top={0.5} time={3000} isActive={isActive} setActive={setActive} icon={icon} background={background}/>
 }
 
 export default GlobalPopup;

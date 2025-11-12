@@ -1,1 +1,1 @@
-export {CreateGoal} from "@/widgets/create-goal/ui/CreateGoal"
+export {CreateGoal} from "@/features/create-goal/ui/CreateGoal"

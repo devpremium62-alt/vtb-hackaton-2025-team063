@@ -1,11 +1,11 @@
 "use client";
 
 import Heading from "@/shared/ui/typography/Heading";
-import {getPayments, Payment, PaymentType} from "@/entities/payment";
+import {getPayments, Payment} from "@/entities/payment";
 import React, {useMemo, useState} from "react";
 import {PaymentsCalendar} from "@/widgets/payments-calendar";
 import {PaymentsList} from "@/widgets/payments-list";
-import {DepositPayment} from "@/widgets/deposit-payment";
+import {DepositPayment} from "@/features/deposit-payment";
 import {useQuery} from "@tanstack/react-query";
 
 const ShortUpcomingPayments = () => {

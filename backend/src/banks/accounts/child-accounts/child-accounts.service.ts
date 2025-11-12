@@ -7,6 +7,8 @@ import {AccountsService} from "../accounts.service";
 import {FamilyService} from "../../../family/family.service";
 import {ChildAccountDTO, UpdateChildAccountDTO} from "./child-account.dto";
 import {FamilyCacheService} from "../../../family/family-cache.service";
+import {TransactionsService} from "../transactions/transactions.service";
+import {DepositDTO} from "../transactions/transaction.dto";
 
 @Injectable()
 export class ChildAccountsService {
@@ -17,6 +19,7 @@ export class ChildAccountsService {
         private readonly childAccountRepository: Repository<ChildAccount>,
         private readonly redisService: RedisService,
         private readonly accountsService: AccountsService,
+        private readonly transactionsService: TransactionsService,
         private readonly familyService: FamilyService,
         private readonly familyCacheService: FamilyCacheService,
     ) {
@@ -51,6 +54,7 @@ export class ChildAccountsService {
         const childAccount = this.childAccountRepository.create({
             ...childAccountDTO,
             id: account.accountId,
+            account: account.account_number,
             user: {id: userId}
         });
         await this.childAccountRepository.save(childAccount);
@@ -80,6 +84,36 @@ export class ChildAccountsService {
     }
 
     public async updateChildAccount(userId: number, childAccountId: string, updateChildAccountDTO: UpdateChildAccountDTO) {
+        const childAccount = await this.findChildAccount(userId, childAccountId);
+
+        const updatedChildAccount = Object.assign(childAccount, updateChildAccountDTO);
+        await this.childAccountRepository.save(updatedChildAccount);
+
+        await this.familyCacheService.invalidateFamilyCache(this.baseKey, userId);
+
+        return updatedChildAccount;
+    }
+
+    public async depositChildAccount(userId: number, childAccountId: string, depositDTO: DepositDTO) {
+        const childAccount = await this.findChildAccount(userId, childAccountId);
+
+        const transaction = await this.transactionsService.createTransaction(userId, {
+            fromAccountId: depositDTO.fromAccountId,
+            fromAccount: depositDTO.fromAccount,
+            amount: depositDTO.amount,
+            toAccountId: childAccountId,
+            toAccount: childAccount.account,
+            fromBank: depositDTO.fromBank,
+            toBank: childAccount.bankId,
+            comment: "Перевод на детский счет",
+        });
+
+        await this.familyCacheService.invalidateFamilyCache(this.baseKey, userId);
+
+        return childAccount;
+    }
+
+    private async findChildAccount(userId: number, childAccountId: string) {
         const childAccount = await this.childAccountRepository.findOne({
             where: {
                 user: {id: userId},
@@ -90,11 +124,6 @@ export class ChildAccountsService {
             throw new NotFoundException("Детский счет не найден");
         }
 
-        const updatedChildAccount = Object.assign(childAccount, updateChildAccountDTO);
-        await this.childAccountRepository.save(updatedChildAccount);
-
-        await this.familyCacheService.invalidateFamilyCache(this.baseKey, userId);
-
-        return updatedChildAccount;
+        return childAccount;
     }
 }

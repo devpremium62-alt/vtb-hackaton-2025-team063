@@ -1,15 +1,31 @@
-import { fetchMock } from "@/shared/lib/fetchMock";
+import {fetchMock} from "@/shared/lib/fetchMock";
 import {ChildAccountType} from "@/entities/child-account";
+import universalFetch from "@/shared/lib/universalFetch";
 
-export async function getChildAccount(): Promise<ChildAccountType> {
-    return fetchMock("/api/accounts/child");
+export async function getChildAccounts(): Promise<ChildAccountType[]> {
+    return universalFetch("/child-accounts");
 }
 
-export async function changeLimit(limit: number): Promise<ChildAccountType> {
-    return fetchMock("/api/accounts/child", {
+export async function createChildAccount(childAccount: FormData) {
+    return universalFetch("/child-accounts", {
+        method: "POST",
+        body: childAccount,
+    });
+}
+
+export async function deleteChildAccount(childAccountId: string) {
+    return universalFetch(`/child-accounts/${childAccountId}`, {
+        method: "DELETE",
+    });
+}
+
+export async function changeLimit({moneyPerDay, accountId}: {
+    accountId: string,
+    moneyPerDay: number
+}): Promise<ChildAccountType> {
+    return universalFetch(`/child-accounts/${accountId}`, {
         method: "PATCH",
-        headers: {"Content-Type": "application/json"},
-        body: JSON.stringify({limit}),
+        body: {moneyPerDay},
     });
 }
 

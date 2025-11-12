@@ -8,6 +8,10 @@ export class ChildAccount {
 
     @Column()
     @Index()
+    account: string;
+
+    @Column()
+    @Index()
     bankId: string;
 
     @Column()

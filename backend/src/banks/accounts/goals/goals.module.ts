@@ -6,9 +6,10 @@ import {RedisModule} from "../../../redis/redis.module";
 import { GoalsService } from './goals.service';
 import {FamilyModule} from "../../../family/family.module";
 import { GoalsController } from './goals.controller';
+import {TransactionsModule} from "../transactions/transactions.module";
 
 @Module({
-    imports: [TypeOrmModule.forFeature([Goal]), AccountsModule, FamilyModule, RedisModule],
+    imports: [TypeOrmModule.forFeature([Goal]), AccountsModule, FamilyModule, TransactionsModule, RedisModule],
     providers: [GoalsService],
     controllers: [GoalsController]
 })

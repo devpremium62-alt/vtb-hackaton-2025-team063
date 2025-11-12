@@ -1,1 +1,1 @@
-export {CreateLimit} from "@/widgets/create-limit/ui/CreateLimit"
+export {CreateLimit} from "@/features/create-limit/ui/CreateLimit"

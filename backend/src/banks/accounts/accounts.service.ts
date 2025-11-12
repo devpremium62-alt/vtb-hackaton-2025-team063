@@ -1,14 +1,17 @@
 import {BadRequestException, Injectable} from '@nestjs/common';
 import {BanksService} from "../banks.service";
 import {ConsentsService} from "../consents/consents.service";
-import {AccountType} from "../banks.types";
+import {AccountType, CreatedAccountType} from "../banks.types";
 import {RedisService} from "../../redis/redis.service";
 import {AccountCloseDTO, AccountDTO} from "./account.dto";
 import {Consent} from "../consents/consent.entity";
+import {OnEvent} from "@nestjs/event-emitter";
+import {CacheInvalidateEvent} from "../../common/events/cache-invalidate.event";
 
 @Injectable()
 export class AccountsService {
     private cacheKey = "accounts";
+    private cacheExtendedKey = "accounts-extended";
 
     public constructor(private readonly banksService: BanksService, private readonly consentsService: ConsentsService, private readonly redisService: RedisService) {
     }
@@ -48,11 +51,32 @@ export class AccountsService {
         return responses;
     }
 
+    public async getAccountsForPayments(userId: number) {
+        return this.redisService.withCache(`${this.cacheExtendedKey}:${userId}`, 300, async () => {
+            const accounts: Record<string, (AccountType & {balance?: number})[]> = await this.getAccounts(userId);
+
+            const promises: Promise<any>[] = [];
+            for (const bank of Object.keys(accounts)) {
+                for (const account of accounts[bank]) {
+                    promises.push(this.getBalance(account.accountId, bank, userId)
+                        .then(balance => account.balance = balance)
+                        .catch(err => console.error(err)));
+                }
+            }
+
+            await Promise.all(promises);
+
+            return accounts;
+        });
+    }
+
     private async getBankAccounts(userId: number, bankId: string, onlyEnabled = false, consent?: Consent) {
         const bankConsent = consent || await this.consentsService.getUserBankConsent(bankId, userId);
 
         const cacheKey = `${this.cacheKey}:${bankConsent.id}:${userId}`;
-        const bankAccounts = await this.banksService.requestBankAPI<{ data: { account: AccountType[] } }>(bankConsent.bankId, {
+        const bankAccounts = await this.banksService.requestBankAPI<{
+            data: { account: AccountType[] }
+        }>(bankConsent.bankId, {
             url: `/accounts?client_id=${bankConsent.clientId}`,
             method: "GET",
             headers: {
@@ -65,10 +89,27 @@ export class AccountsService {
         });
     }
 
+    public async getAccountInfo(userId: number, bankId: string, accountId: string) {
+        const bankConsent = await this.consentsService.getUserBankConsent(bankId, userId);
+
+        const cacheKey = `${this.cacheKey}:${bankConsent.id}:${accountId}:${userId}`;
+        const account = await this.banksService.requestBankAPI<{
+            data: { account: AccountType }
+        }>(bankConsent.bankId, {
+            url: `/accounts/${accountId}`,
+            method: "GET",
+            headers: {
+                "X-Consent-Id": bankConsent.id,
+            }
+        }, cacheKey);
+
+        return account.data.account[0];
+    }
+
     public async createAccount(userId: number, bankId: string, account: AccountDTO) {
         const consent = await this.consentsService.getUserBankConsent(bankId, userId);
 
-        const response = await this.banksService.requestBankAPI<{ data: AccountType }>(bankId, {
+        const response = await this.banksService.requestBankAPI<{ data: CreatedAccountType }>(bankId, {
             url: `/accounts?client_id=${consent.clientId}`,
             method: "POST",
             headers: {
@@ -92,13 +133,13 @@ export class AccountsService {
         const accounts = await this.getBankAccounts(userId, bankId);
 
         let firstAccountId: string | null = null;
-        for(const account of accounts) {
-            if(account.status === "Enabled" && account.accountSubType === "Checking") {
+        for (const account of accounts) {
+            if (account.status === "Enabled" && account.accountSubType === "Checking") {
                 firstAccountId = account.accountId;
             }
         }
 
-        if(!firstAccountId) {
+        if (!firstAccountId) {
             throw new BadRequestException("У вас нет подходящего счета для перевода средств");
         }
 
@@ -139,5 +180,13 @@ export class AccountsService {
         }
 
         return 0;
+    }
+
+    @OnEvent('cache.invalidate.transactions', {async: true})
+    async handleCacheInvalidation(event: CacheInvalidateEvent) {
+        const [userId, accountId] = event.entityIds;
+
+        await this.redisService.invalidateCache(this.cacheKey, accountId, "*", userId, "balance");
+        await this.redisService.invalidateCache(this.cacheExtendedKey, userId);
     }
 }

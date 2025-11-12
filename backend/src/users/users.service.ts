@@ -97,10 +97,11 @@ export class UsersService {
         });
     }
 
+    @OnEvent('cache.invalidate.transactions', {async: true})
     @OnEvent('cache.invalidate.consents', {async: true})
-    async handleCacheInvalidation(event: CacheInvalidateEvent) {
-        const {entityId} = event;
+    async handleConsentsInvalidation(event: CacheInvalidateEvent) {
+        const [userId] = event.entityIds;
 
-        await this.redisService.invalidateCache("finance", entityId);
+        await this.redisService.invalidateCache("finance", userId);
     }
 }

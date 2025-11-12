@@ -4,7 +4,7 @@ import Heading from "@/shared/ui/typography/Heading";
 import React, {useMemo, useState} from "react";
 import {BankKey, banks, ConnectableBank, getConsents} from "@/entities/bank";
 import {useQuery} from "@tanstack/react-query";
-import {CreateBankConsent} from "@/widgets/create-bank-consent";
+import {CreateBankConsent} from "@/features/create-bank-consent";
 
 const BanksConnect = () => {
     const [isModalActive, setModalActive] = useState(false);

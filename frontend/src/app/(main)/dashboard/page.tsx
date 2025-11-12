@@ -2,11 +2,12 @@ import SharedBalance from "@/app/(main)/dashboard/SharedBalance";
 import Accounts from "@/app/(main)/dashboard/Accounts";
 import ShortGoals from "@/app/(main)/dashboard/ShortGoals";
 import ShortUpcomingPayments from "@/app/(main)/dashboard/ShortUpcomingPayments";
-import {ChildAccountSimple, getChildAccount} from "@/entities/child-account";
+import {getChildAccounts} from "@/entities/child-account";
 import {getGoals} from "@/entities/goal";
 import {getPayments} from "@/entities/payment";
 import {dehydrate, HydrationBoundary, QueryClient} from "@tanstack/react-query";
 import {getFamilyFinance} from "@/entities/family/api/api";
+import {ShortChildAccounts} from "@/app/(main)/dashboard/ShortChildAccounts";
 
 export default async function Dashboard() {
     const queryClient = new QueryClient();
@@ -15,7 +16,7 @@ export default async function Dashboard() {
         queryClient.prefetchQuery({queryKey: ["family-finance"], queryFn: getFamilyFinance}),
         queryClient.prefetchQuery({queryKey: ["goals"], queryFn: getGoals}),
         queryClient.prefetchQuery({queryKey: ["payments"], queryFn: getPayments}),
-        queryClient.prefetchQuery({queryKey: ["child-account"], queryFn: getChildAccount})
+        queryClient.prefetchQuery({queryKey: ["child-accounts"], queryFn: getChildAccounts})
     ]);
 
 
@@ -33,7 +34,7 @@ export default async function Dashboard() {
             <div>
                 <HydrationBoundary state={dehydrate(queryClient)}>
                     <ShortGoals/>
-                    <ChildAccountSimple/>
+                    <ShortChildAccounts/>
                 </HydrationBoundary>
             </div>
         </div>

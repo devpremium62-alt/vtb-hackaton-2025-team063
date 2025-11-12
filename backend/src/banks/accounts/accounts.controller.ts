@@ -5,6 +5,7 @@ import {User} from "../../common/decorators/user.decorator";
 import {ApiCookieAuth, ApiOperation, ApiResponse, ApiTags} from "@nestjs/swagger";
 import {ValidateBankIdPipe} from "../../common/pipes/validate-bank-id.pipe";
 import {AccountDTO} from "./account.dto";
+import {use} from "passport";
 
 @ApiTags("Счета")
 @Controller('accounts')
@@ -19,6 +20,24 @@ export class AccountsController {
     @UseGuards(JwtAuthGuard)
     public async getAccounts(@User("id") userId: number) {
         return this.accountsService.getAccounts(userId);
+    }
+
+    @ApiOperation({summary: 'Получение счетов пользователя во всех банках с балансами'})
+    @ApiResponse({status: 200, description: 'Список счетов'})
+    @ApiCookieAuth('access_token')
+    @Get("/extended")
+    @UseGuards(JwtAuthGuard)
+    public async getExtendedAccounts(@User("id") userId: number) {
+        return this.accountsService.getAccountsForPayments(userId);
+    }
+
+    @ApiOperation({summary: 'Получение данных счета'})
+    @ApiResponse({status: 200, description: 'Данные счета'})
+    @ApiCookieAuth('access_token')
+    @Get("/:bankId/:accountId")
+    @UseGuards(JwtAuthGuard)
+    public async getAccount(@User("id") userId: number, @Param("bankId", ValidateBankIdPipe) bankId: string, @Param("accountId") accountId: string) {
+        return this.accountsService.getAccountInfo(userId, bankId, accountId);
     }
 
     @ApiOperation({summary: 'Создание нового счета'})

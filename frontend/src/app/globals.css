@@ -282,6 +282,14 @@ input.large::placeholder {
     background: transparent !important;
 }
 
+.mantine-Carousel-indicator {
+    background-color: var(--color-gray-200) !important;
+}
+
+.mantine-Carousel-indicator[data-active="true"] {
+    background-color: var(--color-blue-500) !important;
+}
+
 .login-page {
     padding-top: 15vh;
     padding-bottom: 4rem;

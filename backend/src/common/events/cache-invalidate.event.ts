@@ -1,5 +1,7 @@
 export class CacheInvalidateEvent {
-    constructor(
-        public readonly entityId: number | string,
-    ) {}
+    public readonly entityIds: (null | number | string)[];
+
+    constructor(...args: (null | number | string)[]) {
+        this.entityIds = args;
+    }
 }

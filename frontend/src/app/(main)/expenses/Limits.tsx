@@ -5,9 +5,8 @@ import Heading from "@/shared/ui/typography/Heading";
 import {Plus} from "@/shared/ui/icons/Plus";
 import AccentButton from "@/shared/ui/AccentButton";
 import {useState} from "react";
-import {CreateLimit} from "@/widgets/create-limit";
+import {CreateLimit} from "@/features/create-limit";
 import {useQuery} from "@tanstack/react-query";
-import {Goal} from "@/entities/goal";
 import CollectionEmpty from "@/shared/ui/CollectionEmpty";
 import {AnimatePresence} from "framer-motion";
 

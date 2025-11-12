@@ -6,7 +6,7 @@ import {
     HttpCode,
     Param,
     Patch,
-    Post,
+    Post, Put,
     UploadedFile,
     UseGuards,
     UseInterceptors
@@ -17,6 +17,7 @@ import {JwtAuthGuard} from "../../../auth/jwt-auth.guard";
 import {User} from "../../../common/decorators/user.decorator";
 import {ChildAccountDTO, UpdateChildAccountDTO} from "./child-account.dto";
 import AvatarInterceptor from "../../../common/interceptors/avatar.interceptor";
+import {DepositDTO} from "../transactions/transaction.dto";
 
 @ApiTags("Детские счета")
 @Controller('child-accounts')
@@ -66,5 +67,15 @@ export class ChildAccountsController {
     @UseGuards(JwtAuthGuard)
     public async update(@User("id") userId: number, @Param("childAccountId") childAccountId: string, @Body() updateChildAccountDTO: UpdateChildAccountDTO) {
         return this.childAccountsService.updateChildAccount(userId, childAccountId, updateChildAccountDTO);
+    }
+
+    @ApiOperation({summary: 'Пополнение детского счета'})
+    @ApiResponse({status: 200, description: "Детский счет"})
+    @ApiCookieAuth('access_token')
+    @Put("/:childAccountId")
+    @HttpCode(200)
+    @UseGuards(JwtAuthGuard)
+    public async deposit(@User("id") userId: number, @Param("childAccountId") childAccountId: string, @Body() depositDTO: DepositDTO) {
+        return this.childAccountsService.depositChildAccount(userId, childAccountId, depositDTO);
     }
 }

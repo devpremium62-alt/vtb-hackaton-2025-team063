@@ -1,6 +1,6 @@
 import {ChangeEvent, Dispatch, SetStateAction, useEffect, useRef, useState} from "react";
 
-function usePhotoSelection(setPhoto: Dispatch<SetStateAction<string | null>>) {
+function usePhotoSelection(setPhoto?: Dispatch<SetStateAction<string | null>>) {
     const [isCameraActive, setCameraActive] = useState(false);
     const [file, setFile] = useState<File | null>(null);
     const videoRef = useRef<HTMLVideoElement>(null);
@@ -42,7 +42,11 @@ function usePhotoSelection(setPhoto: Dispatch<SetStateAction<string | null>>) {
         canvasRef.current.width = video.videoWidth;
         canvasRef.current.height = video.videoHeight;
         context.drawImage(video, 0, 0, video.videoWidth, video.videoHeight);
-        setPhoto(canvasRef.current.toDataURL("image/png"));
+
+        if(setPhoto) {
+            setPhoto(canvasRef.current.toDataURL("image/png"));
+        }
+
         setCameraActive(false);
     }
 
@@ -55,11 +59,14 @@ function usePhotoSelection(setPhoto: Dispatch<SetStateAction<string | null>>) {
         setFile(file);
 
         const reader = new FileReader();
-        reader.onload = ev => setPhoto(ev.target?.result as string);
+
+        if(setPhoto) {
+            reader.onload = ev => setPhoto(ev.target?.result as string);
+        }
         reader.readAsDataURL(file);
     }
 
-    return {file, isCameraActive, setCameraActive, onFileChange, takePhoto, videoRef, canvasRef};
+    return {file, isCameraActive, setCameraActive, onFileChange, takePhoto, videoRef, canvasRef, setFile};
 }
 
 export default usePhotoSelection;
