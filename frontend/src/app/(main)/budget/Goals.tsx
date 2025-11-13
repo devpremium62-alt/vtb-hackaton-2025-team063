@@ -11,7 +11,11 @@ import {AnimatePresence} from "framer-motion";
 import CollectionEmpty from "@/shared/ui/CollectionEmpty";
 import {DepositModal} from "@/widgets/deposit-modal/ui/DepositModal";
 
-const Goals = () => {
+type Props = {
+    className?: string;
+}
+
+const Goals = ({className}: Props) => {
     const [isModalOpen, setModalOpen] = useState(false);
 
     const {data: goals = []} = useQuery({
@@ -34,7 +38,7 @@ const Goals = () => {
         queryClient.invalidateQueries({queryKey: ["goals"]});
     }
 
-    return <section className="mx-4 md:mr-0 mb-[1.875rem]">
+    return <section className={`${className} mb-[1.875rem] md:p-3 md:rounded-2xl md:bg-sky-50`}>
         <div className="flex items-center justify-between mb-2.5 flex-wrap">
             <Heading level={2}>Наши цели</Heading>
             <AccentButton textLarge onClick={() => setModalOpen(true)}>

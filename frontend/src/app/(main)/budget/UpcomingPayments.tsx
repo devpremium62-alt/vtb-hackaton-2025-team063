@@ -21,7 +21,11 @@ import {CreatePayment} from "@/features/create-payment";
 import {DepositPayment} from "@/features/deposit-payment";
 import {useQuery} from "@tanstack/react-query";
 
-const UpcomingPayments = () => {
+type Props = {
+    className?: string;
+}
+
+const UpcomingPayments = ({className}: Props) => {
     const [isDepositModalOpen, setDepositModalOpen] = useState(false);
     const [isCreateModalOpen, setCreateModalOpen] = useState(false);
     const [currentDate, setCurrentDate] = useState<Date>(new Date());
@@ -74,9 +78,9 @@ const UpcomingPayments = () => {
         setDepositModalOpen(true);
     }
 
-    return <section className="mx-4 md:mr-0 mb-[1.875rem]">
+    return <section className={`${className} mb-[1.875rem] md:p-3 md:rounded-2xl md:bg-blue-50`}>
         <div className="mb-2.5">
-            <Heading level={2}>Календарь платежей</Heading>
+            <Heading className="md:text-4xl" level={2}>Календарь платежей</Heading>
         </div>
         <div className="mb-1 flex items-stretch gap-1">
             <SearchInput value={search} onChange={(e: ChangeEvent<HTMLInputElement>) => setSearch(e.target.value)}
@@ -108,7 +112,7 @@ const UpcomingPayments = () => {
                           paymentMarkup={(payment, onDepositClick) => <PaymentLarge onDepositClick={onDepositClick}
                                                                                     payment={payment}/>}
                           skeletonMarkup={(i) => (
-                              <div key={i} className="h-16 rounded-xl bg-tertiary animate-pulse"/>
+                              <div key={i} className="h-16 rounded-xl bg-tertiary md:bg-blue-100/75! animate-pulse"/>
                           )}/>
         </div>
         <CreatePayment isActive={isCreateModalOpen} setActive={setCreateModalOpen}/>

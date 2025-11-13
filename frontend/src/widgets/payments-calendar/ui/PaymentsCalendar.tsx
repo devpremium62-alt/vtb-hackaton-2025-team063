@@ -31,7 +31,7 @@ export const PaymentsCalendar = ({payments, currentDate, setCurrentDate, large}:
     const monthLabel = dayjs(currentDate).locale('ru').format('MMMM');
     const yearLabel = dayjs(currentDate).locale('ru').format('YYYY');
 
-    return <div className="h-full flex-1 bg-tertiary rounded-xl px-1.5 py-[0.5625rem]">
+    return <div className="h-full flex-1 col-span-6 lg:col-span-7 bg-tertiary md:bg-blue-100/75! rounded-xl px-1.5 py-[0.5625rem]">
         <AnimatePresence mode="wait">
             <motion.div
                 key={currentDate.getMonth()}

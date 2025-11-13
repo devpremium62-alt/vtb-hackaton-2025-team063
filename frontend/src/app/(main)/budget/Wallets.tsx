@@ -11,7 +11,11 @@ import CollectionEmpty from "@/shared/ui/CollectionEmpty";
 import {AnimatePresence} from "framer-motion";
 import {DepositModal} from "@/widgets/deposit-modal/ui/DepositModal";
 
-const Wallets = () => {
+type Props = {
+    className?: string;
+}
+
+const Wallets = ({className}: Props) => {
     const [isModalOpen, setModalOpen] = useState(false);
 
     const {data: wallets = []} = useQuery({
@@ -28,7 +32,7 @@ const Wallets = () => {
         setModalActive(true);
     }
 
-    return <section className="mx-4 md:mr-0 mb-[1.875rem]">
+    return <section className={`${className} mb-[1.875rem] md:p-3 md:rounded-2xl md:bg-violet-50`}>
         <div className="flex items-center justify-between mb-2.5 flex-wrap">
             <Heading level={2}>Кошелек</Heading>
             <AccentButton textLarge onClick={() => setModalOpen(true)}>

@@ -10,7 +10,11 @@ import {getFamily} from "@/entities/family";
 import CodeModal from "@/app/(main)/settings/CodeModal";
 import CollectionEmpty from "@/shared/ui/CollectionEmpty";
 
-const ManageFamily = () => {
+type Props = {
+    className?: string;
+}
+
+const ManageFamily = ({className}: Props) => {
     const [isModalOpen, setModalOpen] = useState(false);
 
     const {data: family = [], isPending} = useQuery({
@@ -21,9 +25,9 @@ const ManageFamily = () => {
 
     const isSingle = family.length === 1;
 
-    return <section className="mx-4 md:mr-0 mb-[1.875rem]">
+    return <section className={`${className} mb-[1.875rem]`}>
         <div className="mb-2.5 flex items-center justify-between flex-wrap">
-            <Heading level={2}>Управление семьей</Heading>
+            <Heading className="md:text-3xl" level={2}>Управление семьей</Heading>
             {isSingle && <AccentButton onClick={() => setModalOpen(true)}>
                 <Plus className="mr-1"/>
                 Пригласить партнера

@@ -6,10 +6,12 @@ import {Delete} from "@/shared/ui/icons/Delete";
 import AccentButton from "@/shared/ui/AccentButton";
 import { motion } from "framer-motion";
 
-const AppData = () => {
-    const [isPushEnabled, setPushEnabled] = useState(false);
+type Props = {
+    className?: string;
+}
 
-    return <section className="mx-4 md:mr-0 mb-20">
+const AppData = ({className}: Props) => {
+    return <section className={`${className} mb-[1.875rem]`}>
         <div className="mb-2.5">
             <Heading level={2}>О приложении</Heading>
         </div>

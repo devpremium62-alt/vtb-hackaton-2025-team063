@@ -30,7 +30,7 @@ export const Expenses = ({expenseCategories}: Props) => {
                 <div className="w-1/2 md:w-full flex-1 h-[8.75rem] rounded-xl bg-tertiary animate-pulse mr-1"></div>
                 <div className="w-1/2 md:w-full flex-1 flex flex-col gap-1 mr-4">
                     {Array.from({length: 3}).map((_, i) => (
-                        <div key={i} className="h-11 rounded-xl bg-tertiary animate-pulse"/>
+                        <div key={i} className="h-11 rounded-xl bg-tertiary md:bg-fuchsia-100/75! animate-pulse"/>
                     ))}
                 </div>
             </>

@@ -12,7 +12,11 @@ import {
 import {ChildAccountsCarousel} from "@/widgets/chil-accounts-carousel";
 import {DepositModal} from "@/widgets/deposit-modal/ui/DepositModal";
 
-export const ChildAccounts = () => {
+type Props = {
+    className?: string;
+}
+
+export const ChildAccounts = ({className}: Props) => {
     const [isAddMoneyModalActive, setAddMoneyModalActive] = useState(false);
     const [isChangeLimitModalActive, setChangeLimitModalActive] = useState(false);
     const [selectedAccount, setSelectedAccount] = useState<ChildAccountType | null>(null);
@@ -33,7 +37,7 @@ export const ChildAccounts = () => {
         setChangeLimitModalActive(true);
     }
 
-    return <section className="mx-4 md:ml-0 mb-[1.875rem]">
+    return <section className={`mb-[1.875rem] ${className}`}>
         <div className="mb-2.5">
             <Heading level={2}>Детский счет</Heading>
         </div>

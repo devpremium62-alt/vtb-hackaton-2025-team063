@@ -10,7 +10,11 @@ import {useQuery} from "@tanstack/react-query";
 import CollectionEmpty from "@/shared/ui/CollectionEmpty";
 import {AnimatePresence} from "framer-motion";
 
-const Limits = () => {
+type Props = {
+    className?: string;
+}
+
+const Limits = ({className}: Props) => {
     const [isModalOpen, setModalOpen] = useState(false);
 
     const {data: limits = [], isError} = useQuery({
@@ -19,7 +23,7 @@ const Limits = () => {
         refetchInterval: 5000
     });
 
-    return <section className="mx-4 md:mr-0 mb-[1.875rem]">
+    return <section className={`${className} mb-[1.875rem] md:p-3 md:rounded-2xl md:bg-sky-50`}>
         <div className="flex items-center justify-between mb-2 flex-wrap gap-0.5">
             <Heading level={2}>Лимиты трат</Heading>
             <AccentButton textLarge onClick={() => setModalOpen(true)}>

@@ -22,13 +22,13 @@ export const PaymentLarge = ({payment, onDepositClick}: Props) => {
     return <div className="relative overflow-hidden">
         <SwipeForDelete onDelete={onDelete}>
             <motion.article
-                className={`${isPaymentExpired(payment) ? "bg-error-transparent" : "bg-tertiary"} flex items-center justify-between p-2.5 rounded-xl gap-2`}
+                className={`${isPaymentExpired(payment) ? "bg-error-transparent" : "bg-tertiary md:bg-blue-100/75!"} flex items-center justify-between p-2.5 rounded-xl gap-2`}
                 exit={{opacity: 0, height: 0, paddingTop: 0, paddingBottom: 0}}
                 transition={{duration: 0.3}}
                 layout>
                 <div className="flex flex-col min-w-0">
                     <time className="text-secondary text-xs font-medium">{payment.date.toLocaleDateString()}</time>
-                    <p className="font-semibold min-w-0 text-xl text-ellipsis overflow-hidden whitespace-nowrap">{payment.name}</p>
+                    <p className="font-semibold min-w-0 text-xl md:text-base text-ellipsis overflow-hidden whitespace-nowrap">{payment.name}</p>
                 </div>
                 <div className="flex flex-col items-end">
                     <p className="shrink-0 text-xl font-semibold">

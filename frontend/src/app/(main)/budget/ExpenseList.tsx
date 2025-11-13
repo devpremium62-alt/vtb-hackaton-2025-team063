@@ -10,7 +10,11 @@ import {exportToExcel} from "@/shared/lib/exportToExcel";
 import {Export} from "@/shared/ui/icons/Export";
 import {useQuery} from "@tanstack/react-query";
 
-const TransactionList = () => {
+type Props = {
+    className?: string;
+}
+
+const TransactionList = ({className}: Props) => {
     const {data: transactions = []} = useQuery({
         queryKey: ["transactions"],
         queryFn: getTransactions,
@@ -20,7 +24,7 @@ const TransactionList = () => {
     const [currenttransactions, {setPage, firstPage, lastPage}] = usePagination(transactions, 5);
     const isShowindSkeletons = useShowingSkeleton(transactions);
 
-    return <section className="mx-4 md:ml-0 mb-20">
+    return <section className={`${className} mb-[1.875rem] md:p-3 md:rounded-2xl md:bg-neutral-100`}>
         <div className="mb-2.5 flex justify-between items-center flex-wrap gap-x-2">
             <div className="flex items-center gap-2">
                 <Heading className="mb-1" level={2}>История операций</Heading>

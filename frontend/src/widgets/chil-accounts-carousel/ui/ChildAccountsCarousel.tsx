@@ -16,13 +16,11 @@ export const ChildAccountsCarousel = ({childAccounts, component}: Props) => {
 
     return <>
         <AnimatePresence>
-            <Carousel withIndicators slideGap="0.5rem" classNames={{
-                root: "px-9",
-                controls: "px-0! pointer-events-none",
-                control: "pointer-events-auto bg-white shadow-md hover:bg-gray-50 rounded-full w-7 h-7 flex items-center justify-center border border-gray-200",
-                indicators: "-bottom-3!",
-                indicator: "transition-all",
-            }}>
+            <Carousel withIndicators slideGap="0.5rem" withControls={false} slideSize={{base: '100%', xs: '50%', sm: "100%", md: "50%"}}
+                      classNames={{
+                          indicators: "-bottom-3!",
+                          indicator: "transition-all",
+                      }}>
                 {
                     childAccounts.map((account) => {
                         return <Carousel.Slide key={account.id}>{component(account)}</Carousel.Slide>;

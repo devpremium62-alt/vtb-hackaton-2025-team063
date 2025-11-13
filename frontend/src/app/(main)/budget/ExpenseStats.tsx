@@ -5,16 +5,20 @@ import {Expenses as ExpensesBlock} from "@/widgets/expenses";
 import {useQuery} from "@tanstack/react-query";
 import {getFamilyExpenses} from "@/entities/family/api/api";
 
-const ExpenseStats = () => {
+type Props = {
+    className?: string;
+}
+
+const ExpenseStats = ({className}: Props) => {
     const {data: expenseCategories = []} = useQuery({
         queryKey: ["family-expenses"],
         queryFn: getFamilyExpenses,
         refetchInterval: 5000
     });
 
-    return <section className="ml-4 md:ml-0 mb-[1.875rem]">
+    return <section className={`${className} mb-[1.875rem] md:p-3 md:rounded-2xl md:bg-fuchsia-50`}>
         <div className="mb-2.5">
-            <Heading level={2}>Статистика расходов</Heading>
+            <Heading className="md:text-3xl lg:text-4xl" level={2}>Статистика расходов</Heading>
         </div>
         <ExpensesBlock expenseCategories={expenseCategories[0].categories}/>
     </section>

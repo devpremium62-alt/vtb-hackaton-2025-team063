@@ -30,7 +30,7 @@ export const WalletItem = ({item, onClick}: Props) => {
         <div className="relative overflow-hidden">
             <SwipeForDelete onDelete={onDelete}>
                 <motion.article onClick={() => onClick(item)}
-                                className="cursor-pointer bg-tertiary rounded-xl px-2.5 py-3"
+                                className="cursor-pointer bg-tertiary md:bg-violet-100/75! rounded-xl px-2.5 py-3"
                                 exit={{opacity: 0, height: 0, paddingTop: 0, paddingBottom: 0}}
                                 transition={{duration: 0.3}}
                                 layout>

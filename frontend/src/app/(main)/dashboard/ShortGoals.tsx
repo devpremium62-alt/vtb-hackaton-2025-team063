@@ -8,8 +8,11 @@ import {useQuery, useQueryClient} from "@tanstack/react-query";
 import {useState} from "react";
 import {DepositModal} from "@/widgets/deposit-modal/ui/DepositModal";
 
+type Props = {
+    className?: string;
+}
 
-const ShortGoals = () => {
+const ShortGoals = ({className}: Props) => {
     const {data: goals = []} = useQuery({
         queryKey: ["goals"],
         queryFn: getGoals,
@@ -30,7 +33,7 @@ const ShortGoals = () => {
         queryClient.invalidateQueries({queryKey: ["goals"]});
     }
 
-    return <section className="mx-4 md:mx-0 md:mr-4 mb-5">
+    return <section className={`mb-5 md:p-3 md:rounded-2xl md:bg-sky-50 ${className}`}>
         <Heading className="mb-1" level={2}>Наши цели</Heading>
         <div className="flex gap-1 flex-col">
             <AnimatePresence>

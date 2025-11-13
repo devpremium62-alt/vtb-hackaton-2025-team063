@@ -15,14 +15,14 @@ export default async function Settings() {
     ]);
 
     return <div>
-        <div className="grid grid-cols-1 md:grid-cols-2 md:gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 md:gap-4 lg:gap-8 mb-20">
             <div>
-                <MyProfile settings={{pushEnabled: true}}/>
-                <BanksConnect/>
+                <MyProfile className="mx-4 md:mr-0" settings={{pushEnabled: true}}/>
+                <BanksConnect className="mx-4 md:mr-0"/>
             </div>
             <div>
-                <ManageFamily/>
-                <AppData/>
+                <ManageFamily className="mx-4 md:mr-0"/>
+                <AppData className="mx-4 md:mr-0"/>
             </div>
         </div>
     </div>

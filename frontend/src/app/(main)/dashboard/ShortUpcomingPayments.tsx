@@ -8,7 +8,11 @@ import {PaymentsList} from "@/widgets/payments-list";
 import {DepositPayment} from "@/features/deposit-payment";
 import {useQuery} from "@tanstack/react-query";
 
-const ShortUpcomingPayments = () => {
+type Props = {
+    className?: string;
+}
+
+const ShortUpcomingPayments = ({className}: Props) => {
     const [isModalActive, setModalActive] = useState(false);
     const [currentPayment, setCurrentPayment] = useState<PaymentType | null>(null);
     const [currentDate, setCurrentDate] = useState<Date>(new Date());
@@ -28,15 +32,15 @@ const ShortUpcomingPayments = () => {
         setModalActive(true);
     }
 
-    return <section className="mx-4 md:mr-0 mb-5">
+    return <section className={`${className} mb-5 md:p-3 md:rounded-2xl md:bg-blue-50`}>
         <Heading className="mb-1" level={2}>Ближайшие платежи</Heading>
-        <div className="grid grid-cols-2 gap-2.5">
+        <div className="grid grid-cols-12 gap-2.5">
             <PaymentsCalendar currentDate={currentDate} setCurrentDate={setCurrentDate} payments={dateToPayment}/>
             <PaymentsList onDepositClick={onDepositClick} currentDate={currentDate} payments={payments}
                           paymentMarkup={(payment, onDepositClick) => <Payment onDepositClick={onDepositClick}
                                                                                payment={payment}/>}
                           skeletonMarkup={(i) => (
-                              <div key={i} className="h-11 rounded-xl bg-tertiary animate-pulse"/>
+                              <div key={i} className="h-11 rounded-xl bg-tertiary md:bg-blue-100/75! animate-pulse"/>
                           )}/>
         </div>
         <DepositPayment currentPayment={currentPayment} isActive={isModalActive} setActive={setModalActive}/>

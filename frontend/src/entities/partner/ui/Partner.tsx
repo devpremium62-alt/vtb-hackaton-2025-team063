@@ -44,7 +44,7 @@ export const Partner = ({partner}: Props) => {
             <div className="flex flex-row-reverse justify-between xxs:justify-center xxs:flex-col items-center xxs:items-end gap-2 xxs:gap-0.5">
                 <Status partner={partner}/>
                 <button onClick={() => setModalOpen(true)}
-                        className="text-light text-sm cursor-pointer">Отключить
+                        className="text-light font-light text-sm cursor-pointer">Отключить
                 </button>
             </div>
         </motion.div>

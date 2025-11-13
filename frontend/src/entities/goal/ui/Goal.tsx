@@ -28,7 +28,7 @@ export const Goal = ({goal, onClick}: Props) => {
 
     return <div className="relative overflow-hidden">
         <SwipeForDelete onDelete={onDelete}>
-            <motion.article onClick={() => onClick(goal)} className="bg-tertiary rounded-xl py-1.5 pl-1.5 pr-2.5 cursor-pointer"
+            <motion.article onClick={() => onClick(goal)} className="bg-tertiary md:bg-sky-100/75! rounded-xl py-1.5 pl-1.5 pr-2.5 cursor-pointer"
                      exit={{ opacity: 0, height: 0, paddingTop: 0, paddingBottom: 0 }}
                      transition={{ duration: 0.3 }}
                      layout>

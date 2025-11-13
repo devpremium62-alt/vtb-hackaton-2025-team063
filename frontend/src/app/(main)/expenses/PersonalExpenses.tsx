@@ -16,9 +16,9 @@ type Props = {
 const PersonalExpenses = ({avatar, expenseCategories}: Props) => {
     const totalExpenses = expenseCategories.reduce((acc, c) => acc + c.spent, 0);
 
-    return <section className="mx-4 md:mx-0 md:mr-4 mb-[1.875rem]">
+    return <section className="mx-4 md:mx-0 md:ml-4 mb-[1.875rem] md:p-3 md:rounded-2xl md:bg-blue-50">
         <div className="flex items-center justify-between -mb-0.5">
-            <Heading level={2}>Мои траты за {dayjs(Date.now()).locale('ru').format('MMMM')}</Heading>
+            <Heading className="md:text-3xl lg:text-4xl" level={2}>Мои траты за {dayjs(Date.now()).locale('ru').format('MMMM')}</Heading>
             <Avatar avatar={getAbsoluteSeverUrl(avatar)}/>
         </div>
         <div className="mb-2.5">

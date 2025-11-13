@@ -20,7 +20,7 @@ export const Payment = ({payment, onDepositClick}: Props) => {
     return <div className="relative overflow-hidden">
         <SwipeForDelete onDelete={onDelete}>
             <article
-                className={`${isPaymentExpired(payment) ? "bg-error-transparent" : "bg-tertiary"} px-1.5 py-1 rounded-xl`}>
+                className={`${isPaymentExpired(payment) ? "bg-error-transparent" : "bg-tertiary md:bg-blue-100/75!"} px-1.5 py-1 rounded-xl`}>
                 <div className="flex items-center gap-1 justify-between mb-0.5">
                     <p className="text-xs flex-1 font-medium text-ellipsis min-w-0 overflow-hidden whitespace-nowrap">{payment.name}</p>
                     <p className="shrink-0 text-sm font-medium">

@@ -12,6 +12,8 @@ const Heading = ({level, children, className = ""}: Props) => {
             return <h2 className={`text-2xl font-semibold ${className}`}>{children}</h2>;
         case 3:
             return <h3 className={`text-xl font-semibold ${className}`}>{children}</h3>;
+        case 4:
+            return <h3 className={`text-lg font-semibold ${className}`}>{children}</h3>;
         default:
             return <></>;
     }

@@ -13,9 +13,10 @@ import {getFamilyExpenses} from "@/entities/family/api/api";
 type Props = {
     firstAvatar: string;
     secondAvatar: string;
+    className?: string;
 }
 
-const SharedExpenses = ({firstAvatar, secondAvatar}: Props) => {
+const SharedExpenses = ({firstAvatar, secondAvatar, className}: Props) => {
     const {data: expenseCategories = []} = useQuery({
         queryKey: ["family-expenses"],
         queryFn: getFamilyExpenses,
@@ -28,9 +29,9 @@ const SharedExpenses = ({firstAvatar, secondAvatar}: Props) => {
         });
     }, [expenseCategories]);
 
-    return <section className="ml-4 md:mr-0 mb-[1.875rem]">
+    return <section className={`${className} mb-[1.875rem] md:p-3 md:rounded-2xl md:bg-fuchsia-50`}>
         <div className="flex items-center justify-between mr-4 mb-2.5">
-            <Heading level={2}>Общие траты за {dayjs(Date.now()).locale('ru').format('MMMM')}</Heading>
+            <Heading className="md:text-3xl lg:text-4xl" level={2}>Общие траты за {dayjs(Date.now()).locale('ru').format('MMMM')}</Heading>
             <CoupleAvatars firstAvatar={getAbsoluteSeverUrl(firstAvatar)} secondAvatar={getAbsoluteSeverUrl(secondAvatar)}/>
         </div>
         <Expenses expenseCategories={sharedExpenses}/>

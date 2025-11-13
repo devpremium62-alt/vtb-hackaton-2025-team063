@@ -10,7 +10,11 @@ import {
 import {ChildAccountsCarousel} from "@/widgets/chil-accounts-carousel";
 import {DepositModal} from "@/widgets/deposit-modal/ui/DepositModal";
 
-export const ShortChildAccounts = () => {
+type Props = {
+    className?: string;
+}
+
+export const ShortChildAccounts = ({className}: Props) => {
     const [isModalActive, setModalActive] = useState(false);
     const [selectedAccount, setSelectedAccount] = useState<ChildAccountType | null>(null);
 
@@ -25,7 +29,7 @@ export const ShortChildAccounts = () => {
         setModalActive(true);
     }
 
-    return <section className="mx-4 md:ml-0 mb-24">
+    return <section className={`${className} mb-5 md:p-3 md:pb-6`}>
         <Heading className="mb-1" level={2}>Детские счета</Heading>
         <ChildAccountsCarousel childAccounts={childAccounts}
                                component={(account) => <ChildAccountSimple account={account}

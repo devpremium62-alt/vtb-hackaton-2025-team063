@@ -6,7 +6,11 @@ import {BankKey, banks, ConnectableBank, getConsents} from "@/entities/bank";
 import {useQuery} from "@tanstack/react-query";
 import {CreateBankConsent} from "@/features/create-bank-consent";
 
-const BanksConnect = () => {
+type Props = {
+    className?: string;
+}
+
+const BanksConnect = ({className}: Props) => {
     const [isModalActive, setModalActive] = useState(false);
     const [activeBank, setActiveBank] = useState<{ bankId: BankKey; clientId: string | null } | null>(null);
 
@@ -24,7 +28,7 @@ const BanksConnect = () => {
         setModalActive(true);
     }
 
-    return <section className="mx-4 md:mr-0 mb-[1.875rem]">
+    return <section className={`${className} mb-[1.875rem]`}>
         <div className="mb-2.5 flex items-center justify-between flex-wrap">
             <Heading level={2}>Доступные банки</Heading>
         </div>

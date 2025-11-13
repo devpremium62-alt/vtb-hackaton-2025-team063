@@ -11,9 +11,10 @@ import {getFamilyExpenses} from "@/entities/family/api/api";
 type Props = {
     firstAvatar: string;
     secondAvatar: string;
+    className?: string;
 }
 
-const ExpensesDistributions = ({firstAvatar, secondAvatar}: Props) => {
+const ExpensesDistributions = ({firstAvatar, secondAvatar, className}: Props) => {
     const {data: expenseCategories = []} = useQuery({
         queryKey: ["family-expenses"],
         queryFn: getFamilyExpenses,
@@ -37,7 +38,7 @@ const ExpensesDistributions = ({firstAvatar, secondAvatar}: Props) => {
         secondPersonData.push({value: expenseCategories[1].expenses, color: "var(--primary-color)", label: true});
     }
 
-    return <section className="mx-4 md:mx-0 md:mr-4 mb-20">
+    return <section className={`mb-[1.875rem] ${className}`}>
         <div className="mb-2.5">
             <Heading level={2}>Распределение трат</Heading>
         </div>

@@ -53,10 +53,10 @@ export const ChildAccountExtended = ({account, onDepositClick, onChangeLimitClic
                                              max={account?.balance || 0}/>
                             </div>
                         </div>
-                        <div className="flex flex-col items-end xxs:flex-row xxs:items-center gap-1">
+                        <div className="flex flex-col items-end xxs:flex-row xxs:items-center lg:flex-col lg:items-end 2xl:flex-row 2xl:items-center gap-1">
                             <button
                                 onClick={() => onChangeLimitClick(account)}
-                                className="bg-primary-dark text-white text-sm font-medium px-3 py-1 rounded-2xl cursor-pointer flex items-center bg-primary-dark">
+                                className="whitespace-nowrap bg-primary-dark text-white text-sm font-medium px-3 py-1 rounded-2xl cursor-pointer flex items-center bg-primary-dark">
                                 Изменить лимит
                             </button>
                             <AccentButton onClick={() => onDepositClick(account)}>Пополнить</AccentButton>

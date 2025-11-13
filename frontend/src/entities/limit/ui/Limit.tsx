@@ -26,7 +26,7 @@ export const Limit = ({limit}: Props) => {
 
     return <div className="relative overflow-hidden">
         <SwipeForDelete onDelete={onDelete}>
-            <motion.article className="bg-tertiary rounded-xl p-1.5"
+            <motion.article className="bg-tertiary md:bg-sky-100/75! rounded-xl p-1.5"
                             exit={{opacity: 0, height: 0, paddingTop: 0, paddingBottom: 0}}
                             transition={{duration: 0.3}}
                             layout>

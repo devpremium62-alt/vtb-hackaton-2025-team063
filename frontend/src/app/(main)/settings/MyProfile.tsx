@@ -12,12 +12,13 @@ import ProfileEditableData from "@/app/(main)/settings/ProfileEditableData";
 
 
 type Props = {
+    className?: string;
     settings: {
         pushEnabled: boolean;
     }
 }
 
-const MyProfile = ({settings}: Props) => {
+const MyProfile = ({className, settings}: Props) => {
     const [isPushEnabled, setPushEnabled] = useState(settings.pushEnabled);
 
     const {data: user = null} = useQuery({
@@ -28,9 +29,9 @@ const MyProfile = ({settings}: Props) => {
         refetchOnWindowFocus: false,
     });
 
-    return <section className="mx-4 md:mr-0 mb-[1.875rem]">
+    return <section className={`${className} mb-[1.875rem]`}>
         <div className="mb-2.5 flex items-center justify-between">
-            <Heading level={2}>Мой профиль</Heading>
+            <Heading className="md:text-3xl" level={2}>Мой профиль</Heading>
             <Avatar avatar={getAbsoluteSeverUrl(user?.avatar)}/>
         </div>
         <ProfileEditableData user={user}/>

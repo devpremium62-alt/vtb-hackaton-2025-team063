@@ -25,19 +25,19 @@ export default async function Budget() {
     ]);
 
     return <div>
-        <div className="grid grid-cols-1 md:grid-cols-2 md:gap-8">
-            <div>
+        <div className="grid grid-cols-1 md:grid-cols-2 md:gap-4 lg:gap-8 mb-20">
+            <div className="flex flex-col items-stretch">
                 <HydrationBoundary state={dehydrate(queryClient)}>
-                    <Goals/>
-                    <Wallets/>
-                    <UpcomingPayments/>
+                    <Goals className="mx-4 md:mr-0 md:order-3"/>
+                    <Wallets className="mx-4 md:mr-0 md:order-2"/>
+                    <UpcomingPayments className="mx-4 md:mr-0 md:order-1"/>
                 </HydrationBoundary>
             </div>
-            <div>
+            <div className="flex flex-col items-stretch">
                 <HydrationBoundary state={dehydrate(queryClient)}>
-                    <ChildAccounts/>
-                    <ExpenseStats/>
-                    <TransactionList/>
+                    <ChildAccounts className="mx-4 md:ml-0 md:order-3"/>
+                    <ExpenseStats className="ml-4 md:mx-0 md:order-1"/>
+                    <TransactionList className="mx-4 md:ml-0 md:order-2"/>
                 </HydrationBoundary>
             </div>
         </div>

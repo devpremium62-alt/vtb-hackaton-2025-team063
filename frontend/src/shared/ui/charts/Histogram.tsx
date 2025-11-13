@@ -67,7 +67,7 @@ const Histogram = ({data}: Props) => {
 
     const showingSkeleton = useShowingSkeleton(data);
     if (showingSkeleton) {
-        return <div className="rounded-xl bg-tertiary animate-pulse h-52"></div>;
+        return <div className="rounded-xl bg-tertiary md:bg-blue-100/75! animate-pulse h-52"></div>;
     }
 
     function onDrag(col: Col) {
