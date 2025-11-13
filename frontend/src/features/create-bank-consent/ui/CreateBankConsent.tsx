@@ -13,6 +13,9 @@ import AnimatedLoader from "@/shared/ui/loaders/AnimatedLoader";
 import {usePopup} from "@/providers/GlobalPopupProvider";
 import {Check} from "@/shared/ui/icons/Check";
 import {schema} from "@/features/create-bank-consent/model/schema";
+import {Card} from "@/shared/ui/icons/Card";
+import {Money} from "@/shared/ui/icons/Money";
+import {Enchant} from "@/shared/ui/icons/Enchant";
 
 type Props = {
     isActive: boolean;
@@ -76,6 +79,23 @@ export const CreateBankConsent = ({isActive, setActive, bankId, clientId}: Props
                                    large {...field}/>
                         )}
                     />
+                </div>
+                <div className="bg-primary-light rounded-xl py-1.5 px-3 mb-2.5">
+                    <p className="text-sm mb-1">Приложению необходим доступ к:</p>
+                    <ul className="ml-1 text-xs text-secondary list-none">
+                        <li className="relative flex items-center gap-1 mb-1">
+                            <Card className="w-4"/>
+                            Вашим счетам (для отображения и управления)
+                        </li>
+                        <li className="relative flex items-center gap-1 mb-1">
+                            <Money className="w-4"/>
+                            Балансу (для корректного расчёта доступных средств)
+                        </li>
+                        <li className="relative flex items-center gap-1">
+                            <Enchant className="w-4"/>
+                            Операциям (для отображения и создания транзакций)
+                        </li>
+                    </ul>
                 </div>
                 <div className="mb-2.5">
                     <AccentButton className="w-full justify-center" large>
