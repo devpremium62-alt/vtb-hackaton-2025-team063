@@ -22,7 +22,7 @@ export const Payment = ({payment, onDepositClick}: Props) => {
             <article
                 className={`${isPaymentExpired(payment) ? "bg-error-transparent" : "bg-tertiary"} px-1.5 py-1 rounded-xl`}>
                 <div className="flex items-center gap-1 justify-between mb-0.5">
-                    <p className="text-xs font-medium text-ellipsis min-w-0 overflow-hidden whitespace-nowrap">{payment.name}</p>
+                    <p className="text-xs flex-1 font-medium text-ellipsis min-w-0 overflow-hidden whitespace-nowrap">{payment.name}</p>
                     <p className="shrink-0 text-sm font-medium">
                         <MoneyAmount value={payment.value}/>
                     </p>
@@ -40,7 +40,7 @@ const Status = ({payment, onDepositClick}: Props) => {
     const baseClasses = "text-[0.6rem] font-medium";
 
     if (isPaymentPayed(payment)) {
-        return <p className={`${baseClasses} text-success`}>Внесено</p>
+        return <p className={`${baseClasses} text-info`}>Внесено</p>
     }
 
     if (isPaymentExpired(payment)) {
@@ -48,7 +48,7 @@ const Status = ({payment, onDepositClick}: Props) => {
     }
 
     return <p className={`${baseClasses} flex items-center gap-1.5`}>
-        <span className="text-info">Ожидается</span>
+        <span className="text-success">Ожидается</span>
         <button className="cursor-pointer" onClick={() => onDepositClick(payment)}>Внести</button>
     </p>
 }

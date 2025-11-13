@@ -35,9 +35,9 @@ const Goals = () => {
     }
 
     return <section className="mx-4 md:mr-0 mb-[1.875rem]">
-        <div className="flex items-center justify-between mb-2.5">
+        <div className="flex items-center justify-between mb-2.5 flex-wrap">
             <Heading level={2}>Наши цели</Heading>
-            <AccentButton onClick={() => setModalOpen(true)}>
+            <AccentButton textLarge onClick={() => setModalOpen(true)}>
                 <Plus className="mr-1"/>
                 Создать новую цель
             </AccentButton>

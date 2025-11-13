@@ -19,7 +19,7 @@ const TransactionHistory = ({transactions}: Props) => {
     const isShowindSkeletons = useShowingSkeleton(transactions);
 
     return <section className="mx-4 md:mx-0 md:mr-4 mb-[1.875rem]">
-        <div className="flex justify-between items-center">
+        <div className="flex justify-between items-center mb-2.5">
             <div className="flex items-center gap-2">
                 <Heading level={2}>История трат</Heading>
                 <button onClick={() => exportToExcel(toExcelData(transactions))} className="text-inactive">

@@ -81,7 +81,7 @@ const UpcomingPayments = () => {
         <div className="mb-1 flex items-stretch gap-1">
             <SearchInput value={search} onChange={(e: ChangeEvent<HTMLInputElement>) => setSearch(e.target.value)}
                          className="flex-1" placeholder="Поиск платежей"/>
-            <AccentButton onClick={() => setCreateModalOpen(true)}>
+            <AccentButton textLarge onClick={() => setCreateModalOpen(true)}>
                 <Plus className="mr-1"/>
                 Создать платеж
             </AccentButton>
@@ -102,7 +102,7 @@ const UpcomingPayments = () => {
             <PaymentsCalendar large currentDate={currentDate} setCurrentDate={setCurrentDate} payments={dateToPayment}/>
         </div>
         <div>
-            <Heading level={3}>Все платежи</Heading>
+            <Heading className="mb-1" level={3}>Все платежи</Heading>
             <PaymentsList limit={filteredPayments.length} currentDate={currentDate} payments={filteredPayments}
                           onDepositClick={onDepositClick}
                           paymentMarkup={(payment, onDepositClick) => <PaymentLarge onDepositClick={onDepositClick}

@@ -32,7 +32,7 @@ export const Partner = ({partner}: Props) => {
     const [isModalOpen, setModalOpen] = useState(false);
 
     return <article className="px-1.5 py-2.5 bg-tertiary rounded-xl ">
-        <motion.div className="flex items-center justify-between"
+        <motion.div className="flex flex-col xxs:flex-row items-center justify-between gap-1"
                     initial={{opacity: 0, y: 10}}
                     animate={{opacity: 1, y: 0}}
                     exit={{opacity: 0, y: -10}}
@@ -41,10 +41,10 @@ export const Partner = ({partner}: Props) => {
                 <Avatar avatar={getAbsoluteSeverUrl(partner.avatar)}/>
                 <p className="text-base font-medium">{partner.name}</p>
             </div>
-            <div className="flex flex-col gap-0.5 items-end">
+            <div className="flex flex-row-reverse justify-between xxs:justify-center xxs:flex-col items-center xxs:items-end gap-2 xxs:gap-0.5">
                 <Status partner={partner}/>
                 <button onClick={() => setModalOpen(true)}
-                        className="text-light text-[0.6rem] cursor-pointer">Отключить
+                        className="text-light text-sm cursor-pointer">Отключить
                 </button>
             </div>
         </motion.div>
@@ -53,7 +53,7 @@ export const Partner = ({partner}: Props) => {
 }
 
 const Status = ({partner}: Props) => {
-    const baseClass = "py-1.5 px-2.5 rounded-2xl text-xs text-white tracking-wide";
+    const baseClass = "py-1.5 px-2.5 rounded-2xl text-xs text-white tracking-wide whitespace-nowrap";
 
     return <p className={`${baseClass} bg-primary`}>Партнер
         подключен {new Date(partner.connectedAt).toLocaleDateString()}</p>;

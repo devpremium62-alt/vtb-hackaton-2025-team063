@@ -44,7 +44,7 @@ export const ChildAccountExtended = ({account, onDepositClick, onChangeLimitClic
                         <Avatar avatar={getAbsoluteSeverUrl(account?.avatar)} alt="Ребенок"/>
                     </div>
                     <div className="flex items-center justify-between gap-5">
-                        <div className="flex-1">
+                        <div className="flex-1 shrink-0">
                             <p className="font-medium text-xs mb-0.5">
                                 <MoneyAmount value={account?.moneyPerDay || 0}/> в день
                             </p>
@@ -53,7 +53,7 @@ export const ChildAccountExtended = ({account, onDepositClick, onChangeLimitClic
                                              max={account?.balance || 0}/>
                             </div>
                         </div>
-                        <div className="flex items-center gap-1">
+                        <div className="flex flex-col items-end xxs:flex-row xxs:items-center gap-1">
                             <button
                                 onClick={() => onChangeLimitClick(account)}
                                 className="bg-primary-dark text-white text-sm font-medium px-3 py-1 rounded-2xl cursor-pointer flex items-center bg-primary-dark">

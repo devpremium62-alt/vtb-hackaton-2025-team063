@@ -31,7 +31,7 @@ const FinalStep = ({user, onSuccess}: Props) => {
                     <Image className="rounded-full object-cover" src={user.photoSrc!} alt={user.name!} fill sizes="7.5rem"/>
                 </div>
                 <div>
-                    <Heading level={3}>{user.name}</Heading>
+                    <Heading className="mb-1" level={3}>{user.name}</Heading>
                     <p className="font-medium text-secondary text-lg leading-none">{formattedPhone}</p>
                 </div>
                 <div className="flex items-center flex-wrap gap-1">
@@ -45,7 +45,7 @@ const FinalStep = ({user, onSuccess}: Props) => {
             </div>
             <div className="w-full flex items-center justify-center px-4">
                 <AccentButton large background="bg-primary" onClick={() => onSuccess()}
-                              className="justify-center text-base! py-2.5! font-normal! w-full">Завершить
+                              className="justify-center py-2.5! font-normal! w-full">Завершить
                     регистрацию</AccentButton>
             </div>
         </motion.div>

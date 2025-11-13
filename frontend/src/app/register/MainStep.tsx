@@ -143,7 +143,7 @@ const MainStep = ({onSuccess}: Props) => {
                 </div>
                 <div className="mb-2 flex flex-col">
                     <AccentButton large background="bg-primary"
-                                  className="justify-center text-base! py-2.5! font-normal!">Зарегистрироваться</AccentButton>
+                                  className="justify-center py-2.5! font-normal!">Зарегистрироваться</AccentButton>
                 </div>
             </form>
         </motion.div>

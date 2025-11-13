@@ -4,6 +4,7 @@ import SwipeForDelete from "@/shared/ui/SwipeForDelete";
 import {useQueryClient} from "@tanstack/react-query";
 import {motion} from "framer-motion";
 import useDelete from "@/shared/hooks/useDelete";
+import AccentButton from "@/shared/ui/AccentButton";
 
 type Props = {
     payment: PaymentType;
@@ -53,9 +54,9 @@ const Status = ({payment, onDepositClick}: Props) => {
 
     return <p className={`text-[0.6rem] font-medium flex items-center gap-1.5`}>
         <span className="text-info">Ожидается</span>
-        <button onClick={() => onDepositClick(payment)}
-                className="bg-accent cursor-pointer text-white rounded-lg py-0.5 px-2.5">
+        <AccentButton onClick={() => onDepositClick(payment)}
+                      className="text-sm font-medium bg-accent cursor-pointer text-white rounded-2xl py-0.5! px-2.5!">
             Внести
-        </button>
+        </AccentButton>
     </p>
 }

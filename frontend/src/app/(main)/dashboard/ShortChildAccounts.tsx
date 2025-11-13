@@ -26,7 +26,7 @@ export const ShortChildAccounts = () => {
     }
 
     return <section className="mx-4 md:ml-0 mb-24">
-        <Heading level={2}>Детские счета</Heading>
+        <Heading className="mb-1" level={2}>Детские счета</Heading>
         <ChildAccountsCarousel childAccounts={childAccounts}
                                component={(account) => <ChildAccountSimple account={account}
                                                                            onDepositClick={onDepositClick}/>}/>

@@ -41,7 +41,7 @@ const MyProfile = ({settings}: Props) => {
                             animate={{opacity: 1, y: 0}}
                             exit={{opacity: 0, y: -10}}
                             transition={{duration: 0.3}}>
-                    <p className="text-sm font-medium">Push-уведомления</p>
+                    <p className="text-base font-medium">Push-уведомления</p>
                     <Checkbox value={isPushEnabled} onChange={setPushEnabled}/>
                 </motion.div>
             </div>

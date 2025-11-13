@@ -23,7 +23,7 @@ const TransactionList = () => {
     return <section className="mx-4 md:ml-0 mb-20">
         <div className="mb-2.5 flex justify-between items-center flex-wrap gap-x-2">
             <div className="flex items-center gap-2">
-                <Heading level={2}>История операций</Heading>
+                <Heading className="mb-1" level={2}>История операций</Heading>
                 <button onClick={() => exportToExcel(toExcelData(transactions))} className="text-inactive">
                     <Export/>
                 </button>

@@ -9,7 +9,7 @@ import { motion } from "framer-motion";
 const AppData = () => {
     const [isPushEnabled, setPushEnabled] = useState(false);
 
-    return <section className="mx-4 md:mr-0 mb-[1.875rem]">
+    return <section className="mx-4 md:mr-0 mb-20">
         <div className="mb-2.5">
             <Heading level={2}>О приложении</Heading>
         </div>

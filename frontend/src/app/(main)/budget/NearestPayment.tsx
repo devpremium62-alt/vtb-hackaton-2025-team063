@@ -4,6 +4,7 @@ import {PaymentType} from "@/entities/payment";
 import MoneyAmount from "@/shared/ui/MoneyAmount";
 import Heading from "@/shared/ui/typography/Heading";
 import { motion } from "framer-motion";
+import AccentButton from "@/shared/ui/AccentButton";
 
 type Props = {
     payment: PaymentType;
@@ -25,16 +26,16 @@ const NearestPayment = ({payment, onDepositClick}: Props) => {
             </div>
             <div className="flex flex-col items-end">
                 <div className="-mb-1">
-                    <Heading level={3} className="text-white">
+                    <Heading level={3} className="text-white mb-1">
                     <span className="font-medium">
                         <MoneyAmount value={payment.value}/>
                     </span>
                     </Heading>
                 </div>
-                <button onClick={() => onDepositClick(payment)}
-                        className="bg-accent text-white text-[0.5rem] px-2.5 py-0.5 rounded-2xl cursor-pointer">
+                <AccentButton onClick={() => onDepositClick(payment)}
+                              className="text-sm font-medium bg-accent cursor-pointer text-white rounded-2xl py-0.5! px-2.5!">
                     Внести
-                </button>
+                </AccentButton>
             </div>
         </motion.div>
     </div>

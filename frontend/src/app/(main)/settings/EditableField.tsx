@@ -58,15 +58,15 @@ const EditableField = ({value, onSuccess, mutationFn, transformValue, InputCompo
                     animate={{opacity: 1, y: 0}}
                     exit={{opacity: 0, y: -10}}
                     transition={{duration: 0.3}}>
-            <form className="flex items-center justify-between w-full" onSubmit={(e) => e.preventDefault()}>
+            <form className="flex items-center justify-between w-full gap-1 max-w-full" onSubmit={(e) => e.preventDefault()}>
                 {isEditing
                     ? <InputComponent
                         ref={input}
-                        className="text-sm font-medium"
+                        className="text-base font-medium flex-1 min-w-0"
                         value={currValue}
                         onChange={(e: any) => setValue(e.target?.value ?? e)}
                     />
-                    : <p className="text-sm font-medium">{value}</p>
+                    : <p className="text-base font-medium">{value}</p>
                 }
 
                 {isEditing
@@ -77,7 +77,7 @@ const EditableField = ({value, onSuccess, mutationFn, transformValue, InputCompo
                         </motion.div>
                         : <motion.span initial={{opacity: 0}} animate={{opacity: 1}} exit={{opacity: 0}}
                                        transition={{duration: 0.3}}>
-                            <AccentButton type="button" className="text-xs py-1.5" onClick={onSave}>Сохранить изменения</AccentButton>
+                            <AccentButton type="button" className="text-xs shrink-0 whitespace-nowrap py-1.5" onClick={onSave}>Сохранить изменения</AccentButton>
                         </motion.span>
                     : isSaved
                         ? <motion.span initial={{opacity: 0}} animate={{opacity: 1}} exit={{opacity: 0}}

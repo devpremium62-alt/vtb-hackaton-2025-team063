@@ -48,7 +48,7 @@ const PhotoStep = ({onSuccess}: Props) => {
                         </div>
                         <AccentButton
                             large background="bg-accent"
-                            className="w-full mb-4 justify-center gap-1.5 text-base! py-2.5! font-normal!"
+                            className="w-full mb-4 justify-center gap-1.5 py-2.5! font-normal!"
                             onClick={() => onSuccess(file, photo)}
                         >
                             Использовать это фото
@@ -59,7 +59,7 @@ const PhotoStep = ({onSuccess}: Props) => {
                 <div className="mb-2.5 flex flex-col items-stretch gap-2.5">
                     <AccentButton
                         large background="bg-primary"
-                        className="justify-center gap-1.5 text-base! py-2.5! font-normal!"
+                        className="justify-center gap-1.5 py-2.5! font-normal!"
                         onClick={() => fileInputRef.current?.click()}
                     >
                         Загрузить с устройства
@@ -68,7 +68,7 @@ const PhotoStep = ({onSuccess}: Props) => {
 
                     <AccentButton
                         large background="bg-primary"
-                        className="justify-center text-base! py-2.5! font-normal!"
+                        className="justify-center py-2.5! font-normal!"
                         onClick={() => setCameraActive(true)}
                     >
                         Сделать фото

@@ -31,7 +31,7 @@ const ShortGoals = () => {
     }
 
     return <section className="mx-4 md:mx-0 md:mr-4 mb-5">
-        <Heading level={2}>Наши цели</Heading>
+        <Heading className="mb-1" level={2}>Наши цели</Heading>
         <div className="flex gap-1 flex-col">
             <AnimatePresence>
                 {goals.length

@@ -20,9 +20,9 @@ const Limits = () => {
     });
 
     return <section className="mx-4 md:mr-0 mb-[1.875rem]">
-        <div className="flex items-center justify-between mb-1">
+        <div className="flex items-center justify-between mb-2 flex-wrap gap-0.5">
             <Heading level={2}>Лимиты трат</Heading>
-            <AccentButton onClick={() => setModalOpen(true)}>
+            <AccentButton textLarge onClick={() => setModalOpen(true)}>
                 <Plus className="mr-1"/>
                 Создать лимит
             </AccentButton>

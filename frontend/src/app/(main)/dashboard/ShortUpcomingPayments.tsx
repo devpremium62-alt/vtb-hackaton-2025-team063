@@ -29,7 +29,7 @@ const ShortUpcomingPayments = () => {
     }
 
     return <section className="mx-4 md:mr-0 mb-5">
-        <Heading level={2}>Ближайшие платежи</Heading>
+        <Heading className="mb-1" level={2}>Ближайшие платежи</Heading>
         <div className="grid grid-cols-2 gap-2.5">
             <PaymentsCalendar currentDate={currentDate} setCurrentDate={setCurrentDate} payments={dateToPayment}/>
             <PaymentsList onDepositClick={onDepositClick} currentDate={currentDate} payments={payments}

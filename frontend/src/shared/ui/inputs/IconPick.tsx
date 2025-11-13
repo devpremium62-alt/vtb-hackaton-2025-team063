@@ -13,7 +13,7 @@ type Props = {
 
 const IconPick = ({icon, onIconChange, ...props}: Props) => {
     return <VariantPick variant={icon} variants={icons} onVariantChange={onIconChange} element={(icon) => {
-        return <Image width={32} height={32} className="w-8 h-8 p-2" src={`/images/categories/${icon}.png`} alt="" sizes="32px"/>
+        return <Image width={36} height={36} className="w-9 h-9 p-2" src={`/images/categories/${icon}.png`} alt="" sizes="36px"/>
     }} {...props}/>
 }
 

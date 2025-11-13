@@ -12,7 +12,7 @@ const Input = forwardRef<HTMLInputElement, any & Props>(({className = "", large,
     return <>
         <input
             ref={ref}
-            className={` ${large ? "large text-sm text-primary py-2.5 px-2.5" : "text-xs text-inactive p-1.5"} ${error ? "border-error" : ""} bg-tertiary rounded-xl font-normal outline-primary ${className}`} {...props} />
+            className={` ${large ? "large text-primary py-2 px-2.5" : "text-inactive p-1.5"} ${error ? "border-error" : ""} text-base bg-tertiary rounded-xl font-normal outline-primary ${className}`} {...props} />
         <InputError error={error}/>
     </>
 });

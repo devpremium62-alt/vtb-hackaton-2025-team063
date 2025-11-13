@@ -37,13 +37,13 @@ const BankSelectStep = ({onSuccess}: Props) => {
                 {(Object.entries(banks) as [BankKey, Bank][]).map(([bankId, bank]) => (
                     <button key={bankId} onClick={() => selectBank(bankId)}
                             className={`p-5 rounded-xl text-left cursor-pointer duration-300 transition-colors ${selectedBanks.includes(bankId) ? "bg-primary text-white" : "bg-white"}`}>
-                        <Heading className="leading-none! mb-0!" level={3}>{bank.name}</Heading>
+                        <Heading className="leading-none!" level={3}>{bank.name}</Heading>
                     </button>
                 ))}
             </div>
             <div className="flex items-center justify-center px-4">
                 <AccentButton large background="bg-primary" onClick={() => onSuccess(selectedBanks)}
-                              className="justify-center text-base! py-2.5! font-normal! w-full">Продолжить</AccentButton>
+                              className="justify-center py-2.5! font-normal! w-full">Продолжить</AccentButton>
             </div>
         </motion.div>
     </>
