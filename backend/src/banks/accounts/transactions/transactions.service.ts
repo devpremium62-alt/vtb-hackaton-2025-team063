@@ -41,7 +41,7 @@ export class TransactionsService {
 
             for (const [bank, accounts] of Object.entries(bankAccounts) as [string, any][]) {
                 for (const account of accounts) {
-                    const accountKey = `${this.baseKey}:${userId}:${account.id}`;
+                    const accountKey = `${this.baseKey}:${userId}:${account.accountId}`;
 
                     promises.push(this.banksService.requestBankAPI<{ data: { transaction: TransactionType[] } }>(bank, {
                             url: `/accounts/${account.accountId}/transactions?limit=100`,
