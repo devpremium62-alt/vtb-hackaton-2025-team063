@@ -29,6 +29,8 @@ import {ExpensesModule} from "./family/expenses/expenses.module";
 import {ChildAccount} from "./banks/accounts/child-accounts/child-account.entity";
 import {ChildAccountsModule} from "./banks/accounts/child-accounts/child-accounts.module";
 import {PaymentConsentsModule} from "./banks/accounts/transactions/payment-consents/payment-consents.module";
+import {WalletsModule} from "./banks/accounts/wallets/wallets.module";
+import {Wallet} from "./banks/accounts/wallets/wallet.entity";
 
 
 @Module({
@@ -40,7 +42,7 @@ import {PaymentConsentsModule} from "./banks/accounts/transactions/payment-conse
             username: process.env.DB_USER || 'postgres',
             password: process.env.DB_PASSWORD || '',
             database: process.env.DB_NAME || 'family_multibank',
-            entities: [User, Consent, Limit, Payment, Goal, Transaction, ChildAccount],
+            entities: [User, Consent, Limit, Payment, Goal, Transaction, ChildAccount, Wallet],
             synchronize: true,
         }),
         EventEmitterModule.forRoot(),
@@ -67,6 +69,7 @@ import {PaymentConsentsModule} from "./banks/accounts/transactions/payment-conse
         CategoriesModule,
         LimitsModule,
         PaymentsModule,
+        WalletsModule,
     ],
     controllers: [AppController],
     providers: [AppService],

@@ -134,7 +134,7 @@ export class AccountsService {
 
         let firstAccountId: string | null = null;
         for (const account of accounts) {
-            if (account.status === "Enabled" && account.accountSubType === "Checking") {
+            if (account.accountId != accountId && account.status === "Enabled" && account.accountSubType === "Checking") {
                 firstAccountId = account.accountId;
             }
         }
@@ -155,8 +155,9 @@ export class AccountsService {
             }
         });
 
-        const cacheKey = `${this.cacheKey}:${consent.id}`;
-        await this.redisService.invalidateCache(cacheKey, userId);
+        await this.redisService.invalidateCache(this.cacheKey, userId);
+        await this.redisService.invalidateCache(this.cacheKey, consent.id, userId);
+        await this.redisService.invalidateCache(this.cacheKey, consent.id, accountId, userId);
 
         return response.data;
     }
@@ -187,6 +188,13 @@ export class AccountsService {
         const [userId, accountId] = event.entityIds;
 
         await this.redisService.invalidateCache(this.cacheKey, accountId, "*", userId, "balance");
+        await this.redisService.invalidateCache(this.cacheExtendedKey, userId);
+    }
+
+    @OnEvent('cache.invalidate.accounts', {async: true})
+    async handleExtendedCacheInvalidation(event: CacheInvalidateEvent) {
+        const [userId] = event.entityIds;
+
         await this.redisService.invalidateCache(this.cacheExtendedKey, userId);
     }
 }

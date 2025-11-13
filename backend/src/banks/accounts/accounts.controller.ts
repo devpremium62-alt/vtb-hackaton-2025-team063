@@ -1,10 +1,10 @@
-import {Body, Controller, Get, HttpCode, Param, Post, UseGuards} from '@nestjs/common';
+import {Body, Controller, Delete, Get, HttpCode, Param, Post, UseGuards} from '@nestjs/common';
 import {AccountsService} from "./accounts.service";
 import {JwtAuthGuard} from "../../auth/jwt-auth.guard";
 import {User} from "../../common/decorators/user.decorator";
 import {ApiCookieAuth, ApiOperation, ApiResponse, ApiTags} from "@nestjs/swagger";
 import {ValidateBankIdPipe} from "../../common/pipes/validate-bank-id.pipe";
-import {AccountDTO} from "./account.dto";
+import {AccountCloseDTO, AccountDTO} from "./account.dto";
 import {use} from "passport";
 
 @ApiTags("Счета")
@@ -71,5 +71,15 @@ export class AccountsController {
     public async getTotalBalance(@User("id") userId: number) {
         const totalBalance = await this.accountsService.getTotalBalance(userId);
         return {totalBalance};
+    }
+
+    @ApiOperation({summary: 'Закрытие счета'})
+    @ApiResponse({status: 204})
+    @ApiCookieAuth('access_token')
+    @Delete("/:bankId/:accountId")
+    @HttpCode(204)
+    @UseGuards(JwtAuthGuard)
+    public async closeAccount(@User("id") userId: number, @Param("bankId", ValidateBankIdPipe) bankId: string, @Param("accountId") accountId: string, @Body() accountCloseDTO: AccountCloseDTO) {
+        await this.accountsService.closeAccount(userId, bankId, accountId, accountCloseDTO);
     }
 }

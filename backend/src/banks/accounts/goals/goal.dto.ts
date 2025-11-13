@@ -23,7 +23,7 @@ export class GoalDTO {
     @IsString()
     icon: string;
 
-    @ApiProperty({example: "abank", description: 'Иконка цели'})
+    @ApiProperty({example: "abank", description: 'Идентификатор банка'})
     @IsString()
     bankId: string;
 }

@@ -78,14 +78,13 @@ export class GoalsService {
             toBank: goal.bankId,
             comment: "Перевод на счет финансовой цели",
         });
-        console.log(transaction);
 
         await this.familyCacheService.invalidateFamilyCache(this.baseKey, userId);
 
         return goal;
     }
 
-    private async findGoal(userId: number, goalId:string) {
+    private async findGoal(userId: number, goalId: string) {
         const goal = await this.goalsRepository.findOne({where: {user: {id: userId}, id: goalId}});
         if (!goal) {
             throw new NotFoundException("Финансовая цель не найдена");
