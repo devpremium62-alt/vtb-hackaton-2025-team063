@@ -7,7 +7,7 @@ import {useMemo} from "react";
 type Props = {
     name: string;
     control: Control<any, any, any>;
-    error?: string;
+    error?: string | null;
 }
 
 const BankSelect = ({name, control, error}: Props) => {

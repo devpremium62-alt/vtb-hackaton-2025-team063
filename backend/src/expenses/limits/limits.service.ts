@@ -91,7 +91,7 @@ export class LimitsService {
     }
 
     @OnEvent('cache.invalidate.transactions', {async: true})
-    async handleCacheInvalidation(event: CacheInvalidateEvent) {
+    private async handleCacheInvalidation(event: CacheInvalidateEvent) {
         const [entityId] = event.entityIds;
 
         await this.redisService.invalidateCache(this.keyBase, entityId);

@@ -4,11 +4,11 @@ import React, {JSX, useMemo} from "react";
 import useShowingSkeleton from "@/shared/hooks/useShowingSkeleton";
 
 type Props = {
-    onDepositClick: (id: number) => void;
+    onDepositClick: (payment: PaymentType) => void;
     currentDate: Date;
     limit?: number;
     payments: PaymentType[];
-    paymentMarkup: (payment: PaymentType, onDepositClick: (id: number) => void) => JSX.Element;
+    paymentMarkup: (payment: PaymentType, onDepositClick: (payment: PaymentType) => void) => JSX.Element;
     skeletonMarkup: (key: number) => JSX.Element;
 }
 

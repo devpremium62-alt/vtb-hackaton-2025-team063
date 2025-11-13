@@ -1,6 +1,6 @@
-import {Bank, BankKey, deleteConsent} from "@/entities/bank";
+import {Bank, BankIcon, BankKey, deleteConsent} from "@/entities/bank";
 import {Check} from "@/shared/ui/icons/Check";
-import { motion } from "framer-motion";
+import {motion} from "framer-motion";
 import {useQueryClient} from "@tanstack/react-query";
 import useDelete from "@/shared/hooks/useDelete";
 import SwipeForDelete from "@/shared/ui/SwipeForDelete";
@@ -31,9 +31,7 @@ export const ConnectableBank = ({bankId, bank, isConnected, onClick}: Props) => 
                             exit={{opacity: 0, y: -10}}
                             transition={{duration: 0.3}}>
                     <div className="flex items-center gap-2">
-                        <div style={{background: bank.iconBg}}
-                             className="w-8 h-8 rounded-md text-lg flex justify-center items-center">🏦
-                        </div>
+                        <BankIcon bankId={bankId}/>
                         <p className="text-base font-semibold">{bank.name}</p>
                     </div>
                     {isConnected && <div className="text-active"><Check/></div>}

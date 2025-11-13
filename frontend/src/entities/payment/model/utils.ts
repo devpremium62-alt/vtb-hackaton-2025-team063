@@ -5,9 +5,11 @@ export function isPaymentPayed(payment: PaymentType) {
 }
 
 export function isPaymentExpired(payment: PaymentType) {
-    return Date.now() > payment.date.getTime() && !payment.payed;
+    const todayStart = new Date().setHours(0, 0, 0, 0);
+    return todayStart > payment.date.getTime() && !payment.payed;
 }
 
 export function isPaymentActual(payment: PaymentType) {
-    return Date.now() < payment.date.getTime() && !payment.payed;
+    const todayStart = new Date().setHours(0, 0, 0, 0);
+    return todayStart <= payment.date.getTime() && !payment.payed;
 }

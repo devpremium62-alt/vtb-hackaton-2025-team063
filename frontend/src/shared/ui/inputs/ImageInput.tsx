@@ -1,6 +1,7 @@
 import {ChangeEvent, useEffect, useRef, useState} from "react";
 import InputError from "@/shared/ui/inputs/InputError";
 import usePhotoSelection from "@/shared/hooks/usePhotoSelection";
+import {FieldError} from "react-hook-form";
 
 type Props = {
     className?: string;
@@ -9,7 +10,7 @@ type Props = {
     value?: File;
     onChange?: (value: File | null) => void;
     large?: boolean;
-    error?: string;
+    error?: string | null;
 }
 
 const ImageInput = ({id, value, className, placeholder, onChange, large, error}: Props) => {

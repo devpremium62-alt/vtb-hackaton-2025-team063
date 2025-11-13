@@ -12,6 +12,7 @@ import {useMutation, useQueryClient} from "@tanstack/react-query";
 import {ChildAccountType, depositMoney} from "@/entities/child-account";
 import AnimatedLoader from "@/shared/ui/loaders/AnimatedLoader";
 import * as yup from "yup";
+import {AccountSelection} from "@/widgets/account-selection";
 
 type Props = {
     isActive: boolean;
@@ -30,6 +31,7 @@ export const DepositChildAccount = ({isActive, setActive, activeAccount}: Props)
         resolver: yupResolver(schema),
         defaultValues: {
             chilAccountnewAdd: "" as any,
+            childAccountFrom: null as any
         }
     });
 
@@ -44,11 +46,20 @@ export const DepositChildAccount = ({isActive, setActive, activeAccount}: Props)
             queryClient.invalidateQueries({queryKey: ["family-finance"]});
             queryClient.invalidateQueries({queryKey: ["family-expenses"]});
             queryClient.invalidateQueries({queryKey: ["transactions"]});
+            queryClient.invalidateQueries({queryKey: ["wallets"]});
         },
     });
 
     const onSubmit = (data: yup.InferType<typeof schema>) => {
-        sendDeposit(data.chilAccountnewAdd);
+        if (activeAccount) {
+            sendDeposit({
+                chilAccountId: activeAccount.id,
+                amount: data.chilAccountnewAdd,
+                fromAccountId: data.childAccountFrom.accountId,
+                fromAccount: data.childAccountFrom.account[0].identification,
+                fromBank: data.childAccountFrom.bankId
+            });
+        }
     }
 
     return <ModalWindow isActive={isActive} setActive={setActive}>
@@ -65,13 +76,29 @@ export const DepositChildAccount = ({isActive, setActive, activeAccount}: Props)
                             control={control}
                             render={({field}) => (
                                 <>
-                                    <Input {...field} className="w-full pr-9" id="chilAccountnewAdd" type="number" placeholder="Например, 10 000₽"
-                                           error={errors.chilAccountnewAdd?.message} large {...register("chilAccountnewAdd")}/>
+                                    <Input {...field} className="w-full pr-9" id="chilAccountnewAdd" type="number"
+                                           placeholder="Например, 10 000₽"
+                                           error={errors.chilAccountnewAdd?.message}
+                                           large {...register("chilAccountnewAdd")}/>
                                     <Card className="absolute right-2 top-[0.5rem] w-5"/>
                                 </>
                             )}
                         />
                     </div>
+                </div>
+                <div className="mb-2.5 flex flex-col">
+                    <label className="font-medium text-sm mb-1" htmlFor="childAccountFrom">Выберите счет</label>
+                    <Controller
+                        name="childAccountFrom"
+                        control={control}
+                        render={({field}) => (
+                            <AccountSelection {...field} id="childAccountFrom"
+                                              error={errors.childAccountFrom?.message as string}
+                                              value={field.value} onChange={(val) => field.onChange(val)}
+                                              excluded={[activeAccount!.id]}
+                            />
+                        )}
+                    />
                 </div>
                 <div className="mb-2.5">
                     <AccentButton disabled={isPending} className="w-full justify-center" large>

@@ -7,7 +7,7 @@ import useDelete from "@/shared/hooks/useDelete";
 
 type Props = {
     payment: PaymentType;
-    onDepositClick: (id: number) => void;
+    onDepositClick: (payment: PaymentType) => void;
 }
 
 export const PaymentLarge = ({payment, onDepositClick}: Props) => {
@@ -21,7 +21,7 @@ export const PaymentLarge = ({payment, onDepositClick}: Props) => {
     return <div className="relative overflow-hidden">
         <SwipeForDelete onDelete={onDelete}>
             <motion.article
-                className={`${!payment.payed && payment.date < new Date() ? "bg-error-transparent" : "bg-tertiary"} flex items-center justify-between p-2.5 rounded-xl gap-2`}
+                className={`${isPaymentExpired(payment) ? "bg-error-transparent" : "bg-tertiary"} flex items-center justify-between p-2.5 rounded-xl gap-2`}
                 exit={{opacity: 0, height: 0, paddingTop: 0, paddingBottom: 0}}
                 transition={{duration: 0.3}}
                 layout>
@@ -53,7 +53,7 @@ const Status = ({payment, onDepositClick}: Props) => {
 
     return <p className={`text-[0.6rem] font-medium flex items-center gap-1.5`}>
         <span className="text-info">Ожидается</span>
-        <button onClick={() => onDepositClick(payment.id)}
+        <button onClick={() => onDepositClick(payment)}
                 className="bg-accent cursor-pointer text-white rounded-lg py-0.5 px-2.5">
             Внести
         </button>

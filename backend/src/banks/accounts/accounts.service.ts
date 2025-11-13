@@ -184,7 +184,7 @@ export class AccountsService {
     }
 
     @OnEvent('cache.invalidate.transactions', {async: true})
-    async handleCacheInvalidation(event: CacheInvalidateEvent) {
+    private async handleCacheInvalidation(event: CacheInvalidateEvent) {
         const [userId, accountId] = event.entityIds;
 
         await this.redisService.invalidateCache(this.cacheKey, accountId, "*", userId, "balance");
@@ -192,7 +192,7 @@ export class AccountsService {
     }
 
     @OnEvent('cache.invalidate.accounts', {async: true})
-    async handleExtendedCacheInvalidation(event: CacheInvalidateEvent) {
+    private async handleExtendedCacheInvalidation(event: CacheInvalidateEvent) {
         const [userId] = event.entityIds;
 
         await this.redisService.invalidateCache(this.cacheExtendedKey, userId);

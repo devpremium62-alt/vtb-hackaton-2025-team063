@@ -10,7 +10,7 @@ type Props = {
     onChange?: (value: string) => void;
     options: { value: string; label: string }[];
     large?: boolean;
-    error?: string;
+    error?: string | null;
 }
 
 const Select = ({options, id, value, className, placeholder, onChange, large, error}: Props) => {

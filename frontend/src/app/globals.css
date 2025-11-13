@@ -228,6 +228,11 @@ main {
     z-index: 1;
 }
 
+.border-primary {
+    border: 1px solid var(--primary-color);
+}
+
+
 .border-error {
     border: 1px solid var(--error-color);
 }

@@ -1,7 +1,7 @@
 "use client";
 
 import {Calendar} from "@mantine/dates";
-import {isPaymentExpired, isPaymentPayed, PaymentType} from "@/entities/payment";
+import {isPaymentActual, isPaymentExpired, isPaymentPayed, PaymentType} from "@/entities/payment";
 import {Dispatch, SetStateAction, useState} from "react";
 import dayjs from "dayjs";
 import "dayjs/locale/ru";
@@ -30,8 +30,6 @@ export const PaymentsCalendar = ({payments, currentDate, setCurrentDate, large}:
 
     const monthLabel = dayjs(currentDate).locale('ru').format('MMMM');
     const yearLabel = dayjs(currentDate).locale('ru').format('YYYY');
-
-    const now = new Date();
 
     return <div className="h-full flex-1 bg-tertiary rounded-xl px-1.5 py-[0.5625rem]">
         <AnimatePresence mode="wait">
@@ -88,7 +86,6 @@ export const PaymentsCalendar = ({payments, currentDate, setCurrentDate, large}:
                     }}
                     renderDay={(dateStr) => {
                         const date = new Date(dateStr);
-                        date.setDate(date.getDate() + 1);
                         const day = date.getDate();
                         const payment = payments[dateStr];
 
@@ -98,7 +95,7 @@ export const PaymentsCalendar = ({payments, currentDate, setCurrentDate, large}:
                         let colorClass = "bg-info text-white";
                         if (!payment) {
                             colorClass = "";
-                        } else if (isPaymentPayed(payment)) {
+                        } else if (isPaymentActual(payment)) {
                             colorClass = "bg-success text-white";
                         } else if (isPaymentExpired(payment)) {
                             colorClass = "bg-error text-white";

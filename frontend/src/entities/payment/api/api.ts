@@ -1,6 +1,6 @@
-import { fetchMock } from "@/shared/lib/fetchMock";
 import {PaymentType} from "@/entities/payment";
 import universalFetch from "@/shared/lib/universalFetch";
+import {DepositType} from "@/entities/transaction";
 
 export async function getPayments(): Promise<PaymentType[]> {
     const payments = await universalFetch<PaymentType[]>("/payments", {
@@ -26,8 +26,12 @@ export async function deletePayment(paymentId: number): Promise<void> {
     });
 }
 
-export async function executePayment(paymentId: number): Promise<void> {
-    await fetchMock(`/api/payments/execution/?id=${paymentId}`, {
-        method: "DELETE",
+export async function executePayment(data: { paymentId?: number } & DepositType): Promise<void> {
+    const body = Object.assign({}, data);
+    delete body.paymentId;
+
+    await universalFetch(`/payments/${data.paymentId}`, {
+        method: "PUT",
+        body
     });
 }

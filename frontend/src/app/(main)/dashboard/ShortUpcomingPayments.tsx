@@ -1,7 +1,7 @@
 "use client";
 
 import Heading from "@/shared/ui/typography/Heading";
-import {getPayments, Payment} from "@/entities/payment";
+import {getPayments, Payment, PaymentType} from "@/entities/payment";
 import React, {useMemo, useState} from "react";
 import {PaymentsCalendar} from "@/widgets/payments-calendar";
 import {PaymentsList} from "@/widgets/payments-list";
@@ -10,7 +10,7 @@ import {useQuery} from "@tanstack/react-query";
 
 const ShortUpcomingPayments = () => {
     const [isModalActive, setModalActive] = useState(false);
-    const [currentPaymentId, setCurrentPaymentId] = useState<number | null>(null);
+    const [currentPayment, setCurrentPayment] = useState<PaymentType | null>(null);
     const [currentDate, setCurrentDate] = useState<Date>(new Date());
 
     const {data: payments = []} = useQuery({
@@ -23,8 +23,8 @@ const ShortUpcomingPayments = () => {
         return Object.fromEntries(payments.map(p => [p.date.toISOString().slice(0, 10), {...p}]));
     }, [payments]);
 
-    function onDepositClick(id: number) {
-        setCurrentPaymentId(id);
+    function onDepositClick(payment: PaymentType) {
+        setCurrentPayment(payment);
         setModalActive(true);
     }
 
@@ -39,7 +39,7 @@ const ShortUpcomingPayments = () => {
                               <div key={i} className="h-11 rounded-xl bg-tertiary animate-pulse"/>
                           )}/>
         </div>
-        <DepositPayment currentPaymentId={currentPaymentId} isActive={isModalActive} setActive={setModalActive}/>
+        <DepositPayment currentPayment={currentPayment} isActive={isModalActive} setActive={setModalActive}/>
     </section>
 }
 

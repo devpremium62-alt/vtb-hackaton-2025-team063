@@ -41,7 +41,7 @@ export class CategoriesService {
     }
 
     @OnEvent('cache.invalidate.transactions', {async: true})
-    async handleCacheInvalidation(event: CacheInvalidateEvent) {
+    private async handleCacheInvalidation(event: CacheInvalidateEvent) {
         const [userId] = event.entityIds;
 
         await this.redisService.invalidateCache(this.baseKey, userId);

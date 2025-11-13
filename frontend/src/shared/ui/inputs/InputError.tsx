@@ -1,5 +1,7 @@
+import {FieldError} from "react-hook-form";
+
 type Props = {
-    error?: string;
+    error?: string | null;
 }
 
 const InputError = ({error}: Props) => {

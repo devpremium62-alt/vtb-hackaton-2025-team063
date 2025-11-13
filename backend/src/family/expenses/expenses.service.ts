@@ -35,7 +35,7 @@ export class ExpensesService {
     }
 
     @OnEvent('cache.invalidate.transaction-categories', {async: true})
-    async handleCacheInvalidation(event: CacheInvalidateEvent) {
+    private async handleCacheInvalidation(event: CacheInvalidateEvent) {
         const [userId] = event.entityIds;
 
         await this.familyCacheService.invalidateFamilyCache(this.baseKey, userId as number);

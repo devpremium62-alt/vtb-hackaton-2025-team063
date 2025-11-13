@@ -6,7 +6,7 @@ import {
     isPaymentActual,
     isPaymentExpired,
     isPaymentPayed,
-    PaymentLarge,
+    PaymentLarge, PaymentType,
 } from "@/entities/payment";
 import React, {ChangeEvent, useMemo, useState} from "react";
 import {PaymentsCalendar} from "@/widgets/payments-calendar";
@@ -28,7 +28,7 @@ const UpcomingPayments = () => {
     const [search, setSearch] = useState("");
     const [selectedStatus, setSelectedStatus] = useState("all");
     const [selectedName, setSelectedName] = useState("all");
-    const [currentPaymentId, setCurrentPaymentId] = useState<number | null>(null);
+    const [currentPayment, setCurrentPayment] = useState<PaymentType | null>(null);
 
     const {data: payments = []} = useQuery({
         queryKey: ["payments"],
@@ -66,11 +66,11 @@ const UpcomingPayments = () => {
     }, [filteredPayments]);
 
     const nearestPayment = useMemo(() => {
-        return payments.find(p => p.date > new Date());
+        return payments.find(p => p.date >= new Date() && isPaymentActual(p));
     }, [payments]);
 
-    function onDepositClick(id: number) {
-        setCurrentPaymentId(id);
+    function onDepositClick(payment: PaymentType) {
+        setCurrentPayment(payment);
         setDepositModalOpen(true);
     }
 
@@ -112,7 +112,7 @@ const UpcomingPayments = () => {
                           )}/>
         </div>
         <CreatePayment isActive={isCreateModalOpen} setActive={setCreateModalOpen}/>
-        <DepositPayment currentPaymentId={currentPaymentId} isActive={isDepositModalOpen} setActive={setDepositModalOpen}/>
+        <DepositPayment currentPayment={currentPayment} isActive={isDepositModalOpen} setActive={setDepositModalOpen}/>
     </section>
 }
 

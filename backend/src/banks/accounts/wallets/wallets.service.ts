@@ -10,6 +10,8 @@ import {TransactionsService} from "../transactions/transactions.service";
 import {WalletDTO} from "./wallet.dto";
 import {DepositDTO} from "../transactions/transaction.dto";
 import {use} from "passport";
+import {OnEvent} from "@nestjs/event-emitter";
+import {CacheInvalidateEvent} from "../../../common/events/cache-invalidate.event";
 
 @Injectable()
 export class WalletsService {
@@ -111,5 +113,12 @@ export class WalletsService {
         }
 
         return wallet;
+    }
+
+    @OnEvent('cache.invalidate.transactions', {async: true})
+    private async handleCacheInvalidation(event: CacheInvalidateEvent) {
+        const [userId] = event.entityIds;
+
+        await this.familyCacheService.invalidateFamilyCache(this.baseKey, userId as number);
     }
 }

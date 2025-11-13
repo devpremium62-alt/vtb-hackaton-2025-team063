@@ -9,6 +9,8 @@ import {ChildAccountDTO, UpdateChildAccountDTO} from "./child-account.dto";
 import {FamilyCacheService} from "../../../family/family-cache.service";
 import {TransactionsService} from "../transactions/transactions.service";
 import {DepositDTO} from "../transactions/transaction.dto";
+import {OnEvent} from "@nestjs/event-emitter";
+import {CacheInvalidateEvent} from "../../../common/events/cache-invalidate.event";
 
 @Injectable()
 export class ChildAccountsService {
@@ -125,5 +127,12 @@ export class ChildAccountsService {
         }
 
         return childAccount;
+    }
+
+    @OnEvent('cache.invalidate.transactions', {async: true})
+    private async handleCacheInvalidation(event: CacheInvalidateEvent) {
+        const [userId] = event.entityIds;
+
+        await this.familyCacheService.invalidateFamilyCache(this.baseKey, userId as number);
     }
 }

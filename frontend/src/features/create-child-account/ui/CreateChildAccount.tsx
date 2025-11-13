@@ -71,7 +71,7 @@ export const CreateChildAccount = ({isActive, setActive}: Props) => {
                         name="accountAvatar"
                         control={control}
                         render={({field}) => (
-                            <ImageInput error={errors.accountAvatar?.message as string}
+                            <ImageInput {...field} error={errors.accountAvatar?.message as string}
                                 onChange={(value) => field.onChange(value)}
                                 large placeholder="Выберите изображение" value={field.value} id="accountAvatar"/>
                         )}
@@ -88,7 +88,7 @@ export const CreateChildAccount = ({isActive, setActive}: Props) => {
                         )}
                     />
                 </div>
-                <BankSelect name="accountBankId" control={control} error={errors.accountBankId?.message as string}/>
+                <BankSelect name="accountBankId" control={control} error={errors.accountBankId?.message}/>
                 <div className="mb-2.5">
                     <AccentButton disabled={isPending} className="w-full justify-center" large>
                         <Plus className="mr-1"/>

@@ -7,7 +7,7 @@ import { motion } from "framer-motion";
 
 type Props = {
     payment: PaymentType;
-    onDepositClick: (id: number) => void;
+    onDepositClick: (payment: PaymentType) => void;
 }
 
 const NearestPayment = ({payment, onDepositClick}: Props) => {
@@ -31,7 +31,7 @@ const NearestPayment = ({payment, onDepositClick}: Props) => {
                     </span>
                     </Heading>
                 </div>
-                <button onClick={() => onDepositClick(payment.id)}
+                <button onClick={() => onDepositClick(payment)}
                         className="bg-accent text-white text-[0.5rem] px-2.5 py-0.5 rounded-2xl cursor-pointer">
                     Внести
                 </button>

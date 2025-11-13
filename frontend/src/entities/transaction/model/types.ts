@@ -11,6 +11,13 @@ export type TransactionType = {
     date: Date;
 }
 
+export type DepositType = {
+    fromAccountId: string;
+    fromAccount: string;
+    fromBank: string;
+    amount: number;
+}
+
 export function toExcelData(expenses: TransactionType[]) {
     return expenses.map(item => ({
         "Название": item.name,
