@@ -1,10 +1,13 @@
-import {Column, Entity, Index, ManyToOne, PrimaryColumn} from 'typeorm';
+import {Column, Entity, Index, ManyToOne, PrimaryColumn, PrimaryGeneratedColumn} from 'typeorm';
 import {User} from "../../users/user.entity";
 
 @Entity()
 export class Consent {
-    @PrimaryColumn()
+    @PrimaryGeneratedColumn()
     id: string;
+
+    @PrimaryColumn()
+    consentId: string;
 
     @Column()
     @Index()

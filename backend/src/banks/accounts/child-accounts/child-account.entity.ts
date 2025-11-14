@@ -11,8 +11,11 @@ export class ChildAccount {
     account: string;
 
     @Column()
-    @Index()
     bankId: string;
+
+    @Column()
+    @Index()
+    clientId: string;
 
     @Column()
     avatar: string;

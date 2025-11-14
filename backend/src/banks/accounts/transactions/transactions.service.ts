@@ -32,7 +32,7 @@ export class TransactionsService {
     public async getTransactions(userId: number) {
         return this.redisService.withCache(`${this.baseKey}:${userId}`, 30, async () => {
             const consents = await this.consentsService.getUserConsents(userId);
-            const bankToConsents = Object.fromEntries(consents.map(consent => [consent.bankId, consent.id]));
+            const bankToConsents = Object.fromEntries(consents.map(consent => [consent.bankId, consent.consentId]));
 
             const bankAccounts = await this.accountsService.getAccounts(userId);
 
@@ -98,7 +98,7 @@ export class TransactionsService {
             url: `/payments?client_id=${bankConsent.clientId}`,
             method: "POST",
             headers: {
-                "X-Consent-Id": bankConsent.id,
+                "X-Consent-Id": bankConsent.consentId,
                 "X-Payment-Consent-Id": consent.consent_id
             },
             data: {

@@ -32,6 +32,7 @@ import {PaymentConsentsModule} from "./banks/accounts/transactions/payment-conse
 import {WalletsModule} from "./banks/accounts/wallets/wallets.module";
 import {Wallet} from "./banks/accounts/wallets/wallet.entity";
 import {ScheduleModule} from "@nestjs/schedule";
+import { CryptoModule } from './crypto/crypto.module';
 
 
 @Module({
@@ -72,6 +73,7 @@ import {ScheduleModule} from "@nestjs/schedule";
         LimitsModule,
         PaymentsModule,
         WalletsModule,
+        CryptoModule,
     ],
     controllers: [AppController],
     providers: [AppService],

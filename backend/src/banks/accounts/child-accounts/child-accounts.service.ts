@@ -32,6 +32,7 @@ export class ChildAccountsService {
         const familyKey = this.familyCacheService.getFamilyKey(userId, memberId);
 
         return this.redisService.withCache(`${this.baseKey}:${familyKey}`, 3600, async () => {
+
             const childAccounts = await this.childAccountRepository
                 .createQueryBuilder('childAccount')
                 .leftJoinAndSelect('childAccount.user', 'user')

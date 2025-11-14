@@ -47,7 +47,7 @@ export class ConsentsService {
         const consent = this.consentsRepository.create({
             bankId,
             user: {id: userId},
-            id: isPending ? consentData.request_id! : consentData.consent_id!,
+            consentId: isPending ? consentData.request_id! : consentData.consent_id!,
             clientId: consentDTO.client_id,
             status: isPending ? "pending" : "active",
         });
@@ -64,7 +64,7 @@ export class ConsentsService {
         }
 
         const response = await this.bankService.requestBankAPI(bankId, {
-            url: `/account-consents/${consent.id}`,
+            url: `/account-consents/${consent.consentId}`,
             method: "DELETE",
         });
 
@@ -86,12 +86,14 @@ export class ConsentsService {
     }
 
     public async getUserBankConsent(bankId: string, userId: number) {
-        const consent = await this.consentsRepository.findOne({where: {bankId, user: {id: userId}}});
-        if (!consent) {
-            throw new ForbiddenException("У вас нет согласия на эту операцию");
-        }
+        return this.redisService.withCache(`${this.keyBase}:${userId}:${bankId}`, 3600, async () => {
+            const consent = await this.consentsRepository.findOne({where: {bankId, user: {id: userId}}});
+            if (!consent) {
+                throw new ForbiddenException("У вас нет согласия на эту операцию");
+            }
 
-        return consent;
+            return consent;
+        });
     }
 
     @Interval(10000)
@@ -113,7 +115,7 @@ export class ConsentsService {
                         const consentData = await this.bankService.requestBankAPI<{ data: ConsentResponseType }>(
                             consent.bankId,
                             {
-                                url: `/account-consents/${consent.id}`,
+                                url: `/account-consents/${consent.consentId}`,
                                 method: "GET",
                             },
                             null,
@@ -123,13 +125,13 @@ export class ConsentsService {
                         const status = consentData.data.status;
 
                         if (status === "Authorized" && consent.status !== "active") {
-                            const oldId = consent.id;
+                            const oldId = consent.consentId;
 
                             await this.consentsRepository.delete(oldId);
 
                             const newConsent = this.consentsRepository.create({
                                 ...consent,
-                                id: consentData.data.consentId,
+                                consentId: consentData.data.consentId,
                                 status: "active",
                             });
 

@@ -67,14 +67,14 @@ export class AccountsService {
     private async getBankAccounts(userId: number, bankId: string, onlyEnabled = false, consent?: Consent) {
         const bankConsent = consent || await this.consentsService.getUserBankConsent(bankId, userId);
 
-        const cacheKey = `${this.cacheKey}:${bankConsent.id}:${userId}`;
+        const cacheKey = `${this.cacheKey}:${bankConsent.consentId}:${userId}`;
         const bankAccounts = await this.banksService.requestBankAPI<{
             data: { account: AccountType[] }
         }>(bankConsent.bankId, {
             url: `/accounts?client_id=${bankConsent.clientId}`,
             method: "GET",
             headers: {
-                "X-Consent-Id": bankConsent.id,
+                "X-Consent-Id": bankConsent.consentId,
             }
         }, cacheKey);
 
@@ -86,14 +86,14 @@ export class AccountsService {
     public async getAccountInfo(userId: number, bankId: string, accountId: string) {
         const bankConsent = await this.consentsService.getUserBankConsent(bankId, userId);
 
-        const cacheKey = `${this.cacheKey}:${bankConsent.id}:${accountId}:${userId}`;
+        const cacheKey = `${this.cacheKey}:${bankConsent.consentId}:${accountId}:${userId}`;
         const account = await this.banksService.requestBankAPI<{
             data: { account: AccountType }
         }>(bankConsent.bankId, {
             url: `/accounts/${accountId}`,
             method: "GET",
             headers: {
-                "X-Consent-Id": bankConsent.id,
+                "X-Consent-Id": bankConsent.consentId,
             }
         }, cacheKey);
 
@@ -107,7 +107,7 @@ export class AccountsService {
             url: `/accounts?client_id=${consent.clientId}`,
             method: "POST",
             headers: {
-                "X-Consent-Id": consent.id,
+                "X-Consent-Id": consent.consentId,
             },
             data: {
                 account_type: account.type,
@@ -115,7 +115,7 @@ export class AccountsService {
             }
         });
 
-        const cacheKey = `${this.cacheKey}:${consent.id}`;
+        const cacheKey = `${this.cacheKey}:${consent.consentId}`;
         await this.redisService.invalidateCache(cacheKey, userId);
 
         return response.data;
@@ -141,7 +141,7 @@ export class AccountsService {
             url: `/accounts/${accountId}/close?client_id=${consent.clientId}`,
             method: "PUT",
             headers: {
-                "X-Consent-Id": consent.id,
+                "X-Consent-Id": consent.consentId,
             },
             data: {
                 action: accountCloseDTO.action,
@@ -150,8 +150,8 @@ export class AccountsService {
         });
 
         await this.redisService.invalidateCache(this.cacheKey, userId);
-        await this.redisService.invalidateCache(this.cacheKey, consent.id, userId);
-        await this.redisService.invalidateCache(this.cacheKey, consent.id, accountId, userId);
+        await this.redisService.invalidateCache(this.cacheKey, consent.consentId, userId);
+        await this.redisService.invalidateCache(this.cacheKey, consent.consentId, accountId, userId);
 
         return response.data;
     }
@@ -159,12 +159,12 @@ export class AccountsService {
     public async getBalance(accountId: string, bankId: string, userId: number) {
         const consent = await this.consentsService.getUserBankConsent(bankId, userId);
 
-        const cacheKey = `${this.cacheKey}:${accountId}:${consent.id}:${userId}:balance`;
+        const cacheKey = `${this.cacheKey}:${accountId}:${consent.consentId}:${userId}:balance`;
         const response = await this.banksService.requestBankAPI<{ data: { balance: any[] } }>(bankId, {
             url: `/accounts/${accountId}/balances`,
             method: "GET",
             headers: {
-                "X-Consent-Id": consent.id,
+                "X-Consent-Id": consent.consentId,
             }
         }, cacheKey);
 

@@ -7,6 +7,7 @@ import {AccountsModule} from "../accounts.module";
 import {RedisModule} from "../../../redis/redis.module";
 import {FamilyModule} from "../../../family/family.module";
 import {TransactionsModule} from "../transactions/transactions.module";
+import {ConsentsModule} from "../../consents/consents.module";
 
 @Module({
   imports:[TypeOrmModule.forFeature([ChildAccount]), AccountsModule, RedisModule, FamilyModule, TransactionsModule],
