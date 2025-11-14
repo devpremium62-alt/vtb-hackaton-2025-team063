@@ -14,7 +14,7 @@ type ModalProps = {
 
 const DisconnectPartner = ({isActive, setActive}: ModalProps) => {
     return <ModalWindow isActive={isActive} setActive={setActive}>
-        <div className="mb-2.5">
+        <div className="mb-2.5 text-center">
             <p>Вы уверены, что хотите удалить партнера?</p>
         </div>
         <div className="flex items-center justify-center gap-1">

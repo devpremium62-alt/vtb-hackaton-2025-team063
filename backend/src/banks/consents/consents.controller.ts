@@ -18,7 +18,7 @@ export class ConsentsController {
     @Get()
     @UseGuards(JwtAuthGuard)
     public async getAll(@User('id') userId: number) {
-        return this.consentsService.getUserConsents(userId);
+        return this.consentsService.getUserConsents(userId, true);
     }
 
     @ApiOperation({ summary: 'Создание согласия для банка' })

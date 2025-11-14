@@ -1,10 +1,10 @@
 import React, {JSX, useMemo, useState} from "react";
-import {BankKey, banks, getConsents} from "@/entities/bank";
+import {BankKey, banks, Consent, getConsents} from "@/entities/bank";
 import {useQuery} from "@tanstack/react-query";
 import {CreateBankConsent} from "@/features/create-bank-consent";
 
 type Props = {
-    bankMarkup: (bankId: BankKey, isConnected: boolean, onClick: (bankId: BankKey) => void) => JSX.Element;
+    bankMarkup: (bankId: BankKey, consent: Consent | undefined, onClick: (bankId: BankKey) => void) => JSX.Element;
     className?: string;
 }
 
@@ -15,21 +15,22 @@ export const BanksConnection = ({bankMarkup, className = "gap-1"}: Props) => {
     const {data: consents = []} = useQuery({
         queryKey: ["consents"],
         queryFn: getConsents,
+        refetchInterval: 5000,
     });
 
     const bankToConsent = useMemo(() => {
-        return Object.fromEntries(consents.map((c) => [c.bankId, c.clientId]));
+        return Object.fromEntries(consents.map((c) => [c.bankId, c]));
     }, [consents]);
 
     function onBankSelect(bankId: BankKey) {
-        setActiveBank({bankId, clientId: bankToConsent[bankId]});
+        setActiveBank({bankId, clientId: bankToConsent[bankId] ? bankToConsent[bankId].clientId : null});
         setModalActive(true);
     }
 
     return <>
         <div className={`flex flex-col ${className}`}>
             {Object.entries(banks).map(([bankId, bank]) => (
-                bankMarkup(bankId as BankKey, Boolean(bankToConsent[bankId]), onBankSelect)
+                bankMarkup(bankId as BankKey, bankToConsent[bankId], onBankSelect)
             ))}
         </div>
         <CreateBankConsent isActive={isModalActive} setActive={setModalActive} bankId={activeBank?.bankId}

@@ -17,6 +17,7 @@
     --error-color: #FF5A5F;
     --error-color-hover: #ce4247;
     --warning-color: #FFD66B;
+    --warning-color--light: #fff0cd;
     --error-color--transparent: rgba(255, 90, 95, 0.16);
     --info-color: #0078FF;
 
@@ -174,8 +175,16 @@ main {
     color: var(--error-color);
 }
 
+.text-warning {
+    color: var(--warning-color);
+}
+
 .bg-warning {
     background: var(--warning-color);
+}
+
+.bg-warning-light {
+    background: var(--warning-color--light);
 }
 
 .bg-info {

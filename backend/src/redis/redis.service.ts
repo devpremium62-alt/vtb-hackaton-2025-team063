@@ -3,6 +3,11 @@ import Redis from "ioredis";
 import {EventEmitter2} from "@nestjs/event-emitter";
 import {CacheInvalidateEvent} from "../common/events/cache-invalidate.event";
 
+export enum CACHE_POLICY {
+    CACHE,
+    DONT_CACHE
+}
+
 @Injectable()
 export class RedisService {
     public constructor(

@@ -1,10 +1,10 @@
 import {HttpService} from '@nestjs/axios';
-import {HttpException, HttpStatus, Inject, Injectable} from '@nestjs/common';
+import {HttpException, HttpStatus, Injectable} from '@nestjs/common';
 import {lastValueFrom} from "rxjs";
 import {BanksConfig} from "./banks.config";
 import {ConfigService} from "@nestjs/config";
 import {AxiosRequestConfig} from "axios";
-import {RedisService} from "../redis/redis.service";
+import {CACHE_POLICY, RedisService} from "../redis/redis.service";
 
 @Injectable()
 export class BanksService {
@@ -15,8 +15,9 @@ export class BanksService {
                 private readonly configService: ConfigService) {
     }
 
-    public async requestBankAPI<T>(bankKey: string, requestConfig: AxiosRequestConfig, cacheKey?: string) {
+    public async requestBankAPI<T>(bankKey: string, requestConfig: AxiosRequestConfig, cacheKey?: string | null, dontCache = CACHE_POLICY.CACHE) {
         const token = await this.getAccessToken(bankKey);
+
         const bank = BanksConfig[bankKey];
 
         const clientId = this.configService.get<string>("CLIENT_ID");
@@ -40,7 +41,7 @@ export class BanksService {
                 );
 
                 return response.data as T;
-            }, () => requestConfig.method === "GET");
+            }, () => requestConfig.method === "GET" && dontCache !== CACHE_POLICY.DONT_CACHE);
         });
     }
 
@@ -74,7 +75,7 @@ export class BanksService {
         try {
             return await callback();
         } catch (err) {
-            console.error(err);
+            console.error("Error:", err.request.path, err.message);
 
             if (err.response?.data) {
                 throw new HttpException(

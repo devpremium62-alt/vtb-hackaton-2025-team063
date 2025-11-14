@@ -32,4 +32,5 @@ export const banks: Record<BankKey, Bank> = {
 export type Consent = {
     bankId: string;
     clientId: string;
+    status: "active" | "pending";
 }

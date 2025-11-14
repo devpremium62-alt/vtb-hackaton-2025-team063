@@ -96,6 +96,7 @@ export class GoalsService {
     }
 
     @OnEvent('cache.invalidate.transactions', {async: true})
+    @OnEvent('cache.invalidate.consents', {async: true})
     private async handleCacheInvalidation(event: CacheInvalidateEvent) {
         const [userId] = event.entityIds;
 

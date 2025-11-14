@@ -14,6 +14,7 @@ const BankSelect = ({name, control, error}: Props) => {
     const {data: consents = []} = useQuery({
         queryKey: ["consents"],
         queryFn: getConsents,
+        refetchInterval: 5000,
     });
 
     const bankToConsent = useMemo(() => {

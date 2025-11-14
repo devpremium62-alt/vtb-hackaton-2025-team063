@@ -28,6 +28,12 @@ export async function authUser(): Promise<UserType> {
     });
 }
 
+export async function logoutUser(): Promise<void> {
+    await universalFetch("/auth", {
+        method: "DELETE",
+    });
+}
+
 export async function updateUser(userData: UserEditType): Promise<UserType> {
     return universalFetch("/users/me", {
         method: "PATCH",

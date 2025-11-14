@@ -31,6 +31,7 @@ import {ChildAccountsModule} from "./banks/accounts/child-accounts/child-account
 import {PaymentConsentsModule} from "./banks/accounts/transactions/payment-consents/payment-consents.module";
 import {WalletsModule} from "./banks/accounts/wallets/wallets.module";
 import {Wallet} from "./banks/accounts/wallets/wallet.entity";
+import {ScheduleModule} from "@nestjs/schedule";
 
 
 @Module({
@@ -53,6 +54,7 @@ import {Wallet} from "./banks/accounts/wallets/wallet.entity";
         ConfigModule.forRoot({
             isGlobal: true,
         }),
+        ScheduleModule.forRoot(),
         RedisModule,
         UsersModule,
         CommonModule,

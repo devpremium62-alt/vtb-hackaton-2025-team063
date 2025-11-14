@@ -17,6 +17,7 @@ const BankSelectStep = ({onSuccess}: Props) => {
     const {data: consents = []} = useQuery({
         queryKey: ["consents"],
         queryFn: getConsents,
+        refetchInterval: 5000,
     });
 
     return <>
@@ -31,8 +32,8 @@ const BankSelectStep = ({onSuccess}: Props) => {
             transition={{duration: 0.3}}>
             <p className="text-right text-xs mb-0.5">{consents.length} / 4</p>
 
-            <BanksConnection className="gap-2.5 mb-10" bankMarkup={(bankId, isConnected, onClick) => {
-                return <ConnectableBankOnRegister key={bankId} bankId={bankId} selectBank={onClick} isSelected={isConnected} />;
+            <BanksConnection className="gap-2.5 mb-10" bankMarkup={(bankId, consent, onClick) => {
+                return <ConnectableBankOnRegister key={bankId} bankId={bankId} selectBank={onClick} consent={consent} />;
             }}/>
 
             <div className="flex items-center justify-center px-4">

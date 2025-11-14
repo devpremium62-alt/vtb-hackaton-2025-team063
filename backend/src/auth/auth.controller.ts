@@ -9,7 +9,7 @@ import {
     HttpCode,
     UploadedFile,
     UseInterceptors,
-    BadRequestException
+    BadRequestException, Delete
 } from '@nestjs/common';
 import {UserDTO, UserLoginDTO} from "../users/user.dto";
 import {AuthService} from "./auth.service";
@@ -84,5 +84,16 @@ export class AuthController {
     @UseGuards(JwtAuthGuard)
     public async getMe(@User("id") userId: number) {
         return this.usersService.findUser(userId);
+    }
+
+    @ApiOperation({summary: 'Выход из аккаунта'})
+    @ApiResponse({status: 204})
+    @ApiCookieAuth('access_token')
+    @Delete()
+    @HttpCode(204)
+    @UseGuards(JwtAuthGuard)
+    public async logout(@Res() res: Response) {
+        res.clearCookie('access_token');
+        res.send();
     }
 }

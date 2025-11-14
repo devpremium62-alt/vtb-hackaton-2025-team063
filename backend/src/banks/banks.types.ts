@@ -16,6 +16,13 @@ export type CreatedAccountType = {
     status: 'active' | string;
 }
 
+export type ConsentResponseType = {
+    consentId: string,
+    status: "AwaitingAuthorization" | string,
+    creationDateTime: string,
+    statusUpdateDateTime: string,
+    permissions: string[];
+}
 
 export type TransactionType = {
     accountId: string;

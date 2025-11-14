@@ -13,6 +13,12 @@ export class Consent {
     @Column()
     clientId: string;
 
-    @ManyToOne(() => User, (user) => user.consents, { onDelete: 'CASCADE' })
+    @Column({
+        type: "enum",
+        enum: ["active", "pending", "declined"],
+    })
+    status: "active" | "pending" | "declined";
+
+    @ManyToOne(() => User, { onDelete: 'CASCADE' })
     user: User;
 }

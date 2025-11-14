@@ -39,6 +39,7 @@ export class WalletsService {
             const promises: Promise<any>[] = [];
 
             for (const wallet of wallets) {
+                wallet.currentAmount = 0;
                 promises.push(this.accountsService.getBalance(wallet.id, wallet.bankId, userId)
                     .then(balance => wallet.currentAmount = balance)
                     .catch(err => console.error(err))
@@ -115,6 +116,7 @@ export class WalletsService {
     }
 
     @OnEvent('cache.invalidate.transactions', {async: true})
+    @OnEvent('cache.invalidate.consents', {async: true})
     private async handleCacheInvalidation(event: CacheInvalidateEvent) {
         const [userId] = event.entityIds;
 

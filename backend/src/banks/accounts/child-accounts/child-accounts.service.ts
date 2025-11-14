@@ -130,6 +130,7 @@ export class ChildAccountsService {
     }
 
     @OnEvent('cache.invalidate.transactions', {async: true})
+    @OnEvent('cache.invalidate.consents', {async: true})
     private async handleCacheInvalidation(event: CacheInvalidateEvent) {
         const [userId] = event.entityIds;
 

@@ -16,9 +16,9 @@ const BanksConnect = ({className}: Props) => {
         <div className="mb-2.5 flex items-center justify-between flex-wrap">
             <Heading level={2}>Доступные банки</Heading>
         </div>
-        <BanksConnection bankMarkup={(bankId, isConnected, onClick) => {
+        <BanksConnection bankMarkup={(bankId, consent, onClick) => {
             return <ConnectableBank key={bankId} bankId={bankId as BankKey} onClick={onClick}
-                                    isConnected={isConnected}/>
+                                    consent={consent}/>
         }}/>
     </section>
 }

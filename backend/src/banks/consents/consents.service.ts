@@ -5,7 +5,10 @@ import {Repository} from "typeorm";
 import {Consent} from "./consent.entity";
 import {CreateConsentDto} from "./consent.dto";
 import {ConfigService} from "@nestjs/config";
-import {RedisService} from "../../redis/redis.service";
+import {CACHE_POLICY, RedisService} from "../../redis/redis.service";
+import {ConsentResponseType} from "../banks.types";
+import {Interval} from "@nestjs/schedule";
+import { chunk } from 'lodash';
 
 @Injectable()
 export class ConsentsService {
@@ -22,7 +25,11 @@ export class ConsentsService {
     public async createConsent(bankId: string, userId: number, consentDTO: CreateConsentDto) {
         const requestingBank = this.configService.get<string>("CLIENT_ID");
 
-        const consentData = await this.bankService.requestBankAPI<{ consent_id: string, status: string; }>(bankId, {
+        const consentData = await this.bankService.requestBankAPI<{
+            consent_id?: string,
+            request_id?: string,
+            status: string;
+        }>(bankId, {
             url: "/account-consents/request",
             method: "POST",
             data: {
@@ -34,20 +41,18 @@ export class ConsentsService {
             }
         });
 
-        if (consentData.status === "pending") {
-            return consentData;
-        }
-
         await this.consentsRepository.delete({bankId, user: {id: userId}});
 
+        const isPending = consentData.status === "pending";
         const consent = this.consentsRepository.create({
             bankId,
             user: {id: userId},
-            id: consentData.consent_id,
-            clientId: consentDTO.client_id
+            id: isPending ? consentData.request_id! : consentData.consent_id!,
+            clientId: consentDTO.client_id,
+            status: isPending ? "pending" : "active",
         });
         await this.consentsRepository.save(consent);
-        await this.redisService.invalidateCache(this.keyBase, userId);
+        await this.redisService.invalidateCache(this.keyBase, userId, "*");
 
         return consent;
     }
@@ -65,13 +70,18 @@ export class ConsentsService {
 
         if (!response) {
             await this.consentsRepository.remove(consent);
-            await this.redisService.invalidateCache(this.keyBase, userId);
+            await this.redisService.invalidateCache(this.keyBase, userId, "*");
         }
     }
 
-    public async getUserConsents(userId: number) {
-        return this.redisService.withCache(`${this.keyBase}:${userId}`, 3600, () => {
-            return this.consentsRepository.find({where: {user: {id: userId}}});
+    public async getUserConsents(userId: number, all = false) {
+        return this.redisService.withCache(`${this.keyBase}:${userId}:${all}`, 3600, async () => {
+            const consents = await this.consentsRepository.find({where: {user: {id: userId}}});
+            if(all) {
+                return consents;
+            }
+
+            return consents.filter(c => c.status === "active");
         });
     }
 
@@ -82,5 +92,81 @@ export class ConsentsService {
         }
 
         return consent;
+    }
+
+    @Interval(10000)
+    private async checkConsents() {
+        const consents = await this.consentsRepository.find({
+            relations: ["user"],
+        });
+
+        if (!consents.length) {
+            return;
+        }
+
+        const batches = chunk(consents, 10);
+
+        for (const batch of batches) {
+            await Promise.all(
+                batch.map(async (consent) => {
+                    try {
+                        const consentData = await this.bankService.requestBankAPI<{ data: ConsentResponseType }>(
+                            consent.bankId,
+                            {
+                                url: `/account-consents/${consent.id}`,
+                                method: "GET",
+                            },
+                            null,
+                            CACHE_POLICY.DONT_CACHE
+                        );
+
+                        const status = consentData.data.status;
+
+                        if (status === "Authorized" && consent.status !== "active") {
+                            const oldId = consent.id;
+
+                            await this.consentsRepository.delete(oldId);
+
+                            const newConsent = this.consentsRepository.create({
+                                ...consent,
+                                id: consentData.data.consentId,
+                                status: "active",
+                            });
+
+                            return { action: "update", consent: newConsent };
+                        }
+
+                        if (status === "Rejected" || status === "Revoked") {
+                            return { action: "remove", consent };
+                        }
+
+                        return null;
+                    } catch (error) {
+                        console.error(error);
+                        return null;
+                    }
+                })
+            ).then(async (results) => {
+                const toUpdate = results.filter(r => r?.action === "update").map(r => r!.consent);
+                const toRemove = results.filter(r => r?.action === "remove").map(r => r!.consent);
+
+                if (toUpdate.length) {
+                    await this.consentsRepository.save(toUpdate);
+                }
+
+                if (toRemove.length) {
+                    await this.consentsRepository.remove(toRemove);
+                }
+
+                const userIds = [
+                    ...toUpdate.map(c => c.user.id),
+                    ...toRemove.map(c => c.user.id)
+                ];
+
+                await Promise.all(
+                    userIds.map(id => this.redisService.invalidateCache(this.keyBase, id, "*"))
+                );
+            });
+        }
     }
 }
