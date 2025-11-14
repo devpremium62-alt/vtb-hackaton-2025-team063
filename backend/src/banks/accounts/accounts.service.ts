@@ -185,6 +185,13 @@ export class AccountsService {
         await this.redisService.invalidateCache(this.cacheExtendedKey, userId);
     }
 
+    @OnEvent('cache.invalidate.consents', {async: true})
+    private async handleConsentsCacheInvalidation(event: CacheInvalidateEvent) {
+        const [userId] = event.entityIds;
+
+        await this.redisService.invalidateCache(this.cacheKey, userId);
+    }
+
     @OnEvent('cache.invalidate.accounts', {async: true})
     @OnEvent('cache.invalidate.consents', {async: true})
     private async handleExtendedCacheInvalidation(event: CacheInvalidateEvent) {

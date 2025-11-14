@@ -3,12 +3,12 @@ import {InjectRepository} from "@nestjs/typeorm";
 import {In, Repository} from "typeorm";
 import {Limit} from "./limit.entity";
 import {LimitDTO} from "./limit.dto";
-import {RedisService} from "../../redis/redis.service";
-import {FamilyCacheService} from "../../family/family-cache.service";
-import {FamilyService} from "../../family/family.service";
+import {RedisService} from "../redis/redis.service";
+import {FamilyCacheService} from "../family/family-cache.service";
+import {FamilyService} from "../family/family.service";
 import {OnEvent} from "@nestjs/event-emitter";
-import {CacheInvalidateEvent} from "../../common/events/cache-invalidate.event";
-import {TransactionsService} from "../../banks/accounts/transactions/transactions.service";
+import {CacheInvalidateEvent} from "../common/events/cache-invalidate.event";
+import {TransactionsService} from "../banks/accounts/transactions/transactions.service";
 
 const DAY_DURATION = 1000 * 60 * 60 * 24;
 const WEEK_DURATION = DAY_DURATION * 7;

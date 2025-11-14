@@ -1,6 +1,6 @@
 import {Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn, Index, OneToMany} from 'typeorm';
 import {MaxLength} from "class-validator";
-import {User} from "../../users/user.entity";
+import {User} from "../users/user.entity";
 
 @Entity()
 export class Limit {

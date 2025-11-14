@@ -11,6 +11,8 @@ import {TransactionsService} from "../transactions/transactions.service";
 import {DepositDTO} from "../transactions/transaction.dto";
 import {OnEvent} from "@nestjs/event-emitter";
 import {CacheInvalidateEvent} from "../../../common/events/cache-invalidate.event";
+import {FamilyAccountsService} from "../../../family/family-accounts/family-accounts.service";
+import {extractIds} from "../accounts.mappers";
 
 @Injectable()
 export class GoalsService {
@@ -21,6 +23,7 @@ export class GoalsService {
         private readonly goalsRepository: Repository<Goal>,
         private readonly redisService: RedisService,
         private readonly accountsService: AccountsService,
+        private readonly familyAccountsService: FamilyAccountsService,
         private readonly transactionsService: TransactionsService,
         private readonly familyService: FamilyService,
         private readonly familyCacheService: FamilyCacheService,
@@ -32,7 +35,15 @@ export class GoalsService {
         const familyKey = this.familyCacheService.getFamilyKey(userId, memberId);
 
         return this.redisService.withCache(`${this.baseKey}:${familyKey}`, 3600, async () => {
-            const goals = await this.goalsRepository.find({where: {user: {id: In([userId, memberId])}}});
+            const accountIds = extractIds(await this.familyAccountsService.getAccounts(userId));
+
+            const goals = await this.goalsRepository.find({
+                where: {
+                    id: In(accountIds),
+                    user: {id: In([userId, memberId])}
+                }
+            });
+
             return await Promise.all(goals.map(async goal => {
                 const balance = await this.accountsService.getBalance(goal.id, goal.bankId, userId);
                 return {...goal, collected: balance};
@@ -96,7 +107,7 @@ export class GoalsService {
     }
 
     @OnEvent('cache.invalidate.transactions', {async: true})
-    @OnEvent('cache.invalidate.consents', {async: true})
+    @OnEvent('cache.invalidate.accounts', {async: true})
     private async handleCacheInvalidation(event: CacheInvalidateEvent) {
         const [userId] = event.entityIds;
 

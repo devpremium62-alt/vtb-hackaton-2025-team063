@@ -1,7 +1,7 @@
 import {Body, Controller, Delete, Get, HttpCode, Param, Post, UseGuards} from '@nestjs/common';
 import {LimitsService} from "./limits.service";
-import {JwtAuthGuard} from "../../auth/jwt-auth.guard";
-import {User} from "../../common/decorators/user.decorator";
+import {JwtAuthGuard} from "../auth/jwt-auth.guard";
+import {User} from "../common/decorators/user.decorator";
 import {LimitDTO} from "./limit.dto";
 import {ApiCookieAuth, ApiOperation, ApiResponse, ApiTags} from "@nestjs/swagger";
 

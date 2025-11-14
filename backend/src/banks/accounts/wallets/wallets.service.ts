@@ -11,6 +11,10 @@ import {WalletDTO} from "./wallet.dto";
 import {DepositDTO} from "../transactions/transaction.dto";
 import {OnEvent} from "@nestjs/event-emitter";
 import {CacheInvalidateEvent} from "../../../common/events/cache-invalidate.event";
+import {FamilyAccountsService} from "../../../family/family-accounts/family-accounts.service";
+import {extractIds} from "../accounts.mappers";
+
+type WalletWithBalance = Wallet & { currentAmount: number };
 
 @Injectable()
 export class WalletsService {
@@ -21,23 +25,27 @@ export class WalletsService {
         private readonly walletRepository: Repository<Wallet>,
         private readonly accountsService: AccountsService,
         private readonly transactionsService: TransactionsService,
+        private readonly familyAccountsService: FamilyAccountsService,
         private readonly familyService: FamilyService,
         private readonly familyCacheService: FamilyCacheService,
         private readonly redisService: RedisService,
-    ) {
-
-    }
+    ) {}
 
     public async getAll(userId: number) {
         const memberId = await this.familyService.getFamilyMemberId(userId);
         const familyKey = this.familyCacheService.getFamilyKey(userId, memberId);
 
         return this.redisService.withCache(`${this.baseKey}:${familyKey}`, 300, async () => {
-            const wallets = await this.walletRepository.find({where: {user: {id: In([userId, memberId])}}}) as (Wallet & {
-                currentAmount: number
-            })[];
-            const promises: Promise<any>[] = [];
+            const accountIds = extractIds(await this.familyAccountsService.getAccounts(userId));
 
+            const wallets = await this.walletRepository.find({
+                where: {
+                    id: In(accountIds),
+                    user: {id: In([userId, memberId])}
+                }
+            }) as WalletWithBalance[];
+
+            const promises: Promise<any>[] = [];
             for (const wallet of wallets) {
                 wallet.currentAmount = 0;
                 promises.push(this.accountsService.getBalance(wallet.id, wallet.bankId, userId)
@@ -116,7 +124,7 @@ export class WalletsService {
     }
 
     @OnEvent('cache.invalidate.transactions', {async: true})
-    @OnEvent('cache.invalidate.consents', {async: true})
+    @OnEvent('cache.invalidate.accounts', {async: true})
     private async handleCacheInvalidation(event: CacheInvalidateEvent) {
         const [userId] = event.entityIds;
 

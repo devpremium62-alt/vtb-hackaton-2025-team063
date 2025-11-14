@@ -16,8 +16,8 @@ import {AccountsModule} from "./banks/accounts/accounts.module";
 import {FamilyModule} from './family/family.module';
 import {RedisModule} from './redis/redis.module';
 import {CategoriesModule} from './banks/accounts/transactions/categories/categories.module';
-import {LimitsModule} from './expenses/limits/limits.module';
-import {Limit} from "./expenses/limits/limit.entity";
+import {LimitsModule} from './limits/limits.module';
+import {Limit} from "./limits/limit.entity";
 import {TransactionsModule} from "./banks/accounts/transactions/transactions.module";
 import { PaymentsModule } from './payments/payments.module';
 import {Payment} from "./payments/payment.entity";
@@ -33,6 +33,7 @@ import {WalletsModule} from "./banks/accounts/wallets/wallets.module";
 import {Wallet} from "./banks/accounts/wallets/wallet.entity";
 import {ScheduleModule} from "@nestjs/schedule";
 import { CryptoModule } from './crypto/crypto.module';
+import {FamilyAccountsModule} from "./family/family-accounts/family-accounts.module";
 
 
 @Module({
@@ -65,6 +66,7 @@ import { CryptoModule } from './crypto/crypto.module';
         GoalsModule,
         ChildAccountsModule,
         AccountsModule,
+        FamilyAccountsModule,
         ConsentsModule,
         BanksModule,
         ExpensesModule,

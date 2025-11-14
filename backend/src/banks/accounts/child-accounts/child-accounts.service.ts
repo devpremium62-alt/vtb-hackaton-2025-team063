@@ -1,7 +1,7 @@
 import {Injectable, NotFoundException} from '@nestjs/common';
 import {InjectRepository} from "@nestjs/typeorm";
 import {ChildAccount} from "./child-account.entity";
-import {Repository} from "typeorm";
+import {In, Repository} from "typeorm";
 import {RedisService} from "../../../redis/redis.service";
 import {AccountsService} from "../accounts.service";
 import {FamilyService} from "../../../family/family.service";
@@ -11,6 +11,8 @@ import {TransactionsService} from "../transactions/transactions.service";
 import {DepositDTO} from "../transactions/transaction.dto";
 import {OnEvent} from "@nestjs/event-emitter";
 import {CacheInvalidateEvent} from "../../../common/events/cache-invalidate.event";
+import {FamilyAccountsService} from "../../../family/family-accounts/family-accounts.service";
+import {extractIds} from "../accounts.mappers";
 
 @Injectable()
 export class ChildAccountsService {
@@ -21,6 +23,7 @@ export class ChildAccountsService {
         private readonly childAccountRepository: Repository<ChildAccount>,
         private readonly redisService: RedisService,
         private readonly accountsService: AccountsService,
+        private readonly familyAccountsService: FamilyAccountsService,
         private readonly transactionsService: TransactionsService,
         private readonly familyService: FamilyService,
         private readonly familyCacheService: FamilyCacheService,
@@ -32,12 +35,15 @@ export class ChildAccountsService {
         const familyKey = this.familyCacheService.getFamilyKey(userId, memberId);
 
         return this.redisService.withCache(`${this.baseKey}:${familyKey}`, 3600, async () => {
+            const accountIds = extractIds(await this.familyAccountsService.getAccounts(userId));
 
-            const childAccounts = await this.childAccountRepository
-                .createQueryBuilder('childAccount')
-                .leftJoinAndSelect('childAccount.user', 'user')
-                .where('user.id IN (:...ids)', {ids: [userId, memberId]})
-                .getMany();
+            const childAccounts = await this.childAccountRepository.find({
+                where: {
+                    user: {id: In([userId, memberId])},
+                    id: In(accountIds),
+                },
+                relations: ["user"],
+            });
 
             const accountWithBalance = async (childAccount: ChildAccount) => {
                 return {
@@ -131,7 +137,7 @@ export class ChildAccountsService {
     }
 
     @OnEvent('cache.invalidate.transactions', {async: true})
-    @OnEvent('cache.invalidate.consents', {async: true})
+    @OnEvent('cache.invalidate.accounts', {async: true})
     private async handleCacheInvalidation(event: CacheInvalidateEvent) {
         const [userId] = event.entityIds;
 
