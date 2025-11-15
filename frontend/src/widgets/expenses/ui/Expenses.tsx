@@ -4,6 +4,10 @@ import DonutChart from "@/shared/ui/charts/DonutChart";
 import {TransactionCategories, TransactionCategory, TransactionCategoryType} from "@/entities/transaction-category";
 import React, {useMemo} from "react";
 import useShowingSkeleton from "@/shared/hooks/useShowingSkeleton";
+import CollectionEmpty from "@/shared/ui/CollectionEmpty";
+import {Info} from "@/shared/ui/icons/Info";
+import {Cancel} from "@/shared/ui/icons/Cancel";
+import CollectionEmptyWithIcon from "@/shared/ui/CollectionEmptyWithIcon";
 
 type Props = {
     expenseCategories: TransactionCategoryType[];
@@ -23,6 +27,10 @@ export const Expenses = ({expenseCategories}: Props) => {
     }, [sortedCategories]);
 
     const isShowingSkeleton = useShowingSkeleton(expenseCategories);
+
+    if (!sortedCategories.length) {
+        return <CollectionEmptyWithIcon className="py-6">Пока что здесь ничего нет</CollectionEmptyWithIcon>;
+    }
 
     return <div className="flex md:flex-col md:gap-4 md:items-center items-start">
         {isShowingSkeleton

@@ -7,6 +7,7 @@ import Image from "next/image";
 import getAbsoluteSeverUrl from "@/shared/lib/getAbsoluteServerUrl";
 import {useQuery} from "@tanstack/react-query";
 import {getFamilyExpenses} from "@/entities/family/api/api";
+import CollectionEmptyWithIcon from "@/shared/ui/CollectionEmptyWithIcon";
 
 type Props = {
     firstAvatar: string;
@@ -43,19 +44,27 @@ const ExpensesDistributions = ({firstAvatar, secondAvatar, className}: Props) =>
             <Heading level={2}>Распределение трат</Heading>
         </div>
         <div className="flex items-center flex-col xxs:flex-row">
-            <DonutChart clickable={false} data={firstPersonData} size={80} height={200}>
-                <Image className="rounded-full w-12 h-12 object-cover" width={48} height={48}
-                       src={getAbsoluteSeverUrl(firstAvatar)}
-                       alt=""/>
-            </DonutChart>
-            {expenseCategories[1]
-                ? <DonutChart clickable={false} data={secondPersonData} size={80} height={200}>
-                    <Image className="rounded-full w-12 h-12 object-cover" width={48} height={48}
-                           src={getAbsoluteSeverUrl(secondAvatar)}
-                           alt=""/>
-                </DonutChart>
-                : <></>}
-
+            {
+                firstPersonData[0].value
+                ? <>
+                    <DonutChart clickable={false} data={firstPersonData} size={80} height={200}>
+                        <Image className="rounded-full w-12 h-12 object-cover" width={48} height={48}
+                               src={getAbsoluteSeverUrl(firstAvatar)}
+                               alt=""/>
+                    </DonutChart>
+                    {expenseCategories[1]
+                        ? <DonutChart clickable={false} data={secondPersonData} size={80} height={200}>
+                            <Image className="rounded-full w-12 h-12 object-cover" width={48} height={48}
+                                   src={getAbsoluteSeverUrl(secondAvatar)}
+                                   alt=""/>
+                        </DonutChart>
+                        : <></>
+                    }
+                  </>
+                : <div className="flex items-center justify-center w-full">
+                        <CollectionEmptyWithIcon className="py-6">Пока что здесь ничего нет</CollectionEmptyWithIcon>
+                </div>
+            }
         </div>
     </section>;
 }

@@ -21,8 +21,8 @@ export default async function Settings() {
                 <BanksConnect className="mx-4 md:mr-0"/>
             </div>
             <div>
-                <ManageFamily className="mx-4 md:mr-0"/>
-                <AppData className="mx-4 md:mr-0"/>
+                <ManageFamily className="mx-4 md:ml-0"/>
+                <AppData className="mx-4 md:ml-0"/>
             </div>
         </div>
     </div>

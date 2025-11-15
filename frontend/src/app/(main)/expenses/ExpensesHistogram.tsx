@@ -6,6 +6,9 @@ import React, {useMemo, useState} from "react";
 import {Info} from "@/shared/ui/icons/Info";
 import InfoPopup from "@/shared/ui/popups/InfoPopup";
 import useShowingSkeleton from "@/shared/hooks/useShowingSkeleton";
+import CollectionEmpty from "@/shared/ui/CollectionEmpty";
+import {Cancel} from "@/shared/ui/icons/Cancel";
+import CollectionEmptyWithIcon from "@/shared/ui/CollectionEmptyWithIcon";
 
 type Props = {
     expenseCategories: TransactionCategoryType[];
@@ -23,6 +26,10 @@ const ExpensesHistogram = ({expenseCategories}: Props) => {
     }, [expenseCategories]);
 
     const isLoading = useShowingSkeleton(expenseCategories);
+
+    if (!nonEmptyCategories.length) {
+        return <CollectionEmptyWithIcon className="pt-2 pb-6">Пока что здесь ничего нет</CollectionEmptyWithIcon>;
+    }
 
     return <>
         <div className="mb-2.5 relative">

@@ -26,7 +26,7 @@ export default async function Dashboard() {
         </HydrationBoundary>
         <div className="grid grid-cols-1 md:grid-cols-12 md:gap-1 lg:gap-2">
             <HydrationBoundary state={dehydrate(queryClient)}>
-                <Accounts className="mx-4 md:mr-0 md:col-span-12"/>
+                <Accounts className="mx-4 md:col-span-12"/>
                 <ShortUpcomingPayments className="mx-4 md:mr-0 md:col-span-6 lg:col-span-7"/>
                 <div className="md:col-span-6 lg:col-span-5">
                     <ShortGoals className="mx-4 md:mx-0 md:mr-4"/>

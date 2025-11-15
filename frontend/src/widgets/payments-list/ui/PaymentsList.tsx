@@ -26,7 +26,7 @@ export const PaymentsList = ({currentDate, payments, paymentMarkup, skeletonMark
     const hasPayments = sortedPayments.length > 0;
 
     return <AnimatePresence mode="popLayout">
-        <div className="col-span-6 lg:col-span-5">
+        <div className="col-span-6 lg:col-span-5 flex items-center justify-center">
             {isLoading ? (
                 <div className="flex-1 flex flex-col gap-1">
                     {Array.from({length: limit}).map((_, i) => skeletonMarkup(i))}

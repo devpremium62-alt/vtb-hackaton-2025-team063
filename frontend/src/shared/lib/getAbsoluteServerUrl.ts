@@ -7,6 +7,6 @@ export default function getAbsoluteSeverUrl(path?: string): string {
         return path;
     }
 
-    const base = process.env.NEXT_PUBLIC_UPLOADS_BASE_URL === undefined ? "http://localhost:8000" : process.env.NEXT_PUBLIC_UPLOADS_BASE_URL;
+    const base = process.env.NEXT_PUBLIC_UPLOADS_BASE_URL  === undefined ? "http://localhost:8000" : process.env.NEXT_PUBLIC_UPLOADS_BASE_URL;
     return `${base}${path}`;
 }

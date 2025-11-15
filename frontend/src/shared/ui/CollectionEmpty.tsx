@@ -2,8 +2,13 @@
 
 import {motion} from "framer-motion";
 
-const CollectionEmpty = ({children}: any) => {
-    return <motion.p className="text-center font-medium text-sm text-secondary"
+type Props = {
+    className?: string;
+    children?: any;
+}
+
+const CollectionEmpty = ({children, className}: Props) => {
+    return <motion.p className={`text-center font-medium text-sm text-secondary py-3 ${className}`}
                      initial={{opacity: 0, y: 10}}
                      animate={{opacity: 1, y: 0}}
                      exit={{opacity: 0, y: 10}}

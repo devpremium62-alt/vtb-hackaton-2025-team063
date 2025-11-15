@@ -36,7 +36,7 @@ export default async function Budget() {
             <div className="flex flex-col items-stretch">
                 <HydrationBoundary state={dehydrate(queryClient)}>
                     <ChildAccounts className="mx-4 md:ml-0 md:order-3"/>
-                    <ExpenseStats className="ml-4 md:mx-0 md:order-1"/>
+                    <ExpenseStats className="ml-4 md:ml-0 md:mr-4 md:order-1"/>
                     <TransactionList className="mx-4 md:ml-0 md:order-2"/>
                 </HydrationBoundary>
             </div>

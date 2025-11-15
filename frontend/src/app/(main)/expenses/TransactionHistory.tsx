@@ -8,6 +8,9 @@ import usePagination from "@/shared/hooks/usePagination";
 import Pagination from "@/shared/ui/Pagination";
 import {Export} from "@/shared/ui/icons/Export";
 import {exportToExcel} from "@/shared/lib/exportToExcel";
+import CollectionEmpty from "@/shared/ui/CollectionEmpty";
+import {Cancel} from "@/shared/ui/icons/Cancel";
+import CollectionEmptyWithIcon from "@/shared/ui/CollectionEmptyWithIcon";
 
 type Props = {
     transactions: TransactionType[];
@@ -32,7 +35,9 @@ const TransactionHistory = ({transactions}: Props) => {
             {isShowindSkeletons
                 ? Array.from({length: 5}).map((_, i) => (
                     <div key={i} className="bg-tertiary md:bg-violet-100/75! h-16 rounded-xl animate-pulse"></div>))
-                : currentTransactions.map((transaction) => (<Transaction key={transaction.id} transaction={transaction}/>))
+                : currentTransactions.length
+                    ? currentTransactions.map((transaction) => (<Transaction key={transaction.id} transaction={transaction}/>))
+                    : <CollectionEmptyWithIcon className="py-6">Пока что здесь ничего нет</CollectionEmptyWithIcon>
             }
         </div>
     </section>;

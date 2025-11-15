@@ -31,7 +31,7 @@ export const ExpensesDistributionPortal = () => {
 
     return createPortal(
         <ExpensesDistribution
-            className="mx-4 md:mx-0 md:order-3 md:p-3"
+            className="mx-4 md:ml-0 md:order-3 md:p-3"
             firstAvatar={firstAvatar}
             secondAvatar={secondAvatar}
         />,

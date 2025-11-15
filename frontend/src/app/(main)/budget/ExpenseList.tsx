@@ -9,6 +9,9 @@ import Pagination from "@/shared/ui/Pagination";
 import {exportToExcel} from "@/shared/lib/exportToExcel";
 import {Export} from "@/shared/ui/icons/Export";
 import {useQuery} from "@tanstack/react-query";
+import {Cancel} from "@/shared/ui/icons/Cancel";
+import CollectionEmpty from "@/shared/ui/CollectionEmpty";
+import CollectionEmptyWithIcon from "@/shared/ui/CollectionEmptyWithIcon";
 
 type Props = {
     className?: string;
@@ -21,7 +24,7 @@ const TransactionList = ({className}: Props) => {
         refetchInterval: 5000
     });
 
-    const [currenttransactions, {setPage, firstPage, lastPage}] = usePagination(transactions, 5);
+    const [currentTransactions, {setPage, firstPage, lastPage}] = usePagination(transactions, 5);
     const isShowindSkeletons = useShowingSkeleton(transactions);
 
     return <section className={`${className} mb-[1.875rem] md:p-3 md:rounded-2xl md:bg-neutral-100`}>
@@ -40,9 +43,12 @@ const TransactionList = ({className}: Props) => {
                 {Array.from({length: 5}).map((_, i) => (
                     <div key={i} className="bg-tertiary h-14 rounded-xl animate-pulse"></div>))}
             </div>
-            : <div className="flex flex-col">
-                {currenttransactions.map((transaction) => (<TransactionLight key={transaction.id} transaction={transaction}/>))}
-            </div>
+            : currentTransactions.length
+                ? <div className="flex flex-col">
+                    {currentTransactions.map((transaction) => (
+                        <TransactionLight key={transaction.id} transaction={transaction}/>))}
+                </div>
+                : <CollectionEmptyWithIcon className="py-6">Пока что здесь ничего нет</CollectionEmptyWithIcon>
         }
     </section>
 }

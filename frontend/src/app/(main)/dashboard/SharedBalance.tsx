@@ -26,7 +26,7 @@ const SharedBalance = () => {
         return familyFinance.reduce((acc, f) => acc + f.monthlyIncome, 0);
     }, [familyFinance]);
 
-    return <section className="mx-4 md:mr-0 p-2 rounded-xl bg-shared-balance mb-5 text-white">
+    return <section className="mx-4 p-2 rounded-xl bg-shared-balance mb-5 text-white">
         <div className="mb-12 flex items-center justify-between">
             <CoupleAvatars firstAvatar={familyFinance[0] ? getAbsoluteSeverUrl(familyFinance[0].avatar) : ""}
                            secondAvatar={familyFinance[1] ? getAbsoluteSeverUrl(familyFinance[1].avatar) : ""}/>
