@@ -24,7 +24,7 @@ const TransactionHistory = ({transactions}: Props) => {
     return <section className="mx-4 md:mx-0 md:ml-4 mb-[1.875rem] md:p-3 md:rounded-2xl md:bg-violet-50">
         <div className="flex justify-between items-center mb-2.5">
             <div className="flex items-center gap-2">
-                <Heading level={2}>История трат</Heading>
+                <Heading level={2}>История операций</Heading>
                 <button onClick={() => exportToExcel(toExcelData(transactions))} className="text-inactive">
                     <Export/>
                 </button>

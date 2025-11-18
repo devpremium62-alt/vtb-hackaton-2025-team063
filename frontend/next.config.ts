@@ -12,7 +12,7 @@ const withPWA = require("next-pwa")({
 export default withPWA({
     reactCompiler: true,
     redirects() {
-        return [{source: "/", destination: "/register", statusCode: 302}];
+        return [{source: "/", destination: "/login", statusCode: 301}];
     },
     env: {
         NEXT_PUBLIC_APP_VERSION: version,

@@ -18,7 +18,7 @@ export class NotificationsService {
         );
     }
 
-    public async createNotification(userId: number, notificationDTO: NotificationDTO) {
+    public async subscribeNotifications(userId: number, notificationDTO: NotificationDTO) {
         const found = await this.getUserNotification(userId);
         if (found) {
             throw new BadRequestException("Пользователь уже включил уведомления");
@@ -34,7 +34,7 @@ export class NotificationsService {
         return notification;
     }
 
-    public async deleteNotification(userId: number) {
+    public async unsubscribeNotifications(userId: number) {
         const found = await this.getUserNotification(userId);
         if (!found) {
             throw new BadRequestException("Пользователь уже отключил уведомления");
@@ -47,7 +47,7 @@ export class NotificationsService {
         return this.notificationRepository.findOne({where: {user: {id: userId}}});
     }
 
-    public async sendNotification(title: string, body: string, ...userIds: number[]) {
+    public async sendNotification(title: string, body: string, ...userIds: (number | undefined)[]) {
         const subs = await this.findNotifications(...userIds);
 
         for (const sub of subs) {
@@ -59,7 +59,7 @@ export class NotificationsService {
         }
     }
 
-    private async findNotifications(...userIds: number[]) {
+    private async findNotifications(...userIds: (number | undefined)[]) {
         return this.notificationRepository.find({where: {user: {id: In(userIds)}}});
     }
 

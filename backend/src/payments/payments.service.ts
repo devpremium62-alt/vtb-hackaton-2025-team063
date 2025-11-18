@@ -42,14 +42,16 @@ export class PaymentsService {
     }
 
     public async deposit(userId: number, paymentId: number, depositDTO: DepositDTO) {
+        const memberId = await this.familyService.getFamilyMemberId(userId);
         const payment = await this.paymentRepository.findOne({
             where: {
                 id: paymentId,
-                user: {id: In([userId, paymentId])}
-            }
+                user: {id: In([userId, memberId])}
+            },
+            relations: ["user"]
         });
 
-        if(!payment) {
+        if (!payment) {
             throw new NotFoundException("Платеж не найден");
         }
 
@@ -73,7 +75,8 @@ export class PaymentsService {
     }
 
     public async delete(userId: number, paymentId: number) {
-        const result = await this.paymentRepository.delete({id: paymentId, user: {id: In([userId, paymentId])}});
+        const memberId = await this.familyService.getFamilyMemberId(userId);
+        const result = await this.paymentRepository.delete({id: paymentId, user: {id: In([userId, memberId])}});
         if (!result.affected || result.affected === 0) {
             throw new NotFoundException("Платеж не найден");
         }

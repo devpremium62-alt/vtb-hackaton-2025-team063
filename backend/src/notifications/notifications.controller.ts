@@ -17,7 +17,7 @@ export class NotificationsController {
     @HttpCode(201)
     @UseGuards(JwtAuthGuard)
     public async create(@User("id") userId: number, @Body() notificationDTO: NotificationDTO) {
-        return this.notificationsService.createNotification(userId, notificationDTO);
+        return this.notificationsService.subscribeNotifications(userId, notificationDTO);
     }
 
     @ApiOperation({summary: 'Отключение уведомлений'})
@@ -27,7 +27,7 @@ export class NotificationsController {
     @HttpCode(204)
     @UseGuards(JwtAuthGuard)
     public async delete(@User("id") userId: number) {
-        await this.notificationsService.deleteNotification(userId);
+        await this.notificationsService.unsubscribeNotifications(userId);
     }
 
     @ApiOperation({summary: 'Получение статуса включенности уведомлений'})

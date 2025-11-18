@@ -27,7 +27,7 @@ export class CategoriesService {
 
             const transactions = await this.transactionService.getTransactions(userId);
             transactions.forEach((transaction) => {
-                if (new Date(transaction.date).getTime() > fromDate.getTime() && transaction.outcome) {
+                if (transaction.outcome) {
                     categories[transaction.category.id].spent += transaction.value;
                 }
             });

@@ -8,6 +8,7 @@ import {TransactionsService} from "../banks/accounts/transactions/transactions.s
 import {RedisService} from "../redis/redis.service";
 import {OnEvent} from "@nestjs/event-emitter";
 import {CacheInvalidateEvent} from "../common/events/cache-invalidate.event";
+import {NotificationsService} from "../notifications/notifications.service";
 
 @Injectable()
 export class UsersService {
@@ -20,6 +21,7 @@ export class UsersService {
         private readonly accountsService: AccountsService,
         private readonly transactionsService: TransactionsService,
         private readonly redisService: RedisService,
+        private readonly notificationsService: NotificationsService,
     ) {
     }
 
@@ -36,6 +38,7 @@ export class UsersService {
             if (user.partner) {
                 await manager.update(User, {id: user.partner}, {partner: {id: newUser.id}});
                 await this.redisService.invalidateCache(this.baseKey, user.partner);
+                await this.notificationsService.sendNotification("Подключение к семье", `${user.name} подключился(-acь) к семье!`, user.partner);
             }
 
             return newUser;
@@ -81,12 +84,9 @@ export class UsersService {
 
             const getIncome = this.transactionsService.getTransactions(userId)
                 .then((transactions) => {
-                    let fromDate = new Date();
-                    fromDate.setMonth(fromDate.getMonth() - 1);
-
                     let monthlyIncome = 0;
                     for (const transaction of transactions) {
-                        if (new Date(transaction.date).getTime() >= fromDate.getTime() && !transaction.outcome && transaction.status === "completed") {
+                        if (!transaction.outcome && transaction.status === "completed") {
                             monthlyIncome += transaction.value;
                         }
                     }

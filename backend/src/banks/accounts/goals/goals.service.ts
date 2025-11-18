@@ -68,7 +68,8 @@ export class GoalsService {
     }
 
     public async deleteGoal(userId: number, goalId: string) {
-        const goal = await this.findGoal(userId, goalId);
+        const memberId = await this.familyService.getFamilyMemberId(userId);
+        const goal = await this.findGoal(goalId, userId, memberId);
 
         const account = await this.accountsService.closeAccount(userId, goal.bankId, goalId, {action: "transfer"});
         if (account.status === "closed") {
@@ -79,7 +80,8 @@ export class GoalsService {
     }
 
     public async depositGoal(userId: number, goalId: string, depositDTO: DepositDTO) {
-        const goal = await this.findGoal(userId, goalId);
+        const memberId = await this.familyService.getFamilyMemberId(userId);
+        const goal = await this.findGoal(goalId, userId, memberId);
 
         const transaction = await this.transactionsService.createTransaction(userId, {
             fromAccountId: depositDTO.fromAccountId,
@@ -97,8 +99,8 @@ export class GoalsService {
         return goal;
     }
 
-    private async findGoal(userId: number, goalId: string) {
-        const goal = await this.goalsRepository.findOne({where: {user: {id: userId}, id: goalId}});
+    private async findGoal(goalId: string, userId: number, memberId?: number) {
+        const goal = await this.goalsRepository.findOne({where: {user: {id: In([userId, memberId])}, id: goalId}});
         if (!goal) {
             throw new NotFoundException("Финансовая цель не найдена");
         }

@@ -13,6 +13,7 @@ import {OnEvent} from "@nestjs/event-emitter";
 import {CacheInvalidateEvent} from "../../../common/events/cache-invalidate.event";
 import {FamilyAccountsService} from "../../../family/family-accounts/family-accounts.service";
 import {extractIds} from "../accounts.mappers";
+import {NotificationsService} from "../../../notifications/notifications.service";
 
 type WalletWithBalance = Wallet & { currentAmount: number };
 
@@ -29,7 +30,9 @@ export class WalletsService {
         private readonly familyService: FamilyService,
         private readonly familyCacheService: FamilyCacheService,
         private readonly redisService: RedisService,
-    ) {}
+        private readonly notificationsService: NotificationsService,
+    ) {
+    }
 
     public async getAll(userId: number) {
         const memberId = await this.familyService.getFamilyMemberId(userId);
@@ -85,9 +88,12 @@ export class WalletsService {
     }
 
     public async depositWallet(userId: number, walletId: string, depositDTO: DepositDTO, wallet?: Wallet) {
-        const resWallet = wallet || await this.findWallet(userId, walletId);
+        const memberId = await this.familyService.getFamilyMemberId(userId);
+        const resWallet = wallet || await this.findWallet(walletId, userId, memberId);
 
-        const transaction = await this.transactionsService.createTransaction(userId, {
+        const balance = await this.accountsService.getBalance(resWallet.account, resWallet.bankId, resWallet.user.id);
+
+        const transaction = await this.transactionsService.createTransaction(resWallet.user.id, {
             fromAccountId: depositDTO.fromAccountId,
             fromAccount: depositDTO.fromAccount,
             amount: depositDTO.amount,
@@ -98,15 +104,24 @@ export class WalletsService {
             comment: "Перевод на счет кошелька",
         });
 
+        const remains = Math.round(balance - depositDTO.amount);
+        const usedPercent = Math.round((remains) / resWallet.amount * 100);
+        if (usedPercent >= 100) {
+            await this.notificationsService.sendNotification("Лимит кошелька исчерпан", `На кошельке "${resWallet.name}" закончились средства`, userId, memberId);
+        } else if(usedPercent >= 90) {
+            await this.notificationsService.sendNotification("Средства на кошельке подходят к концу", `На кошельке "${resWallet.name}" осталось ${remains}₽`, userId, memberId);
+        }
+
         await this.familyCacheService.invalidateFamilyCache(this.baseKey, userId);
 
         return resWallet;
     }
 
     public async deleteWallet(userId: number, walletId: string) {
-        const wallet = await this.findWallet(userId, walletId);
+        const memberId = await this.familyService.getFamilyMemberId(userId);
+        const wallet = await this.findWallet(walletId, userId, memberId);
 
-        const account = await this.accountsService.closeAccount(userId, wallet.bankId, walletId, {action: "transfer"});
+        const account = await this.accountsService.closeAccount(wallet.user.id, wallet.bankId, walletId, {action: "transfer"});
         if (account.status === "closed") {
             await this.walletRepository.remove(wallet);
 
@@ -114,8 +129,12 @@ export class WalletsService {
         }
     }
 
-    private async findWallet(userId: number, walletId: string) {
-        const wallet = await this.walletRepository.findOne({where: {user: {id: userId}, id: walletId}});
+    private async findWallet(walletId: string, userId: number, memberId?: number) {
+        const wallet = await this.walletRepository.findOne({
+            where: {user: {id: In([userId, memberId])}, id: walletId},
+            relations: ["user"]
+        });
+
         if (!wallet) {
             throw new NotFoundException("Кошелек не найден");
         }

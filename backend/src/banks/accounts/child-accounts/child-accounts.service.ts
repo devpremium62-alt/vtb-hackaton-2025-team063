@@ -74,17 +74,10 @@ export class ChildAccountsService {
     }
 
     public async deleteChildAccount(userId: number, childAccountId: string) {
-        const childAccount = await this.childAccountRepository.findOne({
-            where: {
-                user: {id: userId},
-                id: childAccountId
-            }
-        });
-        if (!childAccount) {
-            throw new NotFoundException("Детский счет не найден");
-        }
+        const partnerId = await this.familyService.getFamilyMemberId(userId);
+        const childAccount = await this.findChildAccount(childAccountId, userId, partnerId);
 
-        const account = await this.accountsService.closeAccount(userId, childAccount.bankId, childAccountId, {action: "transfer"});
+        const account = await this.accountsService.closeAccount(childAccount.user.id, childAccount.bankId, childAccountId, {action: "transfer"});
         if (account.status === "closed") {
             await this.childAccountRepository.remove(childAccount);
 
@@ -93,7 +86,8 @@ export class ChildAccountsService {
     }
 
     public async updateChildAccount(userId: number, childAccountId: string, updateChildAccountDTO: UpdateChildAccountDTO) {
-        const childAccount = await this.findChildAccount(userId, childAccountId);
+        const partnerId = await this.familyService.getFamilyMemberId(userId);
+        const childAccount = await this.findChildAccount(childAccountId, userId, partnerId);
 
         const updatedChildAccount = Object.assign(childAccount, updateChildAccountDTO);
         await this.childAccountRepository.save(updatedChildAccount);
@@ -104,7 +98,8 @@ export class ChildAccountsService {
     }
 
     public async depositChildAccount(userId: number, childAccountId: string, depositDTO: DepositDTO) {
-        const childAccount = await this.findChildAccount(userId, childAccountId);
+        const partnerId = await this.familyService.getFamilyMemberId(userId);
+        const childAccount = await this.findChildAccount(childAccountId, userId, partnerId);
 
         const transaction = await this.transactionsService.createTransaction(userId, {
             fromAccountId: depositDTO.fromAccountId,
@@ -122,13 +117,15 @@ export class ChildAccountsService {
         return childAccount;
     }
 
-    private async findChildAccount(userId: number, childAccountId: string) {
+    private async findChildAccount(childAccountId: string, userId: number, partnerId?: number) {
         const childAccount = await this.childAccountRepository.findOne({
             where: {
-                user: {id: userId},
+                user: {id: In([userId, partnerId])},
                 id: childAccountId
-            }
+            },
+            relations: ["user"]
         });
+
         if (!childAccount) {
             throw new NotFoundException("Детский счет не найден");
         }

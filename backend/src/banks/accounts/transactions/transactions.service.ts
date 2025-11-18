@@ -41,6 +41,9 @@ export class TransactionsService {
             const promises: Promise<any>[] = [];
             const transactions: TransformedTransaction[] = [];
 
+            let lastMonth = new Date();
+            lastMonth.setMonth(lastMonth.getMonth() - 1);
+
             for (const [bank, accounts] of Object.entries(bankAccounts) as [string, any][]) {
                 for (const account of accounts) {
                     const accountKey = `${this.baseKey}:${userId}:${account.accountId}`;
@@ -53,7 +56,8 @@ export class TransactionsService {
                             }
                         }, accountKey)
                         .then(async accountTransactions => {
-                            const transformed = accountTransactions.data.transaction.map(t => this.transactionsTransformer.transform(t, bank));
+                            const filteredTransactions = accountTransactions.data.transaction.filter(t => new Date(t.valueDateTime) >= lastMonth);
+                            const transformed = filteredTransactions.map(t => this.transactionsTransformer.transform(t, bank));
                             transactions.push(...transformed);
                         })
                         .catch(err => console.error(err))
