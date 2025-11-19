@@ -36,7 +36,8 @@ const HistogramColumn = ({index, maxValue, col, onDrag}: ColProps) => {
         backgroundColor: isOver ? "var(--primary-color)" : col.color
     };
 
-    const height = isOver ? 50 : Math.round((col.value / maxValue) * 100);
+    const baseHeight = Math.round((col.value / maxValue) * 100);
+    const height = isOver ? Math.max(baseHeight, 50) : baseHeight;
 
     return <div ref={setNodeRef} className="h-full flex items-end">
         <motion.div
