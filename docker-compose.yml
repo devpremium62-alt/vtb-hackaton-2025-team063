@@ -20,24 +20,6 @@ services:
     restart: unless-stopped
     env_file:
       - .env
-    environment:
-      DB_HOST: ${DB_HOST}
-      DB_PORT: ${DB_PORT}
-      DB_USER: ${DB_USER}
-      DB_PASSWORD: ${DB_PASSWORD}
-      DB_NAME: ${DB_NAME}
-
-      REDIS_HOST: ${REDIS_HOST}
-      REDIS_PORT: ${REDIS_PORT}
-
-      JWT_SECRET: ${JWT_SECRET}
-      CLIENT_ID: ${CLIENT_ID}
-      CLIENT_SECRET: ${CLIENT_SECRET}
-      ENCRYPTION_KEY_B64: ${ENCRYPTION_KEY_B64}
-
-      CLIENT_URL: ${CLIENT_URL}
-      PORT: 8000
-
     expose:
       - "8000"
 
@@ -69,6 +51,18 @@ services:
       - postgres_data:/var/lib/postgresql/data
     ports:
       - "5432:5432"
+    networks:
+      - app_net
+
+  worker:
+    build:
+      context: ./worker
+    env_file:
+      - .env
+    depends_on:
+      redis:
+        condition: service_healthy
+    restart: unless-stopped
     networks:
       - app_net
 

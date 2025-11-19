@@ -4,14 +4,16 @@ import {lastValueFrom} from "rxjs";
 import {BanksConfig} from "./banks.config";
 import {AxiosRequestConfig} from "axios";
 import {CACHE_POLICY, RedisService} from "../redis/redis.service";
+import {BanksQueueService} from "./banks-queue.service";
 
 @Injectable()
 export class BanksService {
     private tokens: Record<string, { token: string; expiresAt: number }> = {};
 
     constructor(private readonly httpService: HttpService,
-                private readonly redisService: RedisService) {
-    }
+                private readonly redisService: RedisService,
+                private readonly banksQueueService: BanksQueueService)
+    {}
 
     public async requestBankAPI<T>(bankKey: string, requestConfig: AxiosRequestConfig, cacheKey?: string | null, dontCache = CACHE_POLICY.CACHE) {
         const token = await this.getAccessToken(bankKey);
@@ -23,20 +25,10 @@ export class BanksService {
             const key = cacheKey || `${url}:${process.env.CLIENT_ID}:${requestConfig.headers?["X-Consent-Id"] : ""}`;
 
             return this.redisService.withCache<T>(key, 300, async () => {
-                const response = await lastValueFrom(
-                    this.httpService.request({
-                        ...requestConfig,
-                        url: url,
-                        headers: {
-                            ...requestConfig.headers,
-                            Authorization: `Bearer ${token}`,
-                            "X-Requesting-Bank": process.env.CLIENT_ID,
-                            'Content-Type': 'application/json',
-                        },
-                    }),
-                );
+                const job = await this.banksQueueService.addJob(url, token, bankKey, requestConfig);
+                const result = await job.waitUntilFinished(this.banksQueueService.events);
 
-                return response.data as T;
+                return result as T;
             }, () => requestConfig.method === "GET" && dontCache !== CACHE_POLICY.DONT_CACHE);
         });
     }
