@@ -40,6 +40,10 @@ const Goals = ({className, goalsInitial}: Props) => {
 
     function onDeposit() {
         queryClient.invalidateQueries({queryKey: ["goals"]});
+        queryClient.invalidateQueries({queryKey: ["child-accounts"]});
+        queryClient.invalidateQueries({queryKey: ["child-transactions"]});
+        queryClient.invalidateQueries({queryKey: ["child-transaction-categories"]});
+        queryClient.invalidateQueries({queryKey: ["wallets"]});
     }
 
     return <section className={`${className} mb-[1.875rem] md:p-3 md:rounded-2xl md:bg-sky-50`}>

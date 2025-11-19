@@ -6,7 +6,7 @@ import {Plus} from "@/shared/ui/icons/Plus";
 import {depositWallet, getWallets, WalletItem, WalletType} from "@/entities/wallet";
 import {useState} from "react";
 import {CreateWallet} from "@/features/create-wallet";
-import {useQuery} from "@tanstack/react-query";
+import {useQuery, useQueryClient} from "@tanstack/react-query";
 import CollectionEmpty from "@/shared/ui/CollectionEmpty";
 import {AnimatePresence} from "framer-motion";
 import {DepositModal} from "@/widgets/deposit-modal/ui/DepositModal";
@@ -19,6 +19,8 @@ type Props = {
 
 const Wallets = ({className, walletsInitial}: Props) => {
     const [isModalOpen, setModalOpen] = useState(false);
+
+    const queryClient = useQueryClient();
 
     const {data: wallets = []} = useQuery({
         queryKey: ["wallets"],
@@ -34,6 +36,13 @@ const Wallets = ({className, walletsInitial}: Props) => {
     function selectWallet(wallet: WalletType) {
         setSelectedWallet(wallet);
         setModalActive(true);
+    }
+
+    function onDepositSuccess() {
+        queryClient.invalidateQueries({queryKey: ["child-accounts"]});
+        queryClient.invalidateQueries({queryKey: ["child-transactions"]});
+        queryClient.invalidateQueries({queryKey: ["child-transaction-categories"]});
+        queryClient.invalidateQueries({queryKey: ["wallets"]});
     }
 
     return <section className={`${className} mb-[1.875rem] md:p-3 md:rounded-2xl md:bg-violet-50`}>
@@ -56,6 +65,7 @@ const Wallets = ({className, walletsInitial}: Props) => {
         </div>
         <CreateWallet isActive={isModalOpen} setActive={setModalOpen}/>
         <DepositModal activeAccountId={selectedWallet?.id} isActive={isModalActive}
+                      onSuccess={onDepositSuccess}
                       maxValue={selectedWallet ? selectedWallet.amount - selectedWallet.currentAmount : undefined}
                       setActive={setModalActive} entityName="wallet" mutationFn={depositWallet}/>
     </section>

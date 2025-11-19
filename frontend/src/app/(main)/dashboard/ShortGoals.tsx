@@ -35,6 +35,8 @@ const ShortGoals = ({className, goalsInitial}: Props) => {
 
     function onDeposit() {
         queryClient.invalidateQueries({queryKey: ["goals"]});
+        queryClient.invalidateQueries({queryKey: ["child-accounts"]});
+        queryClient.invalidateQueries({queryKey: ["family-finance"]});
     }
 
     return <section className={`mb-5 md:p-3 md:rounded-2xl md:bg-sky-50 ${className}`}>

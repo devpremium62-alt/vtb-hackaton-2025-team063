@@ -3,7 +3,7 @@
 import Heading from "@/shared/ui/typography/Heading";
 import {useState} from "react";
 import {ChangeChildAccountLimit} from "@/features/change-child-account-limit";
-import {useQuery} from "@tanstack/react-query";
+import {useQuery, useQueryClient} from "@tanstack/react-query";
 import {
     ChildAccountExtended,
     ChildAccountType, depositChildAccount,
@@ -23,6 +23,8 @@ export const ChildAccounts = ({className, childAccountsInitial}: Props) => {
     const [isChangeLimitModalActive, setChangeLimitModalActive] = useState(false);
     const [selectedAccount, setSelectedAccount] = useState<ChildAccountType | null>(null);
 
+    const queryClient = useQueryClient();
+
     const {data: childAccounts = []} = useQuery({
         queryKey: ["child-accounts"],
         initialData: childAccountsInitial,
@@ -41,6 +43,13 @@ export const ChildAccounts = ({className, childAccountsInitial}: Props) => {
         setChangeLimitModalActive(true);
     }
 
+    function onDepositSuccess() {
+        queryClient.invalidateQueries({queryKey: ["child-accounts"]});
+        queryClient.invalidateQueries({queryKey: ["child-transactions"]});
+        queryClient.invalidateQueries({queryKey: ["child-transaction-categories"]});
+        queryClient.invalidateQueries({queryKey: ["wallets"]});
+    }
+
     return <section className={`mb-[1.875rem] ${className}`}>
         <div className="mb-2.5">
             <Heading level={2}>Детские счета</Heading>
@@ -53,6 +62,6 @@ export const ChildAccounts = ({className, childAccountsInitial}: Props) => {
                                  activeAccount={selectedAccount}/>
         <DepositModal isActive={isAddMoneyModalActive} setActive={setAddMoneyModalActive}
                       activeAccountId={selectedAccount?.id} entityName="child-account"
-                      mutationFn={depositChildAccount}/>
+                      onSuccess={onDepositSuccess} mutationFn={depositChildAccount}/>
     </section>
 }
