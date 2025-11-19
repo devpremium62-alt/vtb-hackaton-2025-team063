@@ -36,21 +36,22 @@ const HistogramColumn = ({index, maxValue, col, onDrag}: ColProps) => {
         backgroundColor: isOver ? "var(--primary-color)" : col.color
     };
 
-    const height = Math.round((col.value / maxValue) * 100);
+    const height = isOver ? 50 : Math.round((col.value / maxValue) * 100);
 
-    return <motion.div
-        ref={setNodeRef}
-        className="w-8 rounded-lg transition-colors duration-500"
-        style={{...style}}
-        initial={{height: 0}}
-        animate={{height: `${Math.max(5, height)}%`}}
-        transition={{
-            type: "spring",
-            stiffness: 120,
-            damping: 20,
-            delay: index * 0.05,
-        }}
-    />
+    return <div ref={setNodeRef} className="h-full flex items-end">
+        <motion.div
+            className="w-8 rounded-lg transition-colors duration-500"
+            style={{...style}}
+            initial={{height: 0}}
+            animate={{height: `${Math.max(5, height)}%`}}
+            transition={{
+                type: "spring",
+                stiffness: 120,
+                damping: 20,
+                delay: index * 0.05,
+            }}
+        />
+    </div>
 }
 
 type Props = {

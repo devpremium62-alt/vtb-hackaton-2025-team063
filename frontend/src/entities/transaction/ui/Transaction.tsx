@@ -19,10 +19,12 @@ export const Transaction = ({transaction}: Props) => {
         data: {transaction},
     });
 
+    const enableDrag = transaction.outcome;
+
     const style = {
         transform: CSS.Translate.toString(transform),
         opacity: isDragging ? 0.6 : 1,
-        cursor: "grab",
+        cursor: enableDrag ? "grab" : "auto",
         zIndex: isDragging ? 100 : 1,
         position: "relative" as const,
         touchAction: "none" as const,
@@ -35,10 +37,10 @@ export const Transaction = ({transaction}: Props) => {
             animate={{opacity: 1, y: 0}}
             exit={{opacity: 0, y: -10}}
             transition={{duration: 0.3}}>
-            <div ref={setNodeRef}
-                 {...listeners}
-                 {...attributes}
-                 style={style} className="flex items-center justify-between p-1.5 rounded-xl active:cursor-grabbing">
+            <div ref={enableDrag ? setNodeRef : null}
+                 {...(enableDrag ? listeners : [])}
+                 {...(enableDrag ? attributes : [])}
+                 style={style} className={`flex items-center justify-between p-1.5 rounded-xl ${enableDrag ? "active:cursor-grabbing" : ""}`}>
                 <div className="flex items-center gap-2 min-w-0">
                     <TransactionCategoryAvatar categoryId={transaction.category.id}/>
                     <div className="flex flex-col min-w-0">
@@ -63,7 +65,6 @@ export const Transaction = ({transaction}: Props) => {
                 </span>
                 </div>
             </div>
-
         </motion.article>
     );
 };
