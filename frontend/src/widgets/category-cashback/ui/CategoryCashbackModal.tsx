@@ -11,7 +11,7 @@ type Props = {
 export const CategoryCashbackModal = ({isActive, setActive, cardCashbacks}: Props) => {
     return <ModalWindow isActive={isActive} setActive={setActive}>
         <div className="flex flex-col gap-2.5">
-            {cardCashbacks.map(c => <CategoryCashbackCard key={c.user + c.cashback.category.toString()} cashback={c}/>)}
+            {cardCashbacks.map(c => <CategoryCashbackCard key={c.user + c.card + c.cashback.category.toString()} cashback={c}/>)}
         </div>
     </ModalWindow>
 }

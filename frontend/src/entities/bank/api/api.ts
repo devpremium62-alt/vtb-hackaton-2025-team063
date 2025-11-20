@@ -7,7 +7,7 @@ export function getConsents(): Promise<Consent[]> {
     });
 }
 
-export function createConsent({bankId, clientId}: {bankId: string, clientId: string}): Promise<Consent[]> {
+export function createConsent({bankId, clientId}: {bankId: string, clientId: string}): Promise<Consent> {
     return universalFetch(`/consents/${bankId}`, {
         method: "POST",
         body: {client_id: clientId}

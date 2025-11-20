@@ -60,7 +60,7 @@ const BestCashbackList = ({familyInitial, cashbackInitial, className = ""}: Prop
         <Heading className="mb-2.5" level={2}>Ваши карты</Heading>
         <div className="flex flex-col gap-1">
             <AnimatePresence>
-                <Carousel className="mb-5" withIndicators slideGap="0.625rem" withControls={false}
+                <Carousel className="mb-5 select-none" withIndicators slideGap="0.625rem" withControls={false}
                           emblaOptions={{ align: 'start', slidesToScroll: isLarge ? 3 : 2 }}
                           slideSize={{base: '50%', lg: "33%"}} onSlideChange={setActiveSlide} classNames={{
                               indicators: "-bottom-3!",

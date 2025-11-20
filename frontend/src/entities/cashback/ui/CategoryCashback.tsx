@@ -17,7 +17,7 @@ export const CategoryCashback = ({categoryCashback}: Props) => {
                 <p className="font-medium text-ellipsis overflow-hidden whitespace-nowrap">
                     {TransactionCategories[categoryCashback.category].name}
                 </p>
-                <p className="text-success font-bold text-xl leading-none">
+                <p className="text-success font-bold text-xl leading-none whitespace-nowrap text-ellipsis overflow-hidden">
                     + <MoneyAmount value={categoryCashback.cashback}/>
                 </p>
             </div>

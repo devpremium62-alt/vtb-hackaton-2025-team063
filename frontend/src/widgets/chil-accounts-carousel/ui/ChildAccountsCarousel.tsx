@@ -16,7 +16,7 @@ export const ChildAccountsCarousel = ({childAccounts, component}: Props) => {
 
     return <>
         <AnimatePresence>
-            <Carousel withIndicators slideGap="0.5rem" withControls={false} slideSize={{base: '100%', xs: '50%', sm: "100%", md: "50%"}}
+            <Carousel className="select-none" withIndicators slideGap="0.5rem" withControls={false} slideSize={{base: '100%', xs: '50%', sm: "100%", md: "50%"}}
                       classNames={{
                           indicators: "-bottom-3!",
                           indicator: "transition-all",

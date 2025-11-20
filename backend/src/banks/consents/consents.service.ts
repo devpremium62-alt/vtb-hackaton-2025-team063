@@ -7,7 +7,7 @@ import {CreateConsentDto} from "./consent.dto";
 import {CACHE_POLICY, RedisService} from "../../redis/redis.service";
 import {ConsentResponseType} from "../banks.types";
 import {Interval} from "@nestjs/schedule";
-import { chunk } from 'lodash';
+import {chunk} from 'lodash';
 
 @Injectable()
 export class ConsentsService {
@@ -73,7 +73,7 @@ export class ConsentsService {
     public async getUserConsents(userId: number, all = false) {
         return this.redisService.withCache(`${this.keyBase}:${userId}:${all}`, 3600, async () => {
             const consents = await this.consentsRepository.find({where: {user: {id: userId}}});
-            if(all) {
+            if (all) {
                 return consents;
             }
 
@@ -94,10 +94,9 @@ export class ConsentsService {
 
     @Interval(10000)
     private async checkConsents() {
-        return;
-
         const consents = await this.consentsRepository.find({
             relations: ["user"],
+            where: {status: "pending"}
         });
 
         if (!consents.length) {
@@ -133,11 +132,11 @@ export class ConsentsService {
                                 status: "active",
                             });
 
-                            return { action: "update", consent: newConsent };
+                            return {action: "update", consent: newConsent};
                         }
 
                         if (status === "Rejected" || status === "Revoked") {
-                            return { action: "remove", consent };
+                            return {action: "remove", consent};
                         }
 
                         return null;

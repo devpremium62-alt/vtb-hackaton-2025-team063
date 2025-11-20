@@ -16,6 +16,7 @@ import {schema} from "@/features/create-bank-consent/model/schema";
 import {Card} from "@/shared/ui/icons/Card";
 import {Money} from "@/shared/ui/icons/Money";
 import {Enchant} from "@/shared/ui/icons/Enchant";
+import {Time} from "@/shared/ui/icons/Time";
 
 type Props = {
     isActive: boolean;
@@ -27,7 +28,6 @@ type Props = {
 export const CreateBankConsent = ({isActive, setActive, bankId, clientId}: Props) => {
     const {
         handleSubmit,
-        reset,
         control,
         setValue,
         formState: {errors},
@@ -42,19 +42,28 @@ export const CreateBankConsent = ({isActive, setActive, bankId, clientId}: Props
 
     useEffect(() => {
         setValue("clientId", clientId || "");
-    }, [clientId]);
+    }, [clientId, bankId]);
 
     const queryClient = useQueryClient();
 
     const {mutate: makeConsent, isPending} = useMutation({
         mutationFn: createConsent,
-        onSuccess: () => {
-            reset();
+        onSuccess: (data) => {
             setActive(false);
-            showPopup({
-                text: "Банк успешно подключен!",
-                icon: () => <Check/>
-            });
+
+            if (data.status === "pending") {
+                showPopup({
+                    text: "Банк ожидает подключения в личном кабинете!",
+                    background: "var(--success-color)",
+                    icon: () => <Time/>
+                });
+            } else {
+                showPopup({
+                    text: "Банк успешно подключен!",
+                    icon: () => <Check/>
+                });
+            }
+
 
             queryClient.invalidateQueries({queryKey: ["consents"]});
             queryClient.invalidateQueries({queryKey: ["transactions"]});
