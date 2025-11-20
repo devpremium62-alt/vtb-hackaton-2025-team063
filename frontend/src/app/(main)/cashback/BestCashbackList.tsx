@@ -5,7 +5,7 @@ import {getFamily} from "@/entities/family";
 import {REFETCH_INTERVAL} from "@/providers/ReactQueryProvider";
 import Heading from "@/shared/ui/typography/Heading";
 import {UserType} from "@/entities/user";
-import {BestCashback, CashbackType} from "@/entities/cashback";
+import {BestCashback, CashbackType, getFamilyCashback} from "@/entities/cashback";
 import Pagination from "@/shared/ui/Pagination";
 import React, {useMemo, useState} from "react";
 import usePagination from "@/shared/hooks/usePagination";
@@ -30,17 +30,27 @@ const BestCashbackList = ({familyInitial, cashbackInitial, className = ""}: Prop
         staleTime: REFETCH_INTERVAL * 5
     });
 
+    const {data: cashback = []} = useQuery({
+        queryKey: ["family-cashback"],
+        initialData: cashbackInitial,
+        queryFn: getFamilyCashback,
+        refetchInterval: REFETCH_INTERVAL,
+        staleTime: REFETCH_INTERVAL
+    });
+
     const cashbackByCategory = useMemo(() => {
-        const maxArray = new Array(Object.keys(TransactionCategories).length).fill({percents: 0});
-        cashbackInitial.forEach((item) => {
-            const idx = item.category - 1;
-            if (item.percents > maxArray[idx].percents) {
-                maxArray[idx] = item;
-            }
+        const maxArray = new Array(Object.keys(TransactionCategories).length).fill({cashback: {percents: 0}});
+        cashback.forEach((item) => {
+            item.cashback.forEach(cashback => {
+                const idx = cashback.category - 1;
+                if (cashback.percents > maxArray[idx].cashback.percents) {
+                    maxArray[idx] = {...item, cashback};
+                }
+            })
         });
 
         return maxArray;
-    }, [cashbackInitial]);
+    }, [cashback]);
 
     const [currentCashback, {setPage, firstPage, lastPage}] = usePagination(cashbackByCategory, 3);
 
@@ -55,8 +65,11 @@ const BestCashbackList = ({familyInitial, cashbackInitial, className = ""}: Prop
     }
 
     const categoryCashbacks = useMemo(() => {
-        return cashbackInitial.filter(c => c.category === currentCategory).sort((a, b) => b.percents - a.percents);
-    }, [cashbackInitial, currentCategory]);
+        return cashback.map(card => ({
+            ...card,
+            cashback: card.cashback.filter(c => c.category === currentCategory).sort((a, b) => b.percents - a.percents)[0]
+        }));
+    }, [cashback, currentCategory]);
 
     return <section className={`${className} mb-[1.875rem]`}>
         <div className="mb-2.5 flex items-center justify-between">
@@ -64,7 +77,7 @@ const BestCashbackList = ({familyInitial, cashbackInitial, className = ""}: Prop
             <Pagination setPage={setPage} firstPage={firstPage} lastPage={lastPage}/>
         </div>
         <div className="flex flex-col gap-1">
-            {currentCashback.map(c => <BestCashback onClick={onCategoryClick} key={c.category.toString() + c.card}
+            {currentCashback.map(c => <BestCashback onClick={onCategoryClick} key={c.cashback.category}
                                                     userAvatar={firstId === c.user ? firstAvatar : secondAvatar}
                                                     cashback={c}/>)}
         </div>

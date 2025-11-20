@@ -5,11 +5,16 @@ import {JwtAuthGuard} from "../auth/jwt-auth.guard";
 import {User} from "../common/decorators/user.decorator";
 import {User as UserEntity} from "../users/user.entity";
 import {UsersService} from "../users/users.service";
+import {CashbackService} from "../banks/cards/cashback/cashback.service";
 
 @ApiTags("Семья")
 @Controller('family')
 export class FamilyController {
-    constructor(private readonly familyService: FamilyService, private readonly userService: UsersService) {}
+    constructor(
+        private readonly familyService: FamilyService,
+        private readonly userService: UsersService,
+        private readonly cashbackService: CashbackService,
+    ) {}
 
     @ApiOperation({ summary: 'Получение данных пользователей семьи' })
     @ApiResponse({ status: 200, description: 'Список пользователей' })
@@ -51,5 +56,22 @@ export class FamilyController {
         }
 
         return response;
+    }
+
+    @ApiOperation({ summary: 'Получение кэшбэка семьи' })
+    @ApiResponse({ status: 200, description: 'Кэшбэк' })
+    @ApiCookieAuth('access_token')
+    @Get("/cashback")
+    @UseGuards(JwtAuthGuard)
+    public async getCashback(@User("id") userId: number) {
+        const myCashback = await this.cashbackService.getCardsCashback(userId);
+
+        const memberId = await this.familyService.getFamilyMemberId(userId);
+        if(memberId) {
+            const memberCashback = await this.cashbackService.getCardsCashback(memberId);
+            myCashback.push(...memberCashback);
+        }
+
+        return myCashback;
     }
 }

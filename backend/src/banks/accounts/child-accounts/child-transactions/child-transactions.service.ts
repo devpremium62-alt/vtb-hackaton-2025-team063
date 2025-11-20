@@ -74,8 +74,7 @@ export class ChildTransactionsService {
         private readonly familyService: FamilyService,
         private readonly familyCacheService: FamilyCacheService,
         private readonly redisService: RedisService,
-    ) {
-    }
+    ) {}
 
     public async getTransactions(userId: number) {
         const partnerId = await this.familyService.getFamilyMemberId(userId);

@@ -30,7 +30,7 @@ export class ConsentsService {
             method: "POST",
             data: {
                 "client_id": consentDTO.client_id,
-                "permissions": ["ReadAccountsDetail", "ReadBalances", "ReadTransactionsDetail", "ManageAccounts"],
+                "permissions": ["ReadAccountsDetail", "ReadBalances", "ReadTransactionsDetail", "ManageAccounts", "ReadCards"],
                 "reason": "Агрегация счетов для HackAPI",
                 "requesting_bank": process.env.CLIENT_ID,
                 "requesting_bank_name": "Семейный Мультибанк"

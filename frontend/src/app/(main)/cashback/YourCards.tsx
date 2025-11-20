@@ -5,7 +5,12 @@ import {getFamily} from "@/entities/family";
 import {REFETCH_INTERVAL} from "@/providers/ReactQueryProvider";
 import Heading from "@/shared/ui/typography/Heading";
 import {UserType} from "@/entities/user";
-import {CardWithCashbackType, CashbackCard, CategoryCashback} from "@/entities/cashback";
+import {
+    CashbackCard,
+    CashbackType,
+    CategoryCashback,
+    getFamilyCashback
+} from "@/entities/cashback";
 import React, {useMemo, useState} from "react";
 import {Carousel} from "@mantine/carousel";
 import {AnimatePresence} from "framer-motion";
@@ -13,11 +18,11 @@ import {useMediaQuery} from "@mantine/hooks";
 
 type Props = {
     familyInitial: UserType[];
-    cardsCashbackInitial: CardWithCashbackType[];
+    cashbackInitial: CashbackType[];
     className?: string;
 }
 
-const BestCashbackList = ({familyInitial, cardsCashbackInitial, className = ""}: Props) => {
+const BestCashbackList = ({familyInitial, cashbackInitial, className = ""}: Props) => {
     const [activeSlide, setActiveSlide] = useState(0);
 
     const {data: family = []} = useQuery({
@@ -26,6 +31,14 @@ const BestCashbackList = ({familyInitial, cardsCashbackInitial, className = ""}:
         queryFn: getFamily,
         refetchInterval: REFETCH_INTERVAL * 5,
         staleTime: REFETCH_INTERVAL * 5
+    });
+
+    const {data: cashback = []} = useQuery({
+        queryKey: ["family-cashback"],
+        initialData: cashbackInitial,
+        queryFn: getFamilyCashback,
+        refetchInterval: REFETCH_INTERVAL,
+        staleTime: REFETCH_INTERVAL
     });
 
     const firstAvatar = family[0] ? family[0].avatar : "";
@@ -40,8 +53,8 @@ const BestCashbackList = ({familyInitial, cardsCashbackInitial, className = ""}:
         const start = activeSlide;
         const end = activeSlide + visibleCount - 1;
 
-        return cardsCashbackInitial.slice(start, end + 1);
-    }, [isLarge, activeSlide, cardsCashbackInitial]);
+        return cashback.slice(start, end + 1);
+    }, [isLarge, activeSlide, cashback]);
 
     return <section className={`${className} mb-[1.875rem]`}>
         <Heading className="mb-2.5" level={2}>Ваши карты</Heading>
@@ -54,8 +67,8 @@ const BestCashbackList = ({familyInitial, cardsCashbackInitial, className = ""}:
                               indicator: "transition-all",
                           }}>
                     {
-                        cardsCashbackInitial.map((card) => {
-                            return <Carousel.Slide key={card.card}>
+                        cashback.map((card) => {
+                            return <Carousel.Slide key={card.card + card.user}>
                                 <CashbackCard avatar={card.user === firstId ? firstAvatar : secondAvatar}
                                               cardWithCashback={card}/>
                             </Carousel.Slide>;
@@ -65,8 +78,8 @@ const BestCashbackList = ({familyInitial, cardsCashbackInitial, className = ""}:
             </AnimatePresence>
             <div className="grid grid-cols-2 1200:grid-cols-3 gap-2.5">
                 {visibleCards.map((card) => {
-                    return <div key={card.card} className="flex flex-col gap-1">
-                        {card.categories.map(c => <CategoryCashback key={c.id} categoryCashback={c}/>)}
+                    return <div key={card.card + card.user} className="flex flex-col gap-1">
+                        {card.cashback.map(c => <CategoryCashback key={c.category} categoryCashback={c}/>)}
                     </div>
                 })}
             </div>

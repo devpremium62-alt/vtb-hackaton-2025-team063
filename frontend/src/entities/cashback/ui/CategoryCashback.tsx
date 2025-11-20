@@ -12,10 +12,10 @@ export const CategoryCashback = ({categoryCashback}: Props) => {
         <motion.div className="flex items-center gap-1.5" initial={{opacity: 0, y: 10}}
                     animate={{opacity: 1, y: 0}}
                     transition={{duration: 0.3}}>
-            <TransactionCategoryAvatar categoryId={categoryCashback.id}/>
+            <TransactionCategoryAvatar categoryId={categoryCashback.category}/>
             <div className="min-w-0">
                 <p className="font-medium text-ellipsis overflow-hidden whitespace-nowrap">
-                    {TransactionCategories[categoryCashback.id].name}
+                    {TransactionCategories[categoryCashback.category].name}
                 </p>
                 <p className="text-success font-bold text-xl leading-none">
                     + <MoneyAmount value={categoryCashback.cashback}/>

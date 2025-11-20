@@ -2,22 +2,21 @@ import {BankKey} from "@/entities/bank";
 
 export type CashbackType = {
     user: number;
-    category: number;
     bank: BankKey;
-    date: Date;
-    percents: number;
-    cashback: number;
     card: string;
+    cashback: CategoryCashbackType[];
+}
+
+export type OneCategoryCashbackType = {
+    user: number;
+    bank: BankKey;
+    card: string;
+    cashback: CategoryCashbackType;
 }
 
 export type CategoryCashbackType = {
-    id: number;
+    date: Date;
+    percents: number;
     cashback: number;
-}
-
-export type CardWithCashbackType = {
-    card: string;
-    user: number;
-    total: number;
-    categories: CategoryCashbackType[];
+    category: number;
 }

@@ -7,9 +7,10 @@ import {FamilyController} from './family.controller';
 import {UsersModule} from "../users/users.module";
 import {RedisModule} from "../redis/redis.module";
 import {FamilyCacheService} from "./family-cache.service";
+import {CashbackModule} from "../banks/cards/cashback/cashback.module";
 
 @Module({
-    imports: [TypeOrmModule.forFeature([User]), UsersModule, CodeModule, RedisModule],
+    imports: [TypeOrmModule.forFeature([User]), UsersModule, CodeModule, RedisModule, CashbackModule],
     providers: [FamilyService, FamilyCacheService],
     exports: [FamilyService, FamilyCacheService],
     controllers: [FamilyController],

@@ -59,3 +59,8 @@ export type PaymentConsentType = {
     message: string;
     valid_until: string;
 };
+
+export type CardType = {
+    cardId: string;
+    cardNumber: string;
+}

@@ -12,13 +12,15 @@ import AccentButton from "@/shared/ui/AccentButton";
 import Avatar from "@/shared/ui/Avatar";
 import BalanceCounter from "@/shared/ui/MoneyCounting";
 import {CashbackModal} from "@/widgets/cashback-modal/ui/CashbackModal";
-import {useState} from "react";
+import {useMemo, useState} from "react";
+import {CashbackType, getFamilyCashback, getUserCashback} from "@/entities/cashback";
 
 type Props = {
     familyInitial: UserType[];
+    cashbackInitial: CashbackType[];
 }
 
-const SharedCashback = ({familyInitial}: Props) => {
+const SharedCashback = ({familyInitial, cashbackInitial}: Props) => {
     const [isModalActive, setModalActive] = useState(false);
 
     const {data: family = []} = useQuery({
@@ -29,8 +31,27 @@ const SharedCashback = ({familyInitial}: Props) => {
         staleTime: REFETCH_INTERVAL * 5
     });
 
+    const {data: cashback = []} = useQuery({
+        queryKey: ["family-cashback"],
+        initialData: cashbackInitial,
+        queryFn: getFamilyCashback,
+        refetchInterval: REFETCH_INTERVAL,
+        staleTime: REFETCH_INTERVAL
+    });
+
     const firstAvatar = family[0] ? family[0].avatar : "";
+    const firstId = family[0] ? family[0].id : 0;
+
     const secondAvatar = family[1] ? family[1].avatar : "";
+    const secondId = family[1] ? family[1].id : 0;
+
+    const firstTotalCashback = useMemo(() => {
+        return getUserCashback(firstId, cashback);
+    }, [cashback]);
+
+    const secondTotalCashback = useMemo(() => {
+        return getUserCashback(secondId, cashback);
+    }, [cashback]);
 
     return <section className="mx-4 mb-[1.875rem]">
         <Heading className="mb-2.5 md:text-4xl" level={2}>Общий кэшбэк</Heading>
@@ -39,7 +60,7 @@ const SharedCashback = ({familyInitial}: Props) => {
                 <div>
                     <p className="text-[#85B6FF] text-base">Накоплено за всё время</p>
                     <p className="text-[1.875rem] font-bold leading-none">
-                        <BalanceCounter value={12450}/>
+                        <BalanceCounter value={firstTotalCashback + secondTotalCashback}/>
                     </p>
                 </div>
                 <CoupleAvatars firstAvatar={getAbsoluteSeverUrl(firstAvatar)}
@@ -49,12 +70,12 @@ const SharedCashback = ({familyInitial}: Props) => {
                 <div className="flex items-center flex-wrap gap-x-3 gap-y-1">
                     <div className="flex items-center gap-1">
                         <Avatar size="1.5" avatar={getAbsoluteSeverUrl(firstAvatar)}/>
-                        <p className="text-sm font-semibold"><MoneyAmount value={1456}/></p>
+                        <p className="text-sm font-semibold"><MoneyAmount value={firstTotalCashback}/></p>
                     </div>
                     {secondAvatar
                         ? <div className="flex items-center gap-1">
                             <Avatar size="1.5" avatar={getAbsoluteSeverUrl(secondAvatar)}/>
-                            <p className="text-sm font-semibold"><MoneyAmount value={10994}/></p>
+                            <p className="text-sm font-semibold"><MoneyAmount value={secondTotalCashback}/></p>
                         </div>
                         : <></>
                     }

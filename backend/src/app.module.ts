@@ -39,6 +39,7 @@ import { Notification } from './notifications/notification.entity';
 import {ChildTransactionsModule} from "./banks/accounts/child-accounts/child-transactions/child-transactions.module";
 import {BanksQueueModule} from "./banks/banks-queue.module";
 import {CardsModule} from "./banks/cards/cards.module";
+import {CashbackModule} from "./banks/cards/cashback/cashback.module";
 
 
 @Module({
@@ -66,6 +67,7 @@ import {CardsModule} from "./banks/cards/cards.module";
         UsersModule,
         BanksQueueModule,
         CardsModule,
+        CashbackModule,
         CommonModule,
         AuthModule,
         PaymentConsentsModule,
