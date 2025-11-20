@@ -49,7 +49,7 @@ export class RedisService {
         }
 
         const response = await callback();
-        if (useCache(response)) {
+        if (useCache(response) && response) {
             await this.redis.set(key, JSON.stringify(response), "EX", ttl);
         }
 
@@ -71,6 +71,7 @@ export class RedisService {
                 }
             }
 
+            this.emitter.emit(`cache.invalidate.${keyBase}`, new CacheInvalidateEvent(...entitiesId));
             if (keysToDelete.length > 0) {
                 for(const key of keysToDelete) {
                     this.emitter.emit(`cache.invalidate.${keyBase}`, new CacheInvalidateEvent(...key.split(":").slice(1)));

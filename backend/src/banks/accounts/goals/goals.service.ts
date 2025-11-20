@@ -83,7 +83,7 @@ export class GoalsService {
     public async depositGoal(userId: number, goalId: string, depositDTO: DepositDTO) {
         const memberId = await this.familyService.getFamilyMemberId(userId);
         const goal = await this.findGoal(goalId, userId, memberId);
-        const accountHolder = await this.familyAccountsService.getAccountHolder(depositDTO.fromAccountId, depositDTO.fromBank, userId, memberId);
+        const accountHolder = await this.familyAccountsService.getAccountHolder(depositDTO.fromBank, depositDTO.fromAccountId, userId, memberId);
 
         await this.transactionsService.createTransaction(accountHolder, {
             fromAccountId: depositDTO.fromAccountId,

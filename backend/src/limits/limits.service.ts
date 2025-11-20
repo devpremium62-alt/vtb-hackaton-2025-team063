@@ -56,7 +56,10 @@ export class LimitsService {
             let limits = await this.limitRepository.find({where: {user: {id: In([userId, partnerId])}}});
             limits = limits.map(limit => ({...limit, spent: 0}));
 
-            const transactions = await this.transactionsService.getTransactions(userId);
+            const transactions = await Promise.all([
+                await this.transactionsService.getTransactions(userId),
+                partnerId ? await this.transactionsService.getTransactions(partnerId) : [],
+            ]);
 
             const categoryToLimits: Record<number, (Limit & { spent?: number })[]> = {};
             for (const limit of limits) {
@@ -68,7 +71,7 @@ export class LimitsService {
             }
 
             const now = Date.now();
-            for (const transaction of transactions) {
+            for (const transaction of transactions.flat(1)) {
                 const cat = transaction.category;
 
                 if (!transaction.outcome || !categoryToLimits[cat.id]) {

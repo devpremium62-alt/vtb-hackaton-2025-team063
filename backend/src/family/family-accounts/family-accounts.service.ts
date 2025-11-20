@@ -51,7 +51,9 @@ export class FamilyAccountsService {
             if(account) {
                 return userId;
             }
-        } catch (e) {}
+        } catch (e) {
+            console.error(e);
+        }
 
         return memberId!;
     }
