@@ -4,9 +4,10 @@ import BestCashbackList from "@/app/(main)/cashback/BestCashbackList";
 import YourCards from "@/app/(main)/cashback/YourCards";
 import CashbackPromo from "@/app/(main)/cashback/CashbackPromo";
 import {getFamilyCashback} from "@/entities/cashback";
+import promiseAllSafe from "@/shared/lib/promiseAllSafe";
 
 export default async function Cashback() {
-    const [family, familyCashback] = await Promise.all([getFamily(), getFamilyCashback()]);
+    const [family, familyCashback] = await promiseAllSafe([getFamily(), getFamilyCashback()]);
 
     return <div className="mb-24">
         <SharedCashback familyInitial={family} cashbackInitial={familyCashback}/>

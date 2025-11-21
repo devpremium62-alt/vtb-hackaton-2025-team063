@@ -7,6 +7,7 @@ import {getGoals} from "@/entities/goal";
 import {getPayments} from "@/entities/payment";
 import {getFamilyFinance} from "@/entities/family/api/api";
 import {ShortChildAccounts} from "@/app/(main)/dashboard/ShortChildAccounts";
+import promiseAllSafe from "@/shared/lib/promiseAllSafe";
 
 export default async function Dashboard() {
     const [
@@ -14,7 +15,7 @@ export default async function Dashboard() {
         payments,
         goals,
         childAccounts
-    ] = await Promise.all([getFamilyFinance(), getPayments(), getGoals(), getChildAccounts()]);
+    ] = await promiseAllSafe([getFamilyFinance(), getPayments(), getGoals(), getChildAccounts()]);
 
     return <div className="mb-24">
         <SharedBalance familyFinanceInitial={familyFinance}/>

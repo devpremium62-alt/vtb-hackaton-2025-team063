@@ -6,6 +6,7 @@ import {getTransactions} from "@/entities/transaction";
 import {getFamily} from "@/entities/family";
 import {getFamilyExpenses} from "@/entities/family/api/api";
 import {ExpensesDistributionPortal} from "@/app/(main)/expenses/ExpensesDistributionPortal";
+import promiseAllSafe from "@/shared/lib/promiseAllSafe";
 
 export default async function Expenses() {
     const [
@@ -13,7 +14,7 @@ export default async function Expenses() {
         expenseCategories,
         family,
         transactions
-    ] = await Promise.all([getLimits(), getFamilyExpenses(), getFamily(), getTransactions()]);
+    ] = await promiseAllSafe([getLimits(), getFamilyExpenses(), getFamily(), getTransactions()]);
 
     return <div>
         <div className="grid grid-cols-1 md:grid-cols-2 md:gap-4 lg:gap-8 mb-20">

@@ -10,6 +10,7 @@ import {getWallets} from "@/entities/wallet";
 import {ChildAccounts} from "@/app/(main)/budget/ChildAccounts";
 import ChildTransactionList from "@/app/(main)/budget/ChildTransactionsList";
 import {getChildTransactionCategories} from "@/entities/transaction/api/api";
+import promiseAllSafe from "@/shared/lib/promiseAllSafe";
 
 export default async function Budget() {
     const [
@@ -19,7 +20,7 @@ export default async function Budget() {
         childAccounts,
         childTransactions,
         childTransactionCategories,
-    ] = await Promise.all([getGoals(), getWallets(), getPayments(), getChildAccounts(), getChildTransactions(), getChildTransactionCategories()]);
+    ] = await promiseAllSafe([getGoals(), getWallets(), getPayments(), getChildAccounts(), getChildTransactions(), getChildTransactionCategories()]);
 
     return <div>
         <div className="grid grid-cols-1 md:grid-cols-2 md:gap-4 lg:gap-8 mb-20">

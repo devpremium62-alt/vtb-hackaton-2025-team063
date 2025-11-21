@@ -7,12 +7,13 @@ import BanksConnect from "@/app/(main)/settings/BanksConnect";
 import {getConsents} from "@/entities/bank";
 import {authUser} from "@/entities/user";
 import {getNotificationsStatus} from "@/entities/notification";
+import promiseAllSafe from "@/shared/lib/promiseAllSafe";
 
 export default async function Settings() {
-    const [user, family, notificationsEnabled] = await Promise.all([authUser(), getFamily(), getNotificationsStatus()]);
+    const [user, family, notificationsEnabled] = await promiseAllSafe([authUser(), getFamily(), getNotificationsStatus()]);
     const queryClient = new QueryClient();
 
-    await Promise.all([
+    await promiseAllSafe([
         queryClient.prefetchQuery({queryKey: ["consents"], queryFn: getConsents}),
     ]);
 
