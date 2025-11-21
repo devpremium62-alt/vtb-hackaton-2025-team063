@@ -49,7 +49,7 @@ export class RedisService {
         }
 
         const response = await callback();
-        if (useCache(response) && response) {
+        if (useCache(response) && response && (!Array.isArray(response) || response.length !== 0)) {
             await this.redis.set(key, JSON.stringify(response), "EX", ttl);
         }
 

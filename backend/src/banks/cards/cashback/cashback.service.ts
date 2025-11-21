@@ -50,7 +50,7 @@ export class CashbackService {
                         cashbackCard.cashback.push({
                             category: Number(category),
                             date: getRandomDate(new Date(), monthFuture),
-                            cashback: getRandomInt(1, 5000),
+                            cashback: getRandomInt(1, 2000),
                             percents: Math.max(getRandomInt(1, 20), 1)
                         })
                     }

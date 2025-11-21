@@ -7,6 +7,8 @@ const worker = new Worker(
     async job => {
         const { token, url, request } = job.data;
 
+        console.log("[STARTING]: ", url);
+
         try {
             const res = await axios({
                 ...request,

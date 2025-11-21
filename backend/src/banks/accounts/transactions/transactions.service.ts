@@ -19,6 +19,7 @@ import {CacheInvalidateEvent} from "../../../common/events/cache-invalidate.even
 @Injectable()
 export class TransactionsService {
     private baseKey = "transactions";
+    private partialKey = "partial-transactions";
 
     public constructor(
         @InjectRepository(Transaction)
@@ -32,7 +33,9 @@ export class TransactionsService {
     }
 
     public async getTransactions(userId: number, ...accountIds: string[]) {
-        return this.redisService.withCache(`${this.baseKey}:${userId}`, 30, async () => {
+        const key = accountIds.length ? this.partialKey : this.baseKey;
+
+        return this.redisService.withCache(`${key}:${userId}`, 30, async () => {
             const consents = await this.consentsService.getUserConsents(userId);
             const bankToConsents = Object.fromEntries(consents.map(consent => [consent.bankId, consent.consentId]));
 
@@ -134,6 +137,7 @@ export class TransactionsService {
         });
 
         await this.redisService.invalidateCache(this.baseKey, userId);
+        await this.redisService.invalidateCache(this.partialKey, userId);
         await this.redisService.invalidateCache(this.baseKey, userId, transactionDTO.fromAccountId);
         await this.redisService.invalidateCache(this.baseKey, "*", transactionDTO.toAccountId);
 
@@ -158,6 +162,7 @@ export class TransactionsService {
         const saved = await this.transactionRepository.save(transaction);
 
         await this.redisService.invalidateCache(this.baseKey, userId);
+        await this.redisService.invalidateCache(this.partialKey, userId);
 
         return saved;
     }
@@ -167,5 +172,6 @@ export class TransactionsService {
         const [userId] = event.entityIds;
 
         await this.redisService.invalidateCache(this.baseKey, userId);
+        await this.redisService.invalidateCache(this.partialKey, userId);
     }
 }
