@@ -35,12 +35,12 @@ const ExpensesHistogram = ({expenseCategories}: Props) => {
         <div className="mb-2.5 relative">
             <Histogram data={histogramData}/>
             {!isHelpActive && !isLoading &&
-                <button onClick={() => setHelpActive(true)} className="w-5 h-5 absolute top-0 right-0 text-[#C4C4C4] cursor-pointer">
+                <button onClick={() => setHelpActive(true)} className="w-5 h-5 absolute -top-6 right-0 text-[#C4C4C4] cursor-pointer">
                     <Info/>
                 </button>
             }
 
-            <InfoPopup text="Зажмите и перетащите операцию для изменения категории" time={2000}
+            <InfoPopup top={-1} text="Зажмите и перетащите операцию для изменения категории" time={2000}
                        isActive={isHelpActive}
                        setActive={setHelpActive}/>
         </div>
