@@ -181,7 +181,9 @@ export class AccountsService {
     private async handleCacheInvalidation(event: CacheInvalidateEvent) {
         const [userId, accountId] = event.entityIds;
 
-        await this.redisService.invalidateCache(this.cacheKey, userId);
+        if(userId !== "*" && !accountId) {
+            await this.redisService.invalidateCache(this.cacheKey, userId);
+        }
         await this.redisService.invalidateCache(this.cacheKey, accountId, "*", userId, "balance");
     }
 
@@ -189,7 +191,9 @@ export class AccountsService {
     private async handleConsentsCacheInvalidation(event: CacheInvalidateEvent) {
         const [userId] = event.entityIds;
 
-        await this.redisService.invalidateCache(this.cacheKey, userId);
+        if(userId !== "*") {
+            await this.redisService.invalidateCache(this.cacheKey, userId);
+        }
         await this.redisService.invalidateCache(this.cacheKey, "*", userId);
     }
 
@@ -198,6 +202,8 @@ export class AccountsService {
     private async handleExtendedCacheInvalidation(event: CacheInvalidateEvent) {
         const [userId] = event.entityIds;
 
-        await this.redisService.invalidateCache(this.cacheExtendedKey, userId);
+        if(userId !== "*") {
+            await this.redisService.invalidateCache(this.cacheKey, userId);
+        }
     }
 }

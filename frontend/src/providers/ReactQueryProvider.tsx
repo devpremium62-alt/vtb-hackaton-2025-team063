@@ -4,7 +4,7 @@ import {MutationCache, QueryCache, QueryClient, QueryClientProvider} from '@tans
 import {ReactNode, useState} from 'react'
 import {usePopup} from "@/providers/GlobalPopupProvider";
 
-export const REFETCH_INTERVAL = 5000;
+export const REFETCH_INTERVAL = 10000;
 
 export default function ReactQueryProvider({children}: { children: ReactNode }) {
     const {showPopup} = usePopup();
