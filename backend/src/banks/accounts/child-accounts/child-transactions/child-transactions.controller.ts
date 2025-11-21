@@ -20,9 +20,7 @@ export class ChildTransactionsController {
     @Get()
     @UseGuards(JwtAuthGuard)
     public async getAll(@User("id") userId: number) {
-        const response = await this.childTransactionsService.getTransactions(userId);
-        console.log("RESPONSE: ", response, new Date());
-        return response;
+        return this.childTransactionsService.getTransactions(userId);
     }
 
     @ApiOperation({summary: 'Получение расходов детских счетов по категориям'})

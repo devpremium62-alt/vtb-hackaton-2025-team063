@@ -203,7 +203,7 @@ export class AccountsService {
         const [userId] = event.entityIds;
 
         if(userId !== "*") {
-            await this.redisService.invalidateCache(this.cacheKey, userId);
+            await this.redisService.invalidateCache(this.cacheExtendedKey, userId);
         }
     }
 }
