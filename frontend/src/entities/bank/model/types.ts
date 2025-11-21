@@ -4,7 +4,7 @@ export type Bank = {
     iconBg: string;
 }
 
-export type BankKey = "abank" | "sbank" | "vbank" | "family";
+export type BankKey = "abank" | "sbank" | "vbank";
 
 export const banks: Record<BankKey, Bank> = {
     "abank": {
@@ -21,11 +21,6 @@ export const banks: Record<BankKey, Bank> = {
         name: "Virtual Bank",
         color: "#0066FF",
         iconBg: "linear-gradient(135deg, #7aa2ff, #5e8aff)"
-    },
-    "family": {
-        name: "Family Bank",
-        color: "#791EFF",
-        iconBg: "#791EFF"
     }
 };
 
