@@ -26,7 +26,7 @@ export const BestCashback = ({userAvatar, cashback, onClick}: Props) => {
                     <p className="font-medium text-ellipsis overflow-hidden whitespace-nowrap">{TransactionCategories[cashback.cashback.category].name}</p>
                     <div className="flex items-center flex-wrap gap-1">
                         <BankTag bank={banks[cashback.bank].name}/>
-                        <p className="text-light text-xs font-semibold leading-none">{cashback.card.slice(-4)}</p>
+                        <p className="text-light text-xs font-semibold leading-none">*{cashback.card.slice(-4)}</p>
                     </div>
                 </div>
             </div>

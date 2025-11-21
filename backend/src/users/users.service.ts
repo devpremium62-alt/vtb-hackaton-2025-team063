@@ -26,10 +26,8 @@ export class UsersService {
     }
 
     public async getAll() {
-        return this.redisService.withCache(this.baseKey, 3600, async () => {
-            const users = await this.usersRepository.find();
-            return users.map(u => ({id: u.id, name: u.name}));
-        });
+        const users = await this.usersRepository.find();
+        return users.map(u => ({id: u.id, name: u.name}));
     }
 
     public async createUser(user: UserCreateDTO): Promise<User> {
@@ -47,8 +45,6 @@ export class UsersService {
                 await this.redisService.invalidateCache(this.baseKey, user.partner);
                 await this.notificationsService.sendNotification("Подключение к семье", `${user.name} подключился(-acь) к семье!`, user.partner);
             }
-
-            await this.redisService.invalidateCache(this.baseKey);
 
             return newUser;
         });
@@ -80,7 +76,6 @@ export class UsersService {
         await this.usersRepository.update({id: userId}, {...userEditDTO});
 
         await this.redisService.invalidateCache(this.baseKey, userId);
-        await this.redisService.invalidateCache(this.baseKey);
 
         return this.usersRepository.findOne({where: {id: userId}});
     }

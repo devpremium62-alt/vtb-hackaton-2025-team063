@@ -6,6 +6,8 @@ import 'dayjs/locale/ru';
 import dayjs from "dayjs";
 import MoneyAmount from "@/shared/ui/MoneyAmount";
 import {useMemo} from "react";
+import {BankTag} from "@/entities/transaction/ui/BankTag";
+import {banks} from "@/entities/bank";
 
 type Props = {
     cardWithCashback: CashbackType;
@@ -22,8 +24,11 @@ export const CashbackCard = ({cardWithCashback, avatar}: Props) => {
                     animate={{opacity: 1, y: 0}}
                     transition={{duration: 0.3}}>
             <div className="flex items-start justify-between mb-3.5">
-                <Avatar avatar={getAbsoluteSeverUrl(avatar)} />
-                <p className="text-[#B9CADB] font-bold text-lg">{cardWithCashback.card.slice(-4)}</p>
+                <Avatar avatar={getAbsoluteSeverUrl(avatar)}/>
+                <div className="flex flex-col items-end">
+                    <p className="text-[#B9CADB] font-bold text-lg">*{cardWithCashback.card.slice(-4)}</p>
+                    <BankTag bank={banks[cardWithCashback.bank].name}/>
+                </div>
             </div>
             <div>
                 <p className="text-base text-[#B9CADB]">Накоплено за {dayjs(Date.now()).locale('ru').format('MMMM')}</p>

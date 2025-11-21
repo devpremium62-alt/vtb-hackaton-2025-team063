@@ -43,7 +43,7 @@ const BestCashbackList = ({familyInitial, cashbackInitial, className = ""}: Prop
         cashback.forEach((item) => {
             item.cashback.forEach(cashback => {
                 const idx = cashback.category - 1;
-                if (cashback.percents > maxArray[idx].cashback.percents) {
+                if (cashback.percents >= maxArray[idx].cashback.percents) {
                     maxArray[idx] = {...item, cashback};
                 }
             })
